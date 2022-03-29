@@ -26,7 +26,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_margin="16dp"
-                android:contentDescription="userAvatar"
+                android:contentDescription="@string/user_avatar"
                 android:src="@drawable/avatar_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,14 +36,36 @@
                 android:id="@+id/username"
                 android:layout_width="0dp"
                 android:layout_height="32dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:paddingLeft="8dp"
+                android:layout_margin="16dp"
+                android:padding="8dp"
                 android:gravity="fill_vertical"
                 android:text="Username"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/userAvatar"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/firstUserAttribute"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rhombus"
+                android:gravity="center"
+                android:text="M"
+                app:layout_constraintStart_toEndOf="@+id/userAvatar"
+                app:layout_constraintTop_toBottomOf="@+id/username" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/secondUserAttribute"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rhombus"
+                android:gravity="center"
+                android:text="38"
+                app:layout_constraintStart_toEndOf="@+id/firstUserAttribute"
+                app:layout_constraintTop_toBottomOf="@+id/username" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/thirdUserAttribute"
@@ -64,29 +86,6 @@
                 android:gravity="center"
                 android:text="+"
                 app:layout_constraintStart_toEndOf="@+id/thirdUserAttribute"
-                app:layout_constraintTop_toBottomOf="@+id/username" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/secondUserAttribute"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/rhombus"
-                android:gravity="center"
-                android:text="38"
-                app:layout_constraintStart_toEndOf="@+id/firstUserAttribute"
-                app:layout_constraintTop_toBottomOf="@+id/username" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/firstUserAttribute"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/rhombus"
-                android:gravity="center"
-                android:text="M"
-                app:layout_constraintStart_toEndOf="@+id/userAvatar"
                 app:layout_constraintTop_toBottomOf="@+id/username" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
