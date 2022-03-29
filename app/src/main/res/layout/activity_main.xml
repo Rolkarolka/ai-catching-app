@@ -1,82 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/pink">
+        android:background="@color/pink"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="16dp">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/userAvatar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="16dp"
                 android:contentDescription="userAvatar"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:src="@drawable/avatar_logo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/username"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:paddingLeft="8dp"
+                android:gravity="fill_vertical"
+                android:text="Username"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/userAvatar"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/username"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:padding="15dp"
-                    android:text="Username" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/thirdUserAttribute"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rhombus"
+                android:backgroundTint="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/secondUserAttribute"
+                app:layout_constraintTop_toBottomOf="@+id/username" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center_vertical">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appendUserAttribute"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rhombus"
+                android:gravity="center"
+                android:text="+"
+                app:layout_constraintStart_toEndOf="@+id/thirdUserAttribute"
+                app:layout_constraintTop_toBottomOf="@+id/username" />
 
-                    <TextView
-                        android:id="@+id/firstUserAttribute"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/rhombus"
-                        android:gravity="center"
-                        android:text="M" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/secondUserAttribute"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rhombus"
+                android:gravity="center"
+                android:text="38"
+                app:layout_constraintStart_toEndOf="@+id/firstUserAttribute"
+                app:layout_constraintTop_toBottomOf="@+id/username" />
 
-                    <TextView
-                        android:id="@+id/secondUserAttribute"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/rhombus"
-                        android:gravity="center"
-                        android:text="38" />
-
-                    <View
-                        android:id="@+id/thirdUserAttribute"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/rhombus"
-                        android:backgroundTint="@color/black" />
-
-                    <TextView
-                        android:id="@+id/appendUserAttribute"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/rhombus"
-                        android:gravity="center"
-                        android:text="+" />
-
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </Toolbar>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/firstUserAttribute"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rhombus"
+                android:gravity="center"
+                android:text="M"
+                app:layout_constraintStart_toEndOf="@+id/userAvatar"
+                app:layout_constraintTop_toBottomOf="@+id/username" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
 
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
