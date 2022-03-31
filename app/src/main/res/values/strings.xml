@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AICatching</string>
+    <string name="my_wardrobe">My wardrobe</string>
+    <string name="new_cloth">New cloth</string>
 </resources>
