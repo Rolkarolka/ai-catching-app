@@ -112,7 +112,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/appCompatButton2"
+        android:id="@+id/openCameraButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/pink"
@@ -120,12 +120,12 @@
         android:padding="10dp"
         android:text="@string/new_cloth"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/appCompatButton"
+        app:layout_constraintEnd_toStartOf="@+id/showWardrobeButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/appCompatButton"
+        android:id="@+id/showWardrobeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/pink"
