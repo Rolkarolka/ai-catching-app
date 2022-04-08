@@ -46,44 +46,29 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/firstUserAttribute"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                style="@style/RhombusWithText"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/rhombus"
-                android:gravity="center"
                 android:text="M"
                 app:layout_constraintStart_toEndOf="@+id/userAvatar"
                 app:layout_constraintTop_toBottomOf="@+id/username" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/secondUserAttribute"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/rhombus"
-                android:gravity="center"
+                style="@style/RhombusWithText"
                 android:text="38"
                 app:layout_constraintStart_toEndOf="@+id/firstUserAttribute"
                 app:layout_constraintTop_toBottomOf="@+id/username" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/thirdUserAttribute"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/rhombus"
+                style="@style/RhombusWithText"
                 android:backgroundTint="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/secondUserAttribute"
                 app:layout_constraintTop_toBottomOf="@+id/username" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/appendUserAttribute"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/rhombus"
-                android:gravity="center"
+                style="@style/RhombusWithText"
                 android:text="+"
                 app:layout_constraintStart_toEndOf="@+id/thirdUserAttribute"
                 app:layout_constraintTop_toBottomOf="@+id/username" />
