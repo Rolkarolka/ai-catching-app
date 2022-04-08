@@ -1,19 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-  
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pink"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="16dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/userAvatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/user_avatar"
+                android:src="@drawable/ic_avatar_logo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/username"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_margin="16dp"
+                android:gravity="fill_vertical"
+                android:padding="8dp"
+                android:text="Username"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/userAvatar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/firstUserAttribute"
+                style="@style/RhombusWithText"
+                android:layout_marginStart="16dp"
+                android:text="M"
+                app:layout_constraintStart_toEndOf="@+id/userAvatar"
+                app:layout_constraintTop_toBottomOf="@+id/username" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/secondUserAttribute"
+                style="@style/RhombusWithText"
+                android:text="38"
+                app:layout_constraintStart_toEndOf="@+id/firstUserAttribute"
+                app:layout_constraintTop_toBottomOf="@+id/username" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/thirdUserAttribute"
+                style="@style/RhombusWithText"
+                android:backgroundTint="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/secondUserAttribute"
+                app:layout_constraintTop_toBottomOf="@+id/username" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appendUserAttribute"
+                style="@style/RhombusWithText"
+                android:text="+"
+                app:layout_constraintStart_toEndOf="@+id/thirdUserAttribute"
+                app:layout_constraintTop_toBottomOf="@+id/username" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="300dp"
         android:layout_height="300dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/blank_rectangle"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2">
 
         <TextView
             android:id="@+id/textView"
@@ -37,30 +109,32 @@
             app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toTopOf="parent" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/appCompatButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:background="@color/pink"
         android:drawableTop="@drawable/ic_camera"
+        android:padding="10dp"
         android:text="@string/new_cloth"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/appCompatButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/appCompatButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:background="@color/pink"
         android:drawableTop="@drawable/ic_wardrobe"
+        android:padding="10dp"
         android:text="@string/my_wardrobe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/appCompatButton2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
