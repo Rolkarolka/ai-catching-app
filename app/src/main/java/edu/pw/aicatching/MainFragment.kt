@@ -24,6 +24,10 @@ class MainFragment : Fragment() {
         showWardrobeButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.wardrobeFragment)
         )
+
+        openCameraButton.setOnClickListener(
+            Navigation.createNavigateOnClickListener(R.id.cameraFragment)
+        )
     }
 }
 
