@@ -27,13 +27,16 @@
         android:name="edu.pw.aicatching.WardrobeFragment"
         android:label="fragment_wardrobe"
         tools:layout="@layout/fragment_wardrobe" />
+
     <fragment
         android:id="@+id/launchFragment"
         android:name="edu.pw.aicatching.LaunchFragment"
         android:label="fragment_launch"
-        tools:layout="@layout/fragment_launch" >
+        tools:layout="@layout/fragment_launch">
         <action
-            android:id="@+id/action_launchFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            android:id="@+id/action_launchFragment_to_homeFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/launchFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>
