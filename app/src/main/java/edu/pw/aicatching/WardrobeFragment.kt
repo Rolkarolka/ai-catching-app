@@ -1,12 +1,8 @@
 package edu.pw.aicatching
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import android.view.*
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_navigation_bar.*
 
 
 class WardrobeFragment : Fragment() {
@@ -15,8 +11,14 @@ class WardrobeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_wardrobe, container, false)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.toolbar_main, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+
 }
