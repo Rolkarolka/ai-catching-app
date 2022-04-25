@@ -1,24 +1,18 @@
 package edu.pw.aicatching
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.navigation.findNavController
 
 
 class MainActivity : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_AICatching)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        openCameraButton.setOnClickListener {
-            val intent = Intent(this, CameraActivity::class.java)
-            startActivity(intent)
-        }
-
-        showWardrobeButton.setOnClickListener {
-            val intent = Intent(this, WardrobeActivity::class.java)
-            startActivity(intent)
-        }
     }
+
+    override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
 }
