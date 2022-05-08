@@ -15,6 +15,4 @@ class WardrobeFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_wardrobe, container, false)
     }
-
-
 }
