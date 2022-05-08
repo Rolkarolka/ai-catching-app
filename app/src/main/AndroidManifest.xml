@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AICatching">
         <activity
-        android:name=".LaunchActivity"
+        android:name=".MainActivity"
         android:theme="@style/LaunchTheme"
         android:exported="true">
             <intent-filter>
@@ -18,7 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
     </application>
 
 </manifest>
