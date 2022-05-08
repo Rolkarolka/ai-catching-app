@@ -7,9 +7,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainFragment">
 <!--    TODO talk about scaling-->
-
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
+        android:id="@+id/main_page_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/pink"
@@ -86,7 +85,7 @@
         android:padding="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar2">
+        app:layout_constraintTop_toBottomOf="@+id/main_page_toolbar">
 
         <TextView
             android:id="@+id/textView"
