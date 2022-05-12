@@ -21,11 +21,10 @@ class WardrobeFragment : Fragment() {
     ): View? {
         clothList = clothInfo()
         binding = FragmentWardrobeBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
         val mainActivity = this
 
         binding.wardrobeGallery.apply {
-            layoutManager = GridLayoutManager(mainActivity.context, 3)
+            layoutManager = GridLayoutManager(mainActivity.activity, 3)
             adapter = WardrobeGalleryAdapter(clothList)
         }
         return inflater.inflate(R.layout.fragment_wardrobe, container, false)

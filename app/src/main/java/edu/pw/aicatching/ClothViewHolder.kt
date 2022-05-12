@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.pw.aicatching.databinding.WardrobeGalleryItemBinding
 
 class ClothViewHolder(
-    private val wardrobeGalleryItemBinding: WardrobeGalleryItemBinding
+    private val wardrobeGalleryItemBinding: WardrobeGalleryItemBinding,
 ) : RecyclerView.ViewHolder(wardrobeGalleryItemBinding.root)
 {
     fun bindCloth(cloth: Cloth) {

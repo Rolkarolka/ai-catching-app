@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 // TODO pakietowanie
 class WardrobeGalleryAdapter(private val cloths: List<Cloth>)
     : RecyclerView.Adapter<ClothViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothViewHolder {
         val from = LayoutInflater.from(parent.context)
         val binding = WardrobeGalleryItemBinding.inflate(from, parent, false)
@@ -15,12 +16,10 @@ class WardrobeGalleryAdapter(private val cloths: List<Cloth>)
     }
 
     override fun onBindViewHolder(holder: ClothViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bindCloth(cloths[position])
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount(): Int = cloths.size
 
 
 }
