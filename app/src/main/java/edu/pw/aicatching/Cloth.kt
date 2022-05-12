@@ -1,9 +1,7 @@
 package edu.pw.aicatching
 
-import android.net.Uri
-
-data class Cloth (
+data class Cloth(
     val id: Int,
-    val image: Uri,
+    val image: Int,
     val category: String
 )

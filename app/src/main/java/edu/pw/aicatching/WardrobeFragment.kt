@@ -1,6 +1,5 @@
 package edu.pw.aicatching
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,22 +28,22 @@ class WardrobeFragment : Fragment() {
     private fun clothInfo(): List<Cloth> {
         val cloth_1 = Cloth(
             1,
-            Uri.parse("https://1.bp.blogspot.com/-32Htq53fZ2U/V4fNaNSN0DI/AAAAAAAAD38/_F9scm6i-a8IfcLZPzSOx8x0oL7AyMgfgCLcB/s1600/spodnica%2Bz%2Bwysokim%2Bstanem-2.jpg"),
+            R.drawable.cloth,
             "Blouse"
         )
         val cloth_2 = Cloth(
             1,
-            Uri.parse("https://1.bp.blogspot.com/-32Htq53fZ2U/V4fNaNSN0DI/AAAAAAAAD38/_F9scm6i-a8IfcLZPzSOx8x0oL7AyMgfgCLcB/s1600/spodnica%2Bz%2Bwysokim%2Bstanem-2.jpg"),
+            R.drawable.cloth,
             "Bluza"
         )
         val cloth_3 = Cloth(
             1,
-            Uri.parse("https://1.bp.blogspot.com/-32Htq53fZ2U/V4fNaNSN0DI/AAAAAAAAD38/_F9scm6i-a8IfcLZPzSOx8x0oL7AyMgfgCLcB/s1600/spodnica%2Bz%2Bwysokim%2Bstanem-2.jpg"),
+            R.drawable.cloth,
             "Blouse"
         )
         val cloth_4 = Cloth(
             1,
-            Uri.parse("https://1.bp.blogspot.com/-32Htq53fZ2U/V4fNaNSN0DI/AAAAAAAAD38/_F9scm6i-a8IfcLZPzSOx8x0oL7AyMgfgCLcB/s1600/spodnica%2Bz%2Bwysokim%2Bstanem-2.jpg"),
+            R.drawable.cloth,
             "Bluza"
         )
 

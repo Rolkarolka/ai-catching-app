@@ -8,7 +8,7 @@ class ClothViewHolder(
 ) : RecyclerView.ViewHolder(wardrobeGalleryItemBinding.root)
 {
     fun bindCloth(cloth: Cloth) {
-        wardrobeGalleryItemBinding.clothImage.setImageURI(cloth.image)
+        wardrobeGalleryItemBinding.clothImage.setImageResource(cloth.image)
         wardrobeGalleryItemBinding.clothCategory.text = cloth.category
     }
 }
