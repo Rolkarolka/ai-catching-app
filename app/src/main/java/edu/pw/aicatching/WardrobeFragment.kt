@@ -19,7 +19,7 @@ class WardrobeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_wardrobe, container, false)
         val mainActivity = this
         view.wardrobe_gallery.apply {
-            layoutManager = GridLayoutManager(mainActivity.activity, 3)
+            layoutManager = GridLayoutManager(mainActivity.activity, 2)
             adapter = WardrobeGalleryAdapter(clothList)
         }
         return view

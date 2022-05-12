@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/blank_rectangle"
+    android:padding="4dp"
+    android:layout_margin="10dp"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -17,6 +20,7 @@
             android:orientation="vertical">
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/cloth_image"
+                android:padding="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/cloth"
@@ -25,8 +29,10 @@
             <TextView
                 android:id="@+id/cloth_category"
                 android:layout_width="match_parent"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
                 android:text="@string/category_place_holder"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
