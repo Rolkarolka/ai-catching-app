@@ -9,9 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import edu.pw.aicatching.databinding.FragmentWardrobeBinding
 
-
 class WardrobeFragment : Fragment() {
-
     lateinit var clothList: List<Cloth>
     private lateinit var binding: FragmentWardrobeBinding
 
@@ -54,6 +52,4 @@ class WardrobeFragment : Fragment() {
 
         return listOf(cloth_1, cloth_2, cloth_3, cloth_4)
     }
-
-
 }

@@ -14,7 +14,6 @@
         <!-- Customize your theme here. -->
     </style>
     <style name="LaunchTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-
         <item name="android:windowBackground" >@drawable/splash_screen</item>
         <item name="android:statusBarColor">@color/white</item>
     </style>
