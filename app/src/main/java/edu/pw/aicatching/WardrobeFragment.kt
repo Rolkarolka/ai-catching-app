@@ -7,27 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import edu.pw.aicatching.databinding.FragmentWardrobeBinding
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_wardrobe.view.*
 
 
 class WardrobeFragment : Fragment() {
 
-    lateinit var clothList: List<Cloth>
-    private lateinit var binding: FragmentWardrobeBinding
+    private lateinit var clothList: List<Cloth>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         clothList = clothInfo()
-        binding = FragmentWardrobeBinding.inflate(layoutInflater)
+        val view = inflater.inflate(R.layout.fragment_wardrobe, container, false)
         val mainActivity = this
-
-        binding.wardrobeGallery.apply {
+        view.wardrobe_gallery.apply {
             layoutManager = GridLayoutManager(mainActivity.activity, 3)
             adapter = WardrobeGalleryAdapter(clothList)
         }
-        return inflater.inflate(R.layout.fragment_wardrobe, container, false)
+        return view
     }
 
     private fun clothInfo(): List<Cloth> {
