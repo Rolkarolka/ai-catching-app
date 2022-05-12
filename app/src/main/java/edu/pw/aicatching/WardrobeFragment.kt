@@ -7,12 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_wardrobe.view.*
 
-
 class WardrobeFragment : Fragment() {
-
     private lateinit var clothList: List<Cloth>
 
     override fun onCreateView(
@@ -53,6 +50,4 @@ class WardrobeFragment : Fragment() {
 
         return listOf(cloth_1, cloth_2, cloth_3, cloth_4)
     }
-
-
 }
