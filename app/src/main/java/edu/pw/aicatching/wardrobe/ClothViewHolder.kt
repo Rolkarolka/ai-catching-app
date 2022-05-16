@@ -16,8 +16,4 @@ class ClothViewHolder(
         wardrobeGalleryItemBinding.clothCategory.text = cloth.category
         wardrobeGalleryItemBinding.cardView.setOnClickListener{ listener(cloth) }
     }
-
-    fun onClick(view: View) {
-        Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
-    }
 }

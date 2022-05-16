@@ -30,5 +30,9 @@
         android:id="@+id/clothDescriptionFragment"
         android:name="edu.pw.aicatching.clothMatching.ClothDescriptionFragment"
         android:label="Cloth Description"
-        tools:layout="@layout/fragment_cloth_description" />
+        tools:layout="@layout/fragment_cloth_description" >
+        <argument
+            android:name="category"
+            app:argType="string" />
+    </fragment>
 </navigation>

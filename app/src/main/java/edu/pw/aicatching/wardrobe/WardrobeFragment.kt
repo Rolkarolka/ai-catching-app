@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,8 +25,8 @@ class WardrobeFragment : Fragment() {
         view.wardrobe_gallery.apply {
             layoutManager = GridLayoutManager(mainActivity.activity, 2)
             adapter = WardrobeGalleryAdapter(clothList) {
-                card ->
-                card.image.let {  Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)}
+                val bundle = bundleOf("clothCategory" to it.category, "clothImage" to it.image)
+                Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment, bundle)
             }
         }
         return view
