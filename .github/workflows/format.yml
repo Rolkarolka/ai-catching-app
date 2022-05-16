@@ -1,0 +1,11 @@
+name: Formatting
+on:
+  push:
+    branches:
+      - master
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Formatting'
+        run: ./gradlew ktlintCheck
