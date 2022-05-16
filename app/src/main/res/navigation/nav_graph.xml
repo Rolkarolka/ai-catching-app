@@ -18,7 +18,7 @@
         android:id="@+id/mainFragment"
         android:name="edu.pw.aicatching.MainFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
@@ -26,4 +26,9 @@
             android:id="@+id/action_mainFragment_to_wardrobeFragment"
             app:destination="@id/wardrobeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/clothDescriptionFragment"
+        android:name="edu.pw.aicatching.ClothDescriptionFragment"
+        android:label="Cloth Description"
+        tools:layout="@layout/fragment_cloth_description" />
 </navigation>
