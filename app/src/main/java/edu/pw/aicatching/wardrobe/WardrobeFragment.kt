@@ -1,4 +1,4 @@
-package edu.pw.aicatching
+package edu.pw.aicatching.wardrobe
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
+import edu.pw.aicatching.model.Cloth
+import edu.pw.aicatching.R
 import kotlinx.android.synthetic.main.fragment_wardrobe.view.*
 
 class WardrobeFragment : Fragment() {

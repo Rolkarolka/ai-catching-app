@@ -6,17 +6,17 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="edu.pw.aicatching.CameraFragment"
+        android:name="edu.pw.aicatching.camera.CameraFragment"
         android:label="Camera"
         tools:layout="@layout/fragment_camera" />
     <fragment
         android:id="@+id/wardrobeFragment"
-        android:name="edu.pw.aicatching.WardrobeFragment"
+        android:name="edu.pw.aicatching.wardrobe.WardrobeFragment"
         android:label="Wardrobe"
         tools:layout="@layout/fragment_wardrobe" />
     <fragment
         android:id="@+id/mainFragment"
-        android:name="edu.pw.aicatching.MainFragment"
+        android:name="edu.pw.aicatching.home.MainFragment"
         android:label="Home"
         tools:layout="@layout/fragment_main">
         <action

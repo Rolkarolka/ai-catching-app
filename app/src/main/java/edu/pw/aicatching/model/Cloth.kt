@@ -1,4 +1,4 @@
-package edu.pw.aicatching
+package edu.pw.aicatching.model
 
 data class Cloth(
     val id: Int,

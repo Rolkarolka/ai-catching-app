@@ -1,8 +1,9 @@
-package edu.pw.aicatching
+package edu.pw.aicatching.wardrobe
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import edu.pw.aicatching.model.Cloth
 import edu.pw.aicatching.databinding.ItemClothBinding
 
 class WardrobeGalleryAdapter(
