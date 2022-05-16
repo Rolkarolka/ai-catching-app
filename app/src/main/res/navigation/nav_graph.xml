@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/clothDescriptionFragment"
-        android:name="edu.pw.aicatching.ClothDescriptionFragment"
+        android:name="edu.pw.aicatching.clothMatching.ClothDescriptionFragment"
         android:label="Cloth Description"
         tools:layout="@layout/fragment_cloth_description" />
 </navigation>
