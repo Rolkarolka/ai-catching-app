@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import edu.pw.aicatching.databinding.ItemClothBinding
 
-class WardrobeGalleryAdapter(private val cloths: List<Cloth>)
+class WardrobeGalleryAdapter(
+    private val cloths: List<Cloth>,
+    private val listener: (Cloth) -> Unit)
     : RecyclerView.Adapter<ClothViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothViewHolder {
@@ -15,7 +17,7 @@ class WardrobeGalleryAdapter(private val cloths: List<Cloth>)
     }
 
     override fun onBindViewHolder(holder: ClothViewHolder, position: Int) {
-        holder.bindCloth(cloths[position])
+        holder.bind(cloths[position], listener)
     }
 
     override fun getItemCount(): Int = cloths.size

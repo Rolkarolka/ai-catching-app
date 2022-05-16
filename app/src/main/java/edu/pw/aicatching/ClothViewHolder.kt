@@ -9,9 +9,10 @@ class ClothViewHolder(
     private val wardrobeGalleryItemBinding: ItemClothBinding,
 ) : RecyclerView.ViewHolder(wardrobeGalleryItemBinding.root)
 {
-    fun bindCloth(cloth: Cloth) {
+    fun bind(cloth: Cloth, listener: (Cloth) -> Unit) {
         wardrobeGalleryItemBinding.clothImage.setImageResource(cloth.image)
         wardrobeGalleryItemBinding.clothCategory.text = cloth.category
+        wardrobeGalleryItemBinding.cardView.setOnClickListener{ listener(cloth) }
     }
 
     fun onClick(view: View) {

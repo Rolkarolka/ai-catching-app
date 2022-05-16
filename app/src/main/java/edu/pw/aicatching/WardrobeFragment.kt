@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_wardrobe.view.*
 
@@ -20,7 +21,10 @@ class WardrobeFragment : Fragment() {
         val mainActivity = this
         view.wardrobe_gallery.apply {
             layoutManager = GridLayoutManager(mainActivity.activity, 2)
-            adapter = WardrobeGalleryAdapter(clothList)
+            adapter = WardrobeGalleryAdapter(clothList) {
+                card ->
+                card.image.let { image -> Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)}
+            }
         }
 //        view.wardrobe_gallery?.focusedChild?.setOnClickListener(View.OnClickListener() {
 //            @Override
