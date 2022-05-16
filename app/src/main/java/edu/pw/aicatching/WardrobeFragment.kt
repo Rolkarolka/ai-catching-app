@@ -23,15 +23,9 @@ class WardrobeFragment : Fragment() {
             layoutManager = GridLayoutManager(mainActivity.activity, 2)
             adapter = WardrobeGalleryAdapter(clothList) {
                 card ->
-                card.image.let { image -> Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)}
+                card.image.let {  Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)}
             }
         }
-//        view.wardrobe_gallery?.focusedChild?.setOnClickListener(View.OnClickListener() {
-//            @Override
-//            fun onClick(view: View) {
-//                Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
-//            }
-//        })
         return view
     }
 
