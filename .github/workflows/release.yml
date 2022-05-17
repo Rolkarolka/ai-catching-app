@@ -1,4 +1,4 @@
-name: Build and Release APK
+name: Build and release apk
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
     - name: Upload APK
       uses: actions/upload-artifact@v3
       with:
-        name: app.apk
+        name: ${{ github.event.repository.name }}.apk
         path: app/build/outputs/apk/debug/app-debug.apk
 
   release:
@@ -39,10 +39,11 @@ jobs:
     - name: Download APK from uploaded artifact
       uses: actions/download-artifact@v3
       with:
-        name: app.apk
+        name: {{ github.event.repository.name }}.apk
 
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: {{ github.event.repository.name }} v${{ github.run_number }}
-        files: app.apk
+        tag_name: ${{ github.run_number }}
+        release_name: ${{ github.event.repository.name }} v${{ github.run_number }}
+        files: ${{ github.event.repository.name }}.apk
