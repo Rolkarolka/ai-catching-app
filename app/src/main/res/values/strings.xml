@@ -4,4 +4,6 @@
     <string name="outfit_of_the_day">Outfit \nof the day</string>
     <string name="my_wardrobe">My wardrobe</string>
     <string name="new_cloth">New cloth</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

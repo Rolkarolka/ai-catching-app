@@ -1,0 +1,48 @@
+name: Build and Release APK
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    name: Generate APK
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Build APK
+      run: |
+        chmod +x gradlew
+        bash ./gradlew assembleDebug --stacktrace
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ github.event.repository.name }}.apk
+        path: app/build/outputs/apk/debug/app-debug.apk
+
+  release:
+    name: Release app
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download APK from uploaded artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ github.event.repository.name }}.apk
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files:
+          ${{ github.event.repository.name }}.apk
