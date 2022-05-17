@@ -24,10 +24,7 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_host_fragment
         ) as NavHostFragment
         navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(
-            topLevelDestinationIds = setOf(),
-            fallbackOnNavigateUpListener = ::onSupportNavigateUp
-        )
+        appBarConfiguration = AppBarConfiguration(topLevelDestinationIds = setOf(), fallbackOnNavigateUpListener = ::onSupportNavigateUp)
         main_toolbar.setupWithNavController(navController, appBarConfiguration)
 
     }
