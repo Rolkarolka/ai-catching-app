@@ -12,23 +12,18 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.util.concurrent.Executors
 import androidx.camera.core.*
-import androidx.camera.video.*
-import androidx.camera.video.VideoCapture
 import java.util.concurrent.ExecutorService
 import android.os.Build
-import edu.pw.aicatching.databinding.FragmentWardrobeBinding
+import androidx.camera.lifecycle.ProcessCameraProvider
+import edu.pw.aicatching.databinding.FragmentCameraBinding
+import kotlinx.android.synthetic.main.fragment_camera.*
 import kotlinx.android.synthetic.main.fragment_camera.view.*
-
-typealias LumaListener = (luma: Double) -> Unit
 
 
 class CameraFragment : Fragment() {
-    private lateinit var viewBinding: FragmentWardrobeBinding
+    private lateinit var viewBinding: FragmentCameraBinding
 
     private var imageCapture: ImageCapture? = null
-
-    private var videoCapture: VideoCapture<Recorder>? = null
-    private var recording: Recording? = null
 
     private lateinit var cameraExecutor: ExecutorService
 
@@ -54,7 +49,6 @@ class CameraFragment : Fragment() {
 
     private fun takePhoto() {}
 
-    private fun startCamera() {}
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         this.context?.let { it1 ->
@@ -82,15 +76,50 @@ class CameraFragment : Fragment() {
         }
     }
 
+    private fun startCamera() {
+        val cameraProviderFuture = this.context?.let { ProcessCameraProvider.getInstance(it) }
+
+        this.context?.let { ContextCompat.getMainExecutor(it) }?.let {
+            cameraProviderFuture?.addListener({
+                // Used to bind the lifecycle of cameras to the lifecycle owner
+                val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+
+                // Preview
+                val preview = Preview.Builder()
+                    .build()
+                    .also { it1 ->
+                        it1.setSurfaceProvider(viewFinder.surfaceProvider)
+                    }
+
+                // Select back camera as a default
+                val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+                try {
+                    // Unbind use cases before rebinding
+                    cameraProvider.unbindAll()
+
+                    // Bind use cases to camera
+                    cameraProvider.bindToLifecycle(
+                        this, cameraSelector, preview)
+
+                } catch(exc: Exception) {
+    //                Log.e(TAG, "Use case binding failed", exc)
+                    println("Error")
+                }
+
+            }, it)
+        }
+    }
+
+
 
     companion object {
-        private const val TAG = "CameraXApp"
+        private const val TAG = "AICatching"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
             mutableListOf (
-                Manifest.permission.CAMERA,
-                Manifest.permission.RECORD_AUDIO
+                Manifest.permission.CAMERA
             ).apply {
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
                     add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
