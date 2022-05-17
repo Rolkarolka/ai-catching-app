@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutorService
 import android.os.Build
 import android.provider.MediaStore
 import androidx.camera.lifecycle.ProcessCameraProvider
-import edu.pw.aicatching.databinding.FragmentCameraBinding
 import kotlinx.android.synthetic.main.fragment_camera.*
 import kotlinx.android.synthetic.main.fragment_camera.view.*
 
