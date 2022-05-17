@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import android.Manifest
+import android.content.ContentValues
 import android.content.pm.PackageManager
+import android.icu.text.SimpleDateFormat
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -14,6 +16,7 @@ import java.util.concurrent.Executors
 import androidx.camera.core.*
 import java.util.concurrent.ExecutorService
 import android.os.Build
+import android.provider.MediaStore
 import androidx.camera.lifecycle.ProcessCameraProvider
 import edu.pw.aicatching.databinding.FragmentCameraBinding
 import kotlinx.android.synthetic.main.fragment_camera.*
@@ -21,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_camera.view.*
 
 
 class CameraFragment : Fragment() {
-    private lateinit var viewBinding: FragmentCameraBinding
 
     private var imageCapture: ImageCapture? = null
 
@@ -47,7 +49,51 @@ class CameraFragment : Fragment() {
         return viewBinding
     }
 
-    private fun takePhoto() {}
+    private fun takePhoto() {
+        val imageCapture = imageCapture ?: return
+
+        val name = SimpleDateFormat(FILENAME_FORMAT, java.util.Locale.US)
+            .format(System.currentTimeMillis())
+
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
+            }
+        }
+
+        val outputOptions = activity?.contentResolver?.let {
+            ImageCapture.OutputFileOptions
+                .Builder(
+                    it,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    contentValues)
+                .build()
+        }
+
+        this.context?.let { ContextCompat.getMainExecutor(it) }?.let {
+            if (outputOptions != null) {
+                imageCapture.takePicture(
+                    outputOptions,
+                    it,
+                    object : ImageCapture.OnImageSavedCallback {
+                        override fun onError(exc: ImageCaptureException) {
+                            println("Error")
+                        }
+
+                        override fun onImageSaved(output: ImageCapture.OutputFileResults){
+                            val msg = "Photo capture succeeded: ${output.savedUri}"
+                            Toast.makeText(view?.context, msg, Toast.LENGTH_SHORT).show()
+                            //                    Log.d(TAG, msg)
+                            println("err")
+                        }
+                    }
+                )
+            }
+        }
+    }
+
 
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -81,29 +127,23 @@ class CameraFragment : Fragment() {
 
         this.context?.let { ContextCompat.getMainExecutor(it) }?.let {
             cameraProviderFuture?.addListener({
-                // Used to bind the lifecycle of cameras to the lifecycle owner
                 val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-
-                // Preview
                 val preview = Preview.Builder()
                     .build()
                     .also { it1 ->
                         it1.setSurfaceProvider(viewFinder.surfaceProvider)
                     }
-
-                // Select back camera as a default
+                imageCapture = ImageCapture.Builder().build()
                 val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
                 try {
-                    // Unbind use cases before rebinding
                     cameraProvider.unbindAll()
-
-                    // Bind use cases to camera
                     cameraProvider.bindToLifecycle(
-                        this, cameraSelector, preview)
+                        this, cameraSelector, preview, imageCapture)
+
 
                 } catch(exc: Exception) {
-    //                Log.e(TAG, "Use case binding failed", exc)
+                    // TODO log
                     println("Error")
                 }
 
