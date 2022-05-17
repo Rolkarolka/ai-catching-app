@@ -22,7 +22,7 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-    - name: Format
+    - name: 'Format'
       run: |
         chmod +x ./gradlew
         bash ./gradlew ktlintCheck
