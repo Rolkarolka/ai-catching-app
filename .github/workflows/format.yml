@@ -16,4 +16,6 @@ jobs:
 
     steps:
       - name: 'Format'
-        run: ./gradlew ktlintCheck
+        run: |
+          chmod +x gradlew
+          bash ./gradlew ktlintCheck
