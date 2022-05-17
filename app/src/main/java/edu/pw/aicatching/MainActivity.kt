@@ -9,12 +9,11 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
-  
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_AICatching)
         super.onCreate(savedInstanceState)
@@ -29,7 +28,6 @@ class MainActivity : AppCompatActivity() {
             fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )
         main_toolbar.setupWithNavController(navController, appBarConfiguration)
-
     }
 
     override fun onSupportNavigateUp() = navController.navigateUp(appBarConfiguration)
