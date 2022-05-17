@@ -3,8 +3,6 @@ name: Build and release apk
 on:
   push:
     branches: [ main ]
-    tags:
-      - "v*"
 
 jobs:
   build:
@@ -42,8 +40,11 @@ jobs:
         name: ${{ github.event.repository.name }}.apk
 
     - name: Release
-      uses: softprops/action-gh-release@v1
+      uses: marvinpinto/action-automatic-releases@latest
       with:
-        tag_name: ${{ github.run_number }}
-        release_name: ${{ github.event.repository.name }} v${{ github.run_number }}
-        files: ${{ github.event.repository.name }}.apk
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        automatic_release_tag: "latest"
+        title: ${{ github.event.repository.name }}
+        prerelease: false
+        files: |
+          *.apk
