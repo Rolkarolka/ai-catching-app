@@ -14,7 +14,6 @@
         <!-- Customize your theme here. -->
     </style>
     <style name="LaunchTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
         <item name="android:windowBackground" >@drawable/splash_screen</item>
         <item name="android:statusBarColor">@color/white</item>
     </style>
