@@ -8,10 +8,11 @@ import androidx.fragment.app.Fragment
 import edu.pw.aicatching.R
 import kotlinx.android.synthetic.main.fragment_cloth_description.view.*
 
-class ClothDescriptionFragment: Fragment() {
+class ClothDescriptionFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_cloth_description, container, false)
