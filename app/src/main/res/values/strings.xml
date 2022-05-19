@@ -4,6 +4,11 @@
     <string name="outfit_of_the_day">Outfit \nof the day</string>
     <string name="my_wardrobe">My wardrobe</string>
     <string name="new_cloth">New cloth</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-</resources>
+    <string name="take_photo">Take Photo</string>
+    <string name="start_capture">Start Capture</string>
+    <string name="stop_capture">Stop Capture</string>
+    <string name="category_place_holder">Category Place Holder</string>
+    <string name="cloth">Cloth</string>
+    <string name="your_outfit">Your outfit</string>
+    <string name="check_wardrobe">Check wardrobe</string>
+ </resources>

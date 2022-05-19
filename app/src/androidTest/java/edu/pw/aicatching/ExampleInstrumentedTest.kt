@@ -11,6 +11,7 @@ import org.junit.runner.RunWith
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+// TODO tests
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
     @Test
