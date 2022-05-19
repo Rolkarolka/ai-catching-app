@@ -1,4 +1,4 @@
-package edu.pw.aicatching
+package edu.pw.aicatching.camera
 
 import android.os.Bundle
 import android.view.LayoutInflater
