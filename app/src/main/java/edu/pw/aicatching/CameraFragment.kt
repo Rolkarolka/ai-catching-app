@@ -84,8 +84,7 @@ class CameraFragment : Fragment() {
                         override fun onImageSaved(output: ImageCapture.OutputFileResults){
                             val msg = "Photo capture succeeded: ${output.savedUri}"
                             Toast.makeText(view?.context, msg, Toast.LENGTH_SHORT).show()
-                            //                    Log.d(TAG, msg)
-                            println("err")
+                            println("Err")
                         }
                     }
                 )
