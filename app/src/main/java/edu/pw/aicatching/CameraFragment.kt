@@ -29,7 +29,8 @@ class CameraFragment : Fragment() {
     private lateinit var cameraExecutor: ExecutorService
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val viewBinding = inflater.inflate(R.layout.fragment_camera, container, false)
