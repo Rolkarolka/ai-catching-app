@@ -6,14 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import edu.pw.aicatching.R
+import edu.pw.aicatching.databinding.FragmentWardrobeBinding
 import edu.pw.aicatching.model.Cloth
 import kotlinx.android.synthetic.main.fragment_wardrobe.view.*
 
 class WardrobeFragment : Fragment() {
     private lateinit var clothList: List<Cloth>
+    private val viewModel: WardrobeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,8 +24,11 @@ class WardrobeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         clothList = clothInfo()
-        val view = inflater.inflate(R.layout.fragment_wardrobe, container, false)
+        val binding = FragmentWardrobeBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
         val mainActivity = this
+        val view = binding.root
         view.wardrobe_gallery.apply {
             layoutManager = GridLayoutManager(mainActivity.activity, 2)
             adapter = WardrobeGalleryAdapter(clothList) {
