@@ -7,4 +7,3 @@ data class Cloth(
     @Json(name = "img_src")
     val imgSrcUrl: String
 )
-

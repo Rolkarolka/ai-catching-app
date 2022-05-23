@@ -7,7 +7,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
-
 interface AICatchingApiService {
 
     @GET("user/wardrobe")
@@ -28,8 +27,7 @@ interface AICatchingApiService {
                     .build()
                 aiCatchingApiService = retrofit.create(AICatchingApiService::class.java)
             }
-            return aiCatchingApiService!! //TODO without !!
+            return aiCatchingApiService!! // TODO without !!
         }
     }
 }
-

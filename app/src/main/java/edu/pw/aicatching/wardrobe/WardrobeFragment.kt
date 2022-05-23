@@ -31,10 +31,13 @@ class WardrobeFragment : Fragment() {
             view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.clothDescriptionFragment, bundle) }
         }
         viewModel = ViewModelProvider(this, WardrobeViewModelFactory(MainRepository(service))).get(WardrobeViewModel::class.java)
-        viewModel.wardrobeList.observe(viewLifecycleOwner, Observer {
-            adapter.setClothList(it)
-        })
-        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {  })
+        viewModel.wardrobeList.observe(
+            viewLifecycleOwner,
+            Observer {
+                adapter.setClothList(it)
+            }
+        )
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { })
         viewModel.getWardrobe()
         val mainActivity = this
         val view = binding.root
@@ -44,5 +47,4 @@ class WardrobeFragment : Fragment() {
         view.wardrobe_gallery.adapter = adapter
         return view
     }
-
 }

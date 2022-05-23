@@ -1,16 +1,14 @@
 package edu.pw.aicatching.wardrobe
 
-
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.pw.aicatching.network.Cloth
 import edu.pw.aicatching.network.MainRepository
-import retrofit2.Callback
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
-
-class WardrobeViewModel constructor(private val repository: MainRepository)  : ViewModel() {
+class WardrobeViewModel constructor(private val repository: MainRepository) : ViewModel() {
 
     val wardrobeList = MutableLiveData<List<Cloth>>()
     val errorMessage = MutableLiveData<String>()
