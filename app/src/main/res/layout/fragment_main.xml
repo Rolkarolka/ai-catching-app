@@ -10,7 +10,7 @@
     <include layout="@layout/view_top_settings"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/outfitOfTheDayFrame"
+        android:id="@+id/constraintLayout"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginTop="@dimen/outfit_of_the_day_padding"
