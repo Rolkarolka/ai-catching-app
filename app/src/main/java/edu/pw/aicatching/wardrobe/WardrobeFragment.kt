@@ -26,7 +26,7 @@ class WardrobeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentWardrobeBinding.inflate(inflater)
-        var adapter = WardrobeGalleryAdapter() {
+        val adapter = WardrobeGalleryAdapter() {
             val bundle = bundleOf("clothCategory" to it.id, "clothImage" to it.imgSrcUrl)
             view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.clothDescriptionFragment, bundle) }
         }
@@ -40,8 +40,8 @@ class WardrobeFragment : Fragment() {
         val view = binding.root
         view.wardrobe_gallery.apply {
             layoutManager = GridLayoutManager(mainActivity.activity, 2)
-            adapter = adapter
         }
+        view.wardrobe_gallery.adapter = adapter
         return view
     }
 

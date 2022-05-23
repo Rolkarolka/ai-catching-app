@@ -11,7 +11,7 @@ class WardrobeGalleryAdapter(
 ) :
     RecyclerView.Adapter<ClothViewHolder>() {
 
-    private lateinit var cloths: MutableList<Cloth>
+    private var cloths = mutableListOf<Cloth>()
 
     fun setClothList(cloths: List<Cloth>) {
         this.cloths = cloths.toMutableList()
