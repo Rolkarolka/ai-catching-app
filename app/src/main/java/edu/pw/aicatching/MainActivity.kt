@@ -1,6 +1,8 @@
 package edu.pw.aicatching
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -18,17 +20,17 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.Theme_AICatching)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val navHostFragment = supportFragmentManager.findFragmentById(
             R.id.nav_host_fragment
         ) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(
-            topLevelDestinationIds = setOf(),
+            topLevelDestinationIds = setOf(R.id.mainFragment),
             fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )
         main_toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     override fun onSupportNavigateUp() = navController.navigateUp(appBarConfiguration)
+
 }
