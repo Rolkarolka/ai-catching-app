@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+<!--     TODO why in app button is pink?-->
     <Button
         android:id="@+id/takePhotoButton"
         android:layout_width="110dp"
