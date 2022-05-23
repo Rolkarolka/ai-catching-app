@@ -4,13 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import edu.pw.aicatching.databinding.ItemClothBinding
-import edu.pw.aicatching.model.Cloth
+import edu.pw.aicatching.network.Cloth
 
 class WardrobeGalleryAdapter(
-    private val cloths: List<Cloth>,
     private val listener: (Cloth) -> Unit
 ) :
     RecyclerView.Adapter<ClothViewHolder>() {
+
+    private lateinit var cloths: MutableList<Cloth>
+
+    fun setClothList(cloths: List<Cloth>) {
+        this.cloths = cloths.toMutableList()
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothViewHolder {
         val from = LayoutInflater.from(parent.context)

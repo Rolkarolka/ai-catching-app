@@ -1,31 +1,29 @@
 package edu.pw.aicatching.wardrobe
 
-import androidx.lifecycle.LiveData
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import edu.pw.aicatching.network.AICatchingApi
-import java.lang.Exception
-import kotlinx.coroutines.launch
+import edu.pw.aicatching.network.Cloth
+import edu.pw.aicatching.network.MainRepository
+import retrofit2.Callback
+import retrofit2.Call
+import retrofit2.Response
 
-class WardrobeViewModel: ViewModel() {
-    private val _status = MutableLiveData<String>()
-    val status: LiveData<String> = _status
 
-    init {
-        getClothInformation()
-    }
+class WardrobeViewModel constructor(private val repository: MainRepository)  : ViewModel() {
 
-    private fun getClothInformation() {
-        viewModelScope.launch {
-            try {
-                val listResult = AICatchingApi.retrofitService.getPhotoUrls()
-                _status.value = "Success: ${listResult.size} Mars photos retrieved"
-            } catch (e: Exception) {
-                _status.value = "Failure: ${e.message}"
+    val wardrobeList = MutableLiveData<List<Cloth>>()
+    val errorMessage = MutableLiveData<String>()
+
+    fun getWardrobe() {
+        val response = repository.getWardrobe()
+        response.enqueue(object : Callback<List<Cloth>> {
+            override fun onResponse(call: Call<List<Cloth>>, response: Response<List<Cloth>>) {
+                wardrobeList.postValue(response.body())
             }
-
-        }
+            override fun onFailure(call: Call<List<Cloth>>, t: Throwable) {
+                errorMessage.postValue(t.message)
+            }
+        })
     }
-
 }
