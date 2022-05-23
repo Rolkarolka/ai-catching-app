@@ -7,13 +7,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
+
 interface AICatchingApiService {
 
     @GET("user/wardrobe")
     fun getWardrobe(): Call<List<Cloth>>
 
     companion object {
-        private const val BASE_URL = "http://127.0.0.1:8000/"
+        private const val BASE_URL = "https://127.0.0.1:8000/"
         private val moshi: Moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
