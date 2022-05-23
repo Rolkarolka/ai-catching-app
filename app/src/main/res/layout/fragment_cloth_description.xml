@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
+
+    <include
+        android:id="@+id/item"
+        layout="@layout/item_cloth"
+        tools:layout_editor_absoluteX="10dp"/>
+
+    <TextView
+        android:id="@+id/your_outfit"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/cloth_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cloth"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/cloth"/>
-        <TextView
-            android:id="@+id/cloth_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/category_place_holder"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/your_outfit"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/check_wardrobe"/>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:text="@string/your_outfit"
+        app:layout_constraintTop_toBottomOf="@+id/item"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/check_wardrobe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/check_wardrobe"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/your_outfit" />
 </androidx.constraintlayout.widget.ConstraintLayout>
