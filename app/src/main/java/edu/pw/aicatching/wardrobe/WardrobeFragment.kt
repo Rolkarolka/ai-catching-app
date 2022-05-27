@@ -40,8 +40,8 @@ class WardrobeFragment : Fragment() {
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer { })
         viewModel.getWardrobe()
         val mainActivity = this
-        val view = binding.root
-        view.wardrobe_gallery.apply {
+      
+        view.wardrobeGallery.apply {
             layoutManager = GridLayoutManager(mainActivity.activity, 2)
         }
         view.wardrobe_gallery.adapter = adapter

@@ -44,7 +44,7 @@ class CameraFragment : Fragment() {
                 )
             }
         }
-        viewBinding.image_capture_button.setOnClickListener { takePhoto() }
+        viewBinding.takePhotoButton.setOnClickListener { takePhoto() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
         return viewBinding
@@ -137,7 +137,7 @@ class CameraFragment : Fragment() {
                     val preview = Preview.Builder()
                         .build()
                         .also { it1 ->
-                            it1.setSurfaceProvider(viewFinder.surfaceProvider)
+                            it1.setSurfaceProvider(cameraView.surfaceProvider)
                         }
                     imageCapture = ImageCapture.Builder().build()
                     val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -158,7 +158,6 @@ class CameraFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "AICatching"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
