@@ -23,7 +23,7 @@ class WardrobeFragment : Fragment() {
         clothList = clothInfo()
         val view = inflater.inflate(R.layout.fragment_wardrobe, container, false)
         val mainActivity = this
-        view.wardrobe_gallery.apply {
+        view.wardrobeGallery.apply {
             layoutManager = GridLayoutManager(mainActivity.activity, 2)
             adapter = WardrobeGalleryAdapter(clothList) {
                 val bundle = bundleOf("clothCategory" to it.category, "clothImage" to it.image)
