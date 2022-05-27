@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
@@ -43,8 +42,7 @@ class WardrobeFragment : Fragment() {
 
         val mainActivity = this
         val view = binding.root
-
-        view.wardrobe_gallery.apply {
+        view.wardrobeGallery.apply {
             layoutManager = GridLayoutManager(mainActivity.activity, 2)
         }
         view.wardrobe_gallery.adapter = adapter
