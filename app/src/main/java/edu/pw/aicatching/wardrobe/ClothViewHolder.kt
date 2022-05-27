@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.ItemClothBinding
-import edu.pw.aicatching.network.Cloth
+import edu.pw.aicatching.models.Cloth
 
 class ClothViewHolder(
     private val wardrobeGalleryItemBinding: ItemClothBinding,

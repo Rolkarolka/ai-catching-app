@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import edu.pw.aicatching.databinding.ItemClothBinding
-import edu.pw.aicatching.network.Cloth
+import edu.pw.aicatching.models.Cloth
 
 class WardrobeGalleryAdapter(
     private val listener: (Cloth) -> Unit

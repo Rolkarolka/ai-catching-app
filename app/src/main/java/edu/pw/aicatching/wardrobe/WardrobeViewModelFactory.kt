@@ -2,7 +2,7 @@ package edu.pw.aicatching.wardrobe
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import edu.pw.aicatching.network.MainRepository
+import edu.pw.aicatching.repositories.MainRepository
 
 class WardrobeViewModelFactory constructor(private val repository: MainRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

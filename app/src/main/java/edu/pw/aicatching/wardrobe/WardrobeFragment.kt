@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentWardrobeBinding
 import edu.pw.aicatching.network.AICatchingApiService
-import edu.pw.aicatching.network.MainRepository
+import edu.pw.aicatching.repositories.MainRepository
 import kotlinx.android.synthetic.main.fragment_wardrobe.view.*
 
 class WardrobeFragment : Fragment() {
@@ -24,23 +24,26 @@ class WardrobeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentWardrobeBinding.inflate(inflater)
-        val adapter = WardrobeGalleryAdapter() {
+
+        val adapter = WardrobeGalleryAdapter {
             val bundle = bundleOf("clothCategory" to it.id, "clothImage" to it.imgSrcUrl)
             view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.clothDescriptionFragment, bundle) }
         }
+
         viewModel = ViewModelProvider(this, WardrobeViewModelFactory(MainRepository(service))).get(WardrobeViewModel::class.java)
         viewModel.wardrobeList.observe(
-            viewLifecycleOwner,
-            Observer {
-                adapter.setClothList(it)
-            }
-        )
-        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { })
+            viewLifecycleOwner
+        ) {
+            adapter.setClothList(it)
+        }
+        viewModel.errorMessage.observe(viewLifecycleOwner) { }
         viewModel.getWardrobe()
+
         val mainActivity = this
         val view = binding.root
+
         view.wardrobe_gallery.apply {
             layoutManager = GridLayoutManager(mainActivity.activity, 2)
         }

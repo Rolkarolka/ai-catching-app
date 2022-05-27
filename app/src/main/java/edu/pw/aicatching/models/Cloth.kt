@@ -1,4 +1,4 @@
-package edu.pw.aicatching.network
+package edu.pw.aicatching.models
 
 import com.squareup.moshi.Json
 
