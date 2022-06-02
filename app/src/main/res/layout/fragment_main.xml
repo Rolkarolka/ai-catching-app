@@ -10,7 +10,7 @@
     <include layout="@layout/view_top_settings"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/outfitOfTheDayFrame"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginTop="@dimen/outfit_of_the_day_padding"
@@ -22,7 +22,7 @@
         app:layout_constraintBottom_toTopOf="@+id/openCameraButton">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/outfitOfTheDayText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -33,7 +33,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/appCompatImageView"
+            android:id="@+id/outfitOfTheDayPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
@@ -41,7 +41,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintStart_toEndOf="@+id/outfitOfTheDayText"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
@@ -58,7 +58,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/showWardrobeButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/outfitOfTheDayFrame" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/showWardrobeButton"
@@ -71,6 +71,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/openCameraButton"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/outfitOfTheDayFrame" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
