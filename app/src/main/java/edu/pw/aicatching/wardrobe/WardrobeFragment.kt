@@ -45,7 +45,7 @@ class WardrobeFragment : Fragment() {
         view.wardrobeGallery.apply {
             layoutManager = GridLayoutManager(mainActivity.activity, 2)
         }
-        view.wardrobe_gallery.adapter = adapter
+        view.wardrobeGallery.adapter = adapter
         return view
     }
 }
