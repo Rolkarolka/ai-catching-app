@@ -10,7 +10,7 @@ import retrofit2.http.GET
 
 interface AICatchingApiService {
 
-    @GET("user/wardrobe")
+    @GET("photos")
     fun getWardrobe(): Call<List<Cloth>>
 
     companion object {
