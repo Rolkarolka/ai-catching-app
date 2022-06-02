@@ -8,16 +8,16 @@
     <include
         android:id="@+id/item"
         layout="@layout/item_cloth"
-        tools:layout_editor_absoluteX="10dp"/>
+        tools:layout_editor_absoluteX="10dp" />
 
     <TextView
         android:id="@+id/yourOutfit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/your_outfit"
-        app:layout_constraintTop_toBottomOf="@+id/item"
         android:layout_margin="16dp"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:text="@string/your_outfit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item" />
 
     <TextView
         android:id="@+id/checkWardrobe"
