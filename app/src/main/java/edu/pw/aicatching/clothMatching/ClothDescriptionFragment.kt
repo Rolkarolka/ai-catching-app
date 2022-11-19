@@ -18,7 +18,6 @@ import edu.pw.aicatching.repositories.MainRepository
 import kotlinx.android.synthetic.main.fragment_cloth_description.view.*
 import kotlinx.android.synthetic.main.item_cloth.view.*
 
-
 class ClothDescriptionFragment : Fragment() {
     private val service = AICatchingApiService.getInstance()
     lateinit var viewModel: OutfitViewModel
@@ -50,12 +49,11 @@ class ClothDescriptionFragment : Fragment() {
         view.clothCategory.text = clothCategory
         view.clothImage.load(imgUri)
 
-       view.outfitMatching.apply {
+        view.outfitMatching.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-       }
+        }
         view.outfitMatching.adapter = adapter
 
         return view
     }
-
 }
