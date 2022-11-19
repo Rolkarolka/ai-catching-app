@@ -21,7 +21,7 @@ class WardrobeGalleryAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothViewHolder {
         val from = LayoutInflater.from(parent.context)
         val binding = ItemClothBinding.inflate(from, parent, false)
-        binding.root.layoutParams.height = parent.measuredWidth / 2;
+        binding.root.layoutParams.height = parent.measuredWidth / 2
         return ClothViewHolder(binding)
     }
 
