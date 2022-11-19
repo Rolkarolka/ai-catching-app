@@ -1,6 +1,7 @@
 package edu.pw.aicatching
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -22,6 +23,14 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_host_fragment
         ) as NavHostFragment
         navController = navHostFragment.navController
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.mainFragment) {
+                main_toolbar.visibility = View.GONE
+            } else {
+                main_toolbar.visibility = View.VISIBLE
+
+            }
+        }
         appBarConfiguration = AppBarConfiguration(
             topLevelDestinationIds = setOf(R.id.mainFragment),
             fallbackOnNavigateUpListener = ::onSupportNavigateUp
