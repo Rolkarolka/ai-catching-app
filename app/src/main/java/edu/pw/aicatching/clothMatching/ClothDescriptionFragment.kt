@@ -10,7 +10,6 @@ import coil.load
 import edu.pw.aicatching.R
 import kotlinx.android.synthetic.main.item_cloth.view.*
 
-
 class ClothDescriptionFragment : Fragment() {
 
     override fun onCreateView(

@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
                 main_toolbar.visibility = View.GONE
             } else {
                 main_toolbar.visibility = View.VISIBLE
-
             }
         }
         appBarConfiguration = AppBarConfiguration(
