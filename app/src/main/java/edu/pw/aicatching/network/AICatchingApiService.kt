@@ -13,6 +13,9 @@ interface AICatchingApiService {
     @GET("photos")
     fun getWardrobe(): Call<List<Cloth>>
 
+    @GET("photos")
+    fun getOutfit(): Call<List<Cloth>>
+
     companion object {
         private const val BASE_URL = "https://android-kotlin-fun-mars-server.appspot.com/"
         private val moshi: Moshi = Moshi.Builder()
