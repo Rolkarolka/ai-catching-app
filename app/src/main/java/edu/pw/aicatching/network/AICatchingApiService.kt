@@ -10,11 +10,11 @@ import retrofit2.http.GET
 
 interface AICatchingApiService {
 
-    @GET("user/wardrobe")
+    @GET("photos")
     fun getWardrobe(): Call<List<Cloth>>
 
     companion object {
-        private const val BASE_URL = "https://127.0.0.1:8000/"
+        private const val BASE_URL = "https://android-kotlin-fun-mars-server.appspot.com/"
         private val moshi: Moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
