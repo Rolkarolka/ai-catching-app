@@ -14,7 +14,7 @@ class OutfitViewModel constructor(private val repository: MainRepository) : View
     val errorMessage = MutableLiveData<String>()
 
     fun getOutfit() {
-        val response = repository.getWardrobe()
+        val response = repository.getOutfit()
         response.enqueue(object : Callback<List<Cloth>> {
             override fun onResponse(call: Call<List<Cloth>>, response: Response<List<Cloth>>) {
                 outfitList.postValue(response.body())

@@ -8,17 +8,17 @@ import edu.pw.aicatching.databinding.ItemClothBinding
 import edu.pw.aicatching.models.Cloth
 
 class ClothViewHolder(
-    private val wardrobeGalleryItemBinding: ItemClothBinding,
-) : RecyclerView.ViewHolder(wardrobeGalleryItemBinding.root) {
+    private val outfitGalleryItemBinding: ItemClothBinding,
+) : RecyclerView.ViewHolder(outfitGalleryItemBinding.root) {
     fun bind(cloth: Cloth, listener: (Cloth) -> Unit) {
         cloth.imgSrcUrl.let {
             val imgUri = it.toUri().buildUpon().scheme("https").build()
-            wardrobeGalleryItemBinding.clothImage.load(imgUri) {
+            outfitGalleryItemBinding.clothImage.load(imgUri) {
                 placeholder(R.drawable.ic_loading)
                 error(R.drawable.ic_damage_image)
             }
         }
-        wardrobeGalleryItemBinding.clothCategory.text = cloth.id
-        wardrobeGalleryItemBinding.cardView.setOnClickListener { listener(cloth) }
+        outfitGalleryItemBinding.clothCategory.text = cloth.id
+        outfitGalleryItemBinding.cardView.setOnClickListener { listener(cloth) }
     }
 }
