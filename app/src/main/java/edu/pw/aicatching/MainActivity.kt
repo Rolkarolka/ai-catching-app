@@ -24,14 +24,14 @@ class MainActivity : AppCompatActivity() {
         ) as NavHostFragment
         navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.mainFragment) {
+            if (destination.id in listOf(R.id.mainFragment, R.id.authorizationFragment)) {
                 main_toolbar.visibility = View.GONE
             } else {
                 main_toolbar.visibility = View.VISIBLE
             }
         }
         appBarConfiguration = AppBarConfiguration(
-            topLevelDestinationIds = setOf(R.id.mainFragment),
+            topLevelDestinationIds = setOf(R.id.mainFragment, R.id.authorizationFragment),
             fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )
         main_toolbar.setupWithNavController(navController, appBarConfiguration)
