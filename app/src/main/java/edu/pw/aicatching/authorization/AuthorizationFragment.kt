@@ -20,15 +20,15 @@ import com.google.android.gms.common.api.CommonStatusCodes
 import edu.pw.aicatching.R
 import kotlinx.android.synthetic.main.fragment_authorization.*
 
-class AuthorizationFragment: Fragment() {
+class AuthorizationFragment : Fragment() {
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
     private lateinit var signUpRequest: BeginSignInRequest
     private var showOneTapUI = true
 
-
     private val oneTapResult = registerForActivityResult(
-        ActivityResultContracts.StartIntentSenderForResult()){ result ->
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
         try {
             if (result.resultCode == Activity.RESULT_OK) {
                 val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
@@ -44,13 +44,12 @@ class AuthorizationFragment: Fragment() {
                                 Navigation.findNavController(it).navigate(R.id.mainFragment)
                             }
                         }
-                }
+                    }
                     else -> {
                         // Shouldn't happen.
                         Log.d(TAG, "No ID token or password!")
                     }
                 }
-
             }
         } catch (e: ApiException) {
             when (e.statusCode) {
@@ -64,8 +63,11 @@ class AuthorizationFragment: Fragment() {
                     // Try again or just ignore.
                 }
                 else -> {
-                    Log.d(TAG, "Couldn't get credential from result." +
-                        " (${e.localizedMessage})")
+                    Log.d(
+                        TAG,
+                        "Couldn't get credential from result." +
+                            " (${e.localizedMessage})"
+                    )
                 }
             }
         }
@@ -85,7 +87,8 @@ class AuthorizationFragment: Fragment() {
                     .setSupported(true)
                     .setServerClientId(getString(R.string.web_client_id))
                     .setFilterByAuthorizedAccounts(false)
-                    .build())
+                    .build()
+            )
             .build()
 
         signInRequest = BeginSignInRequest.builder()
@@ -94,7 +97,8 @@ class AuthorizationFragment: Fragment() {
                     .setSupported(true)
                     .setServerClientId(getString(R.string.web_client_id))
                     .setFilterByAuthorizedAccounts(true)
-                    .build())
+                    .build()
+            )
             .setAutoSelectEnabled(true)
             .build()
         return viewBinding
@@ -121,7 +125,6 @@ class AuthorizationFragment: Fragment() {
                 e.localizedMessage?.let { Log.d(TAG, it) }
                 signUp()
             }
-
     }
 
     private fun signUp() {
@@ -137,7 +140,5 @@ class AuthorizationFragment: Fragment() {
             .addOnFailureListener(this.requireActivity()) { e ->
                 e.localizedMessage?.let { Log.d(TAG, it) }
             }
-
     }
-
 }
