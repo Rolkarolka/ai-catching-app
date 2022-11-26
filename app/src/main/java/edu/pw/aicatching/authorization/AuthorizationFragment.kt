@@ -33,11 +33,10 @@ class AuthorizationFragment : Fragment() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
                 val idToken = credential.googleIdToken
+                val username = credential.id
                 when {
                     idToken != null -> {
-                        // Got an ID token from Google. Use it to authenticate
-                        // with your backend.
-                        Log.d(TAG, "Got ID token. Check it in backend") // TODO
+
                         val backendResponse = true // TODO
                         if (backendResponse) {
                             view?.let {
