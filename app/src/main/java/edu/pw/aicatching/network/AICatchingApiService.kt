@@ -10,14 +10,14 @@ import retrofit2.http.GET
 
 interface AICatchingApiService {
 
-    @GET("photos")
+    @GET("user/wardrobe")
     fun getWardrobe(): Call<List<Cloth>>
 
-    @GET("photos")
+    @GET("user/wardrobe")
     fun getOutfit(): Call<List<Cloth>>
 
     companion object {
-        private const val BASE_URL = "https://android-kotlin-fun-mars-server.appspot.com/"
+        private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"
         private val moshi: Moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()

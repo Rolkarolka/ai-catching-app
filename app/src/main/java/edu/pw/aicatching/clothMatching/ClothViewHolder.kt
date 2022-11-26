@@ -18,7 +18,7 @@ class ClothViewHolder(
                 error(R.drawable.ic_damage_image)
             }
         }
-        outfitGalleryItemBinding.clothCategory.text = cloth.id
+        outfitGalleryItemBinding.clothCategory.text = cloth.id.toString()
         outfitGalleryItemBinding.cardView.setOnClickListener { listener(cloth) }
     }
 }
