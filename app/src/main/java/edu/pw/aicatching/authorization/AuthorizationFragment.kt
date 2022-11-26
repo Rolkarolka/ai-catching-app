@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -36,8 +37,14 @@ class AuthorizationFragment: Fragment() {
                     idToken != null -> {
                         // Got an ID token from Google. Use it to authenticate
                         // with your backend.
-                        Log.d(TAG, "Got ID token.")
-                    }
+                        Log.d(TAG, "Got ID token. Check it in backend") // TODO
+                        val backendResponse = true // TODO
+                        if (backendResponse) {
+                            view?.let {
+                                Navigation.findNavController(it).navigate(R.id.mainFragment)
+                            }
+                        }
+                }
                     else -> {
                         // Shouldn't happen.
                         Log.d(TAG, "No ID token or password!")
