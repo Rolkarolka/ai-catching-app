@@ -1,8 +1,6 @@
 package edu.pw.aicatching.authorization
 
 import android.app.Activity
-import android.app.PendingIntent
-import android.content.ActivityNotFoundException
 import android.content.ContentValues.TAG
 import android.content.IntentSender
 import android.os.Bundle
@@ -13,9 +11,7 @@ import android.view.ViewGroup
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.GetSignInIntentRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
@@ -27,59 +23,42 @@ class AuthorizationFragment: Fragment() {
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
     private lateinit var signUpRequest: BeginSignInRequest
-    private val REQ_ONE_TAP = 2
+    private var showOneTapUI = true
+
+
     private val oneTapResult = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()){ result ->
-//        try {
-//            val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
-//            val idToken = credential.googleIdToken
-//            when {
-//                idToken != null -> {
-//                    // Got an ID token from Google. Use it to authenticate
-//                    // with your backend.
-//                    val msg = "idToken: $idToken"
-//
-//                    Log.d("one tap", msg)
-//                }
-//                else -> {
-//                    // Shouldn't happen.
-//                    Log.d("one tap", "No ID token!")
-//                }
-//            }
-
         try {
             if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.let { intent ->
-                    oneTapClient.getSignInCredentialFromIntent(intent)
-                }?.also { signInCredential ->
-                    val googleIdToken =
-                        signInCredential.googleIdToken?.also { googleIdToken ->
-                            Log.d(TAG, "googleIdToken: $googleIdToken")
-                        }
-                    val username = signInCredential.id
-                    Log.d(TAG, "username: $username")
-                    val password = signInCredential.password?.also { password ->
-                        Log.d(TAG, "password: $password")
+                val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
+                val idToken = credential.googleIdToken
+                when {
+                    idToken != null -> {
+                        // Got an ID token from Google. Use it to authenticate
+                        // with your backend.
+                        Log.d(TAG, "Got ID token.")
                     }
-//                    LoginFragmentDirections.actionLoginFragmentToMaintenanceFragment(
-//                        null,
-//                        signInCredential
-//                    )
-//                        .also { navDirections ->
-//                        findNavController().navigate(navDirections)
-//                    }
+                    else -> {
+                        // Shouldn't happen.
+                        Log.d(TAG, "No ID token or password!")
+                    }
                 }
+
             }
         } catch (e: ApiException) {
             when (e.statusCode) {
                 CommonStatusCodes.CANCELED -> {
-                    Log.d(TAG, "One-tap dialog was closed.: ${e.message.toString()}")
+                    Log.d(TAG, "One-tap dialog was closed.")
+                    // Don't re-prompt the user.
+                    showOneTapUI = false
                 }
                 CommonStatusCodes.NETWORK_ERROR -> {
-                    Log.d(TAG, "One-tap encountered a network error.: ${e.message.toString()}")
+                    Log.d(TAG, "One-tap encountered a network error.")
+                    // Try again or just ignore.
                 }
                 else -> {
-                    Log.d(TAG, "Couldn't get credential from result.: ${e.localizedMessage}")
+                    Log.d(TAG, "Couldn't get credential from result." +
+                        " (${e.localizedMessage})")
                 }
             }
         }
@@ -93,10 +72,16 @@ class AuthorizationFragment: Fragment() {
         val viewBinding = inflater.inflate(R.layout.fragment_authorization, container, false)
 
         oneTapClient = Identity.getSignInClient(this.requireActivity())
+        signUpRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setServerClientId(getString(R.string.web_client_id))
+                    .setFilterByAuthorizedAccounts(false)
+                    .build())
+            .build()
+
         signInRequest = BeginSignInRequest.builder()
-            .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
-                .setSupported(true)
-                .build())
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
@@ -105,7 +90,6 @@ class AuthorizationFragment: Fragment() {
                     .build())
             .setAutoSelectEnabled(true)
             .build()
-
         return viewBinding
     }
 
@@ -117,33 +101,36 @@ class AuthorizationFragment: Fragment() {
     }
 
     private fun signIn() {
-        val request = GetSignInIntentRequest.builder()
-            .setServerClientId(getString(R.string.web_client_id))
-            .build()
-        Identity.getSignInClient(requireActivity())
-            .getSignInIntent(request)
-            .addOnSuccessListener { result: PendingIntent ->
+        oneTapClient.beginSignIn(signInRequest)
+            .addOnSuccessListener(this.requireActivity()) { result ->
                 try {
-                    startIntentSenderForResult(
-                        result.intentSender,
-                        REQ_ONE_TAP,  /* fillInIntent= */
-                        null,  /* flagsMask= */
-                        0,  /* flagsValue= */
-                        0,  /* extraFlags= */
-                        0,  /* options= */
-                        null
-                    )
+                    val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent).build()
+                    oneTapResult.launch(intentSenderRequest)
                 } catch (e: IntentSender.SendIntentException) {
-                    Log.e(TAG, "Google Sign-in failed")
+                    Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
-            .addOnFailureListener { e: Exception? ->
-                Log.e(
-                    TAG,
-                    "Google Sign-in failed",
-                    e
-                )
+            .addOnFailureListener(this.requireActivity()) { e ->
+                e.localizedMessage?.let { Log.d(TAG, it) }
+                signUp()
             }
+
+    }
+
+    private fun signUp() {
+        oneTapClient.beginSignIn(signUpRequest)
+            .addOnSuccessListener(this.requireActivity()) { result ->
+                try {
+                    val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent).build()
+                    oneTapResult.launch(intentSenderRequest)
+                } catch (e: IntentSender.SendIntentException) {
+                    Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
+                }
+            }
+            .addOnFailureListener(this.requireActivity()) { e ->
+                e.localizedMessage?.let { Log.d(TAG, it) }
+            }
+
     }
 
 }
