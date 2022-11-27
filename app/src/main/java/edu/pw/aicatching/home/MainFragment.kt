@@ -31,8 +31,8 @@ class MainFragment : Fragment() {
             Navigation.createNavigateOnClickListener(R.id.cameraFragment)
         )
 
-        appendUserDetails.setOnClickListener {
+        appendUserDetails.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.userDetailsFragment)
-        }
+        )
     }
 }
