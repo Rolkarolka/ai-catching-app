@@ -11,16 +11,15 @@ import retrofit2.Response
 
 class AuthorizationViewModel : ViewModel() {
     private val service = AICatchingApiService.getInstance()
-    var userLiveData: MutableLiveData<User?> = MutableLiveData()
 
-    fun getCreateNewUserObserver(): MutableLiveData<User?> {
-        return userLiveData
-    }
+    var userLiveData: MutableLiveData<User?> = MutableLiveData()
+    val errorMessage = MutableLiveData<String>()
 
     fun logIn(credentials: Credentials) {
-        val call = service.postLogIn(credentials)
-        call.enqueue(object : Callback<User> {
+        val response = service.postLogIn(credentials)
+        response.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
+                errorMessage.postValue(t.message)
                 userLiveData.postValue(null)
             }
 

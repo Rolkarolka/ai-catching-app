@@ -21,13 +21,13 @@ import kotlinx.android.synthetic.main.item_cloth.view.*
 
 class ClothDescriptionFragment : Fragment() {
     private val service = AICatchingApiService.getInstance()
-    lateinit var viewModel: OutfitViewModel
+    private lateinit var viewModel: OutfitViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentClothDescriptionBinding.inflate(inflater, container, false)
 
         val adapter = OutfitGalleryAdapter {
