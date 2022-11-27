@@ -48,12 +48,7 @@ class AuthorizationFragment : Fragment() {
                 val username = credential.id
                 when {
                     idToken != null -> {
-                        viewModel.logIn(Credentials(username, idToken))
-                        if (viewModel.userLiveData.value != null) {
-                            view?.let {
-                                Navigation.findNavController(it).navigate(R.id.mainFragment)
-                            }
-                        }
+                        this.viewModel.logIn(Credentials(username, idToken))
                     }
                     else -> {
                         // Shouldn't happen.
@@ -117,7 +112,9 @@ class AuthorizationFragment : Fragment() {
             if(it  == null) {
                 Toast.makeText(this.context, "Failed to create User", Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(this.context, "Successfully created User", Toast.LENGTH_LONG).show()
+                view?.let {
+                    Navigation.findNavController(it).navigate(R.id.mainFragment)
+                }
             }
         })
         return viewBinding
