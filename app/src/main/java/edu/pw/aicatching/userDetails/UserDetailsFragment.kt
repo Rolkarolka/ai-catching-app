@@ -41,9 +41,10 @@ class UserDetailsFragment: Fragment() {
         }
         val clothSizesArray = arrayListOf("XS", "S", "M", "L", "XL", "XXL")
         clothSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, clothSizesArray)
+        clothSizeSpinner.setSelection(clothSizesArray.indexOf("M")) // TODO from user
         val shoeSizesArray = (35..45).toList().map { it.toString() }
         shoeSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, shoeSizesArray)
-
+        shoeSizeSpinner.setSelection(clothSizesArray.indexOf("37")) // TODO from user
     }
 }
 
