@@ -8,9 +8,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -18,9 +21,18 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import edu.pw.aicatching.R
+import edu.pw.aicatching.clothMatching.OutfitViewModel
+import edu.pw.aicatching.models.Credentials
+import edu.pw.aicatching.models.User
+import edu.pw.aicatching.network.AICatchingApiService
+import edu.pw.aicatching.repositories.MainRepository
+import edu.pw.aicatching.wardrobe.WardrobeViewModel
+import edu.pw.aicatching.wardrobe.WardrobeViewModelFactory
 import kotlinx.android.synthetic.main.fragment_authorization.*
 
 class AuthorizationFragment : Fragment() {
+    lateinit var viewModel: AuthorizationViewModel
+
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
     private lateinit var signUpRequest: BeginSignInRequest
@@ -36,9 +48,8 @@ class AuthorizationFragment : Fragment() {
                 val username = credential.id
                 when {
                     idToken != null -> {
-
-                        val backendResponse = true // TODO
-                        if (backendResponse) {
+                        viewModel.logIn(Credentials(username, idToken))
+                        if (viewModel.userLiveData.value != null) {
                             view?.let {
                                 Navigation.findNavController(it).navigate(R.id.mainFragment)
                             }
@@ -100,6 +111,15 @@ class AuthorizationFragment : Fragment() {
             )
             .setAutoSelectEnabled(true)
             .build()
+        viewModel = ViewModelProvider(this).get(AuthorizationViewModel::class.java)
+        viewModel.getCreateNewUserObserver().observe(this.viewLifecycleOwner, Observer<User?>{
+
+            if(it  == null) {
+                Toast.makeText(this.context, "Failed to create User", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this.context, "Successfully created User", Toast.LENGTH_LONG).show()
+            }
+        })
         return viewBinding
     }
 
