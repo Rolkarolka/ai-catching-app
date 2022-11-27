@@ -38,27 +38,35 @@
         style="@style/RhombusWithText"
         android:layout_marginStart="16dp"
         android:text="M"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/userAvatar"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/secondUserAttribute"
         style="@style/RhombusWithText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="38"
         app:layout_constraintStart_toEndOf="@+id/firstUserAttribute"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/thirdUserAttribute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="@style/RhombusWithText"
         android:backgroundTint="@color/black"
         app:layout_constraintStart_toEndOf="@+id/secondUserAttribute"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/appendUserAttribute"
-        style="@style/RhombusWithText"
-        android:text="+"
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/appendUserDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_info_in_rhombus"
         app:layout_constraintStart_toEndOf="@+id/thirdUserAttribute"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 

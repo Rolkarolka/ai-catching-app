@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import edu.pw.aicatching.R
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.view_top_settings.*
 
 class MainFragment : Fragment() {
 
@@ -29,5 +30,9 @@ class MainFragment : Fragment() {
         openCameraButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.cameraFragment)
         )
+
+        appendUserDetails.setOnClickListener {
+            Navigation.createNavigateOnClickListener(R.id.userDetailsFragment)
+        }
     }
 }

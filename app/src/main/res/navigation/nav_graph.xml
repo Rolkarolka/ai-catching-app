@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/authorizationFragment">
+    app:startDestination="@id/mainFragment"
+    android:label="TODO change">
     <fragment
         android:id="@+id/authorizationFragment"
         android:name="edu.pw.aicatching.authorization.AuthorizationFragment"
@@ -13,6 +14,12 @@
             android:id="@+id/action_authorizationFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/userDetailsFragment"
+        android:name="edu.pw.aicatching.userDetails.UserDetailsFragment"
+        android:label="User Details"
+        tools:layout="@layout/fragment_user_details"
+        />
     <fragment
         android:id="@+id/cameraFragment"
         android:name="edu.pw.aicatching.camera.CameraFragment"
@@ -42,6 +49,9 @@
         <action
             android:id="@+id/action_mainFragment_to_wardrobeFragment"
             app:destination="@id/wardrobeFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/clothDescriptionFragment"
