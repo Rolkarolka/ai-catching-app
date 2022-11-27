@@ -25,11 +25,17 @@ class WardrobeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentWardrobeBinding.inflate(inflater)
+        val mainActivity = this
+        val view = binding.root
+        view.wardrobeGallery.apply {
+            layoutManager = GridLayoutManager(mainActivity.activity, 2)
+        }
 
         val adapter = WardrobeGalleryAdapter {
             val bundle = bundleOf("clothCategory" to it.id, "clothImage" to it.imgSrcUrl)
-            view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.clothDescriptionFragment, bundle) }
+            view.let { it1 -> Navigation.findNavController(it1).navigate(R.id.clothDescriptionFragment, bundle) }
         }
+        view.wardrobeGallery.adapter = adapter
 
         viewModel = ViewModelProvider(this, WardrobeViewModelFactory(MainRepository(service))).get(WardrobeViewModel::class.java)
         viewModel.wardrobeList.observe(
@@ -40,12 +46,6 @@ class WardrobeFragment : Fragment() {
         viewModel.errorMessage.observe(viewLifecycleOwner) { }
         viewModel.getWardrobe()
 
-        val mainActivity = this
-        val view = binding.root
-        view.wardrobeGallery.apply {
-            layoutManager = GridLayoutManager(mainActivity.activity, 2)
-        }
-        view.wardrobeGallery.adapter = adapter
         return view
     }
 }
