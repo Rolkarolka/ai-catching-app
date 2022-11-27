@@ -9,7 +9,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class AuthorizationViewModel : ViewModel() {
     private val service = AICatchingApiService.getInstance()
     var userLiveData: MutableLiveData<User?> = MutableLiveData()
@@ -18,16 +17,15 @@ class AuthorizationViewModel : ViewModel() {
         return userLiveData
     }
 
-
     fun logIn(credentials: Credentials) {
         val call = service.postLogIn(credentials)
-        call.enqueue(object: Callback<User> {
+        call.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
                 userLiveData.postValue(null)
             }
 
             override fun onResponse(call: Call<User>, response: Response<User>) {
-                if(response.isSuccessful) {
+                if (response.isSuccessful) {
                     userLiveData.postValue(response.body())
                 } else {
                     userLiveData.postValue(null)
@@ -35,6 +33,4 @@ class AuthorizationViewModel : ViewModel() {
             }
         })
     }
-
-
 }

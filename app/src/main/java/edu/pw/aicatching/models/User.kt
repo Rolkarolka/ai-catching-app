@@ -8,7 +8,6 @@ data class User(
     val email: String
 )
 
-
 class Credentials(
     @Json(name = "username")
     val email: String,

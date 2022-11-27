@@ -21,13 +21,8 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import edu.pw.aicatching.R
-import edu.pw.aicatching.clothMatching.OutfitViewModel
 import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.models.User
-import edu.pw.aicatching.network.AICatchingApiService
-import edu.pw.aicatching.repositories.MainRepository
-import edu.pw.aicatching.wardrobe.WardrobeViewModel
-import edu.pw.aicatching.wardrobe.WardrobeViewModelFactory
 import kotlinx.android.synthetic.main.fragment_authorization.*
 
 class AuthorizationFragment : Fragment() {
@@ -107,16 +102,19 @@ class AuthorizationFragment : Fragment() {
             .setAutoSelectEnabled(true)
             .build()
         viewModel = ViewModelProvider(this).get(AuthorizationViewModel::class.java)
-        viewModel.getCreateNewUserObserver().observe(this.viewLifecycleOwner, Observer<User?>{
+        viewModel.getCreateNewUserObserver().observe(
+            this.viewLifecycleOwner,
+            Observer<User?> {
 
-            if(it  == null) {
-                Toast.makeText(this.context, "Failed to create User", Toast.LENGTH_LONG).show()
-            } else {
-                view?.let {
-                    Navigation.findNavController(it).navigate(R.id.mainFragment)
+                if (it == null) {
+                    Toast.makeText(this.context, "Failed to create User", Toast.LENGTH_LONG).show()
+                } else {
+                    view?.let {
+                        Navigation.findNavController(it).navigate(R.id.mainFragment)
+                    }
                 }
             }
-        })
+        )
         return viewBinding
     }
 
