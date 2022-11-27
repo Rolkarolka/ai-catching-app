@@ -13,6 +13,8 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import com.skydoves.colorpickerview.listeners.ColorListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import edu.pw.aicatching.R
@@ -53,7 +55,25 @@ class UserDetailsFragment: Fragment() {
         setShoeSpinner(shoeSizesArray)
         setColorPicker()
         setAvatar()
+
+
+        logOutButton.setOnClickListener(
+            Navigation.createNavigateOnClickListener(R.id.authorizationFragment)
+                .also {
+                    // TODO call server
+                    viewModel.userLiveData = MutableLiveData()
+                }
+        )
+
+        deleteAccountButton.setOnClickListener(
+            Navigation.createNavigateOnClickListener(R.id.authorizationFragment)
+                .also {
+                    // TODO call server
+                    viewModel.userLiveData = MutableLiveData()
+                }
+        )
     }
+
 
     private fun setClothSpinner(clothSizesArray: ArrayList<String>) {
         clothSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, clothSizesArray)
