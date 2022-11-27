@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "edu.pw.aicatching"
         minSdk 28
-        targetSdk 31
+        targetSdk 33
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -68,6 +68,8 @@ dependencies {
     implementation 'com.squareup.moshi:moshi-kotlin:1.13.0'
     implementation "io.coil-kt:coil:1.1.1"
 
+    def activity_version = "1.6.1"
+    implementation "androidx.activity:activity-ktx:$activity_version"
 
 
 }
