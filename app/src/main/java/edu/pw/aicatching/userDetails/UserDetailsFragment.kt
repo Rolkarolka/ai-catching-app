@@ -56,22 +56,17 @@ class UserDetailsFragment: Fragment() {
         setColorPicker()
         setAvatar()
 
+        logOutButton.setOnClickListener {
+            // TODO call server
+            viewModel.userLiveData = MutableLiveData()
+            this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
+        }
 
-        logOutButton.setOnClickListener(
-            Navigation.createNavigateOnClickListener(R.id.authorizationFragment)
-                .also {
-                    // TODO call server
-                    viewModel.userLiveData = MutableLiveData()
-                }
-        )
-
-        deleteAccountButton.setOnClickListener(
-            Navigation.createNavigateOnClickListener(R.id.authorizationFragment)
-                .also {
-                    // TODO call server
-                    viewModel.userLiveData = MutableLiveData()
-                }
-        )
+        deleteAccountButton.setOnClickListener {
+            // TODO call server
+            viewModel.userLiveData = MutableLiveData()
+            this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
+        }
     }
 
 
