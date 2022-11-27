@@ -17,7 +17,6 @@ import edu.pw.aicatching.R
 import edu.pw.aicatching.authorization.AuthorizationViewModel
 import edu.pw.aicatching.models.UserPreferences
 import kotlinx.android.synthetic.main.fragment_user_details.*
-import kotlinx.android.synthetic.main.view_top_settings.*
 
 
 class UserDetailsFragment: Fragment() {
@@ -50,33 +49,42 @@ class UserDetailsFragment: Fragment() {
             pickMediaResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
         val clothSizesArray = arrayListOf("XS", "S", "M", "L", "XL", "XXL")
+        setClothSpinner(clothSizesArray)
         val shoeSizesArray = (35..45).toList().map { it.toString() }
+        setShoeSpinner(shoeSizesArray)
+        setColorPicker()
+    }
 
+    private fun setClothSpinner(clothSizesArray: ArrayList<String>) {
         clothSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, clothSizesArray)
         viewModel.userLiveData.value?.preferences
             ?.let { clothSizesArray.indexOf(it.clothSize) }
             ?.let { clothSizeSpinner.setSelection(it) }
+    }
 
+    private fun setShoeSpinner(shoeSizesArray: List<String>) {
         shoeSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, shoeSizesArray)
         viewModel.userLiveData.value?.preferences
-            ?.let { clothSizesArray.indexOf(it.shoeSize) }
+            ?.let { shoeSizesArray.indexOf(it.shoeSize) }
             ?.let { shoeSizeSpinner.setSelection(it) }
 
-        println(viewModel.userLiveData.value?.preferences?.favouriteColor)
         favColorPickerView.preferenceName = "FavColorPicker"
         viewModel.userLiveData.value?.preferences?.let { it.favouriteColor?.let { favColor ->
             colorPickerManager.setColor("FavColorPicker", favColor) } }
+    }
 
-
+    private fun setColorPicker() {
         favColorPickerView.setColorListener(ColorListener { color, _ ->
             favouriteColorView.backgroundTintList = ColorStateList.valueOf(color)
             if (viewModel.userLiveData.value?.preferences == null) {
-                viewModel.userLiveData.value = viewModel.userLiveData.value?.copy(preferences = UserPreferences(favouriteColor = color))
+                viewModel.userLiveData.value = viewModel.userLiveData
+                    .value?.copy(preferences = UserPreferences(favouriteColor = color))
             } else {
-                viewModel.userLiveData.value = viewModel.userLiveData.value?.copy(preferences = viewModel.userLiveData.value?.preferences?.copy(favouriteColor = color))
+                viewModel.userLiveData.value = viewModel.userLiveData
+                    .value?.copy(preferences = viewModel.userLiveData.value
+                        ?.preferences?.copy(favouriteColor = color))
             }
         })
-
     }
 }
 
