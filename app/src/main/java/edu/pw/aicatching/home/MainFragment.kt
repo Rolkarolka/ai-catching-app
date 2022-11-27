@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import edu.pw.aicatching.R
 import edu.pw.aicatching.authorization.AuthorizationViewModel
@@ -29,16 +28,20 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (viewModel.userLiveData.value != null) {
             username.text = "${viewModel.userLiveData.value!!.name} ${viewModel.userLiveData.value!!.surname}"
-//            viewModel.filters.observe(viewLifecycleOwner, Observer { set ->
-//                // Update the selected filters UI
-//            }
-            viewModel.userLiveData.observe(viewLifecycleOwner, Observer { user ->
+            viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
                 favColorAttribute.backgroundTintList = user?.preferences?.favouriteColor
                     ?.let { ColorStateList.valueOf(it) }
-            })
-//            clothSizeAttribute
-//            shoeSizeAttribute
-//            favColorAttribute
+                clothSizeAttribute.text =
+                    if (user?.preferences?.clothSize?.isNotEmpty() == true)
+                        user.preferences.clothSize
+                    else
+                        "Cloth\nSize"
+                shoeSizeAttribute.text = if (user?.preferences?.shoeSize?.isNotEmpty() == true)
+                    user.preferences.shoeSize
+                else
+                    "Shoe\nSize"
+            }
+
 //            userAvatar
         }
 

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -48,18 +49,35 @@ class UserDetailsFragment: Fragment() {
         changeUserPhotoButton.setOnClickListener {
             pickMediaResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-        val clothSizesArray = arrayListOf("XS", "S", "M", "L", "XL", "XXL")
+        val clothSizesArray = arrayListOf("", "XS", "S", "M", "L", "XL", "XXL")
         setClothSpinner(clothSizesArray)
-        val shoeSizesArray = (35..45).toList().map { it.toString() }
+        val shoeSizesArray = listOf("") + (35..45).toList().map { it.toString() }
         setShoeSpinner(shoeSizesArray)
         setColorPicker()
     }
 
     private fun setClothSpinner(clothSizesArray: ArrayList<String>) {
         clothSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, clothSizesArray)
+
         viewModel.userLiveData.value?.preferences
             ?.let { clothSizesArray.indexOf(it.clothSize) }
             ?.let { clothSizeSpinner.setSelection(it) }
+
+        object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+                if (viewModel.userLiveData.value?.preferences == null) {
+                    viewModel.userLiveData.value = viewModel.userLiveData
+                        .value?.copy(preferences = UserPreferences(clothSize = clothSizesArray[position]))
+                } else {
+                    viewModel.userLiveData.value = viewModel.userLiveData
+                        .value?.copy(preferences = viewModel.userLiveData.value
+                            ?.preferences?.copy(clothSize = clothSizesArray[position]))
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+        }.also { clothSizeSpinner.onItemSelectedListener = it }
+
     }
 
     private fun setShoeSpinner(shoeSizesArray: List<String>) {
@@ -68,12 +86,27 @@ class UserDetailsFragment: Fragment() {
             ?.let { shoeSizesArray.indexOf(it.shoeSize) }
             ?.let { shoeSizeSpinner.setSelection(it) }
 
-        favColorPickerView.preferenceName = "FavColorPicker"
-        viewModel.userLiveData.value?.preferences?.let { it.favouriteColor?.let { favColor ->
-            colorPickerManager.setColor("FavColorPicker", favColor) } }
+        object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+                if (viewModel.userLiveData.value?.preferences == null) {
+                    viewModel.userLiveData.value = viewModel.userLiveData
+                        .value?.copy(preferences = UserPreferences(shoeSize = shoeSizesArray[position]))
+                } else {
+                    viewModel.userLiveData.value = viewModel.userLiveData
+                        .value?.copy(preferences = viewModel.userLiveData.value
+                            ?.preferences?.copy(shoeSize = shoeSizesArray[position]))
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+        }.also { shoeSizeSpinner.onItemSelectedListener = it }
     }
 
     private fun setColorPicker() {
+        favColorPickerView.preferenceName = "FavColorPicker"
+        viewModel.userLiveData.value?.preferences?.let { it.favouriteColor?.let { favColor ->
+            colorPickerManager.setColor("FavColorPicker", favColor) } }
+
         favColorPickerView.setColorListener(ColorListener { color, _ ->
             favouriteColorView.backgroundTintList = ColorStateList.valueOf(color)
             if (viewModel.userLiveData.value?.preferences == null) {
