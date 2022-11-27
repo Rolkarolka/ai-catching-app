@@ -36,7 +36,8 @@ class AuthorizationFragment : Fragment() {
                 val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
                 if (credential.googleIdToken != null) {
                     this.viewModel.logIn(
-                        Credentials(email=credential.id, token=credential.googleIdToken))
+                        Credentials(email = credential.id, token = credential.googleIdToken)
+                    )
                 }
             }
         } catch (e: ApiException) {
@@ -76,12 +77,14 @@ class AuthorizationFragment : Fragment() {
 
         signUpRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
-                createBeginSignInRequest(false))
+                createBeginSignInRequest(false)
+            )
             .build()
 
         signInRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
-                createBeginSignInRequest(true))
+                createBeginSignInRequest(true)
+            )
             .setAutoSelectEnabled(true)
             .build()
 
