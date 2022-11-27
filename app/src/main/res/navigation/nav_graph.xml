@@ -3,17 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/authorizationFragment">
+    <fragment
+        android:id="@+id/authorizationFragment"
+        android:name="edu.pw.aicatching.authorization.AuthorizationFragment"
+        android:label="Authorization"
+        tools:layout="@layout/fragment_authorization">
+        <action
+            android:id="@+id/action_authorizationFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
     <fragment
         android:id="@+id/cameraFragment"
         android:name="edu.pw.aicatching.camera.CameraFragment"
         android:label="Camera"
-        tools:layout="@layout/fragment_camera" />
+        tools:layout="@layout/fragment_camera">
+        <action
+            android:id="@+id/action_cameraFragment_to_clothDescriptionFragment"
+            app:destination="@id/clothDescriptionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/wardrobeFragment"
         android:name="edu.pw.aicatching.wardrobe.WardrobeFragment"
         android:label="Wardrobe"
-        tools:layout="@layout/fragment_wardrobe" />
+        tools:layout="@layout/fragment_wardrobe">
+        <action
+            android:id="@+id/action_wardrobeFragment_to_clothDescriptionFragment"
+            app:destination="@id/clothDescriptionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mainFragment"
         android:name="edu.pw.aicatching.home.MainFragment"
