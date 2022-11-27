@@ -1,6 +1,7 @@
 package edu.pw.aicatching.home
 
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,9 @@ class MainFragment : Fragment() {
         if (viewModel.userLiveData.value != null) {
             username.text = "${viewModel.userLiveData.value!!.name} ${viewModel.userLiveData.value!!.surname}"
             viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
+                user?.photoUrl?.let{ photo ->
+                    userAvatar.setImageURI(Uri.parse(photo))
+                }
                 favColorAttribute.backgroundTintList = user?.preferences?.favouriteColor
                     ?.let { ColorStateList.valueOf(it) }
                 clothSizeAttribute.text =
@@ -41,8 +45,6 @@ class MainFragment : Fragment() {
                 else
                     "Shoe\nSize"
             }
-
-//            userAvatar
         }
 
 

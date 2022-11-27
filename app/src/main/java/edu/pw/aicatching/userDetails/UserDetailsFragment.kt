@@ -1,6 +1,7 @@
 package edu.pw.aicatching.userDetails
 
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,8 +29,8 @@ class UserDetailsFragment: Fragment() {
         if (uri != null) {
             Log.d("UserDetailsFragment:PhotoPicker", "Selected URI: $uri")
             currentUserAvatar.setImageURI(uri)
-            // TODO send image to server, and set in user object
-
+            // TODO send image to server
+            viewModel.userLiveData.value = viewModel.userLiveData.value?.copy(photoUrl = uri.toString())
         } else {
             Log.d("UserDetailsFragment:PhotoPicker", "No media selected")
         }
@@ -46,14 +47,12 @@ class UserDetailsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        changeUserPhotoButton.setOnClickListener {
-            pickMediaResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
         val clothSizesArray = arrayListOf("", "XS", "S", "M", "L", "XL", "XXL")
         setClothSpinner(clothSizesArray)
         val shoeSizesArray = listOf("") + (35..45).toList().map { it.toString() }
         setShoeSpinner(shoeSizesArray)
         setColorPicker()
+        setAvatar()
     }
 
     private fun setClothSpinner(clothSizesArray: ArrayList<String>) {
@@ -118,6 +117,15 @@ class UserDetailsFragment: Fragment() {
                         ?.preferences?.copy(favouriteColor = color))
             }
         })
+    }
+
+    private fun setAvatar() {
+        viewModel.userLiveData.value?.photoUrl?.let{ photo ->
+            currentUserAvatar.setImageURI(Uri.parse(photo))
+        }
+        changeUserPhotoButton.setOnClickListener {
+            pickMediaResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
     }
 }
 
