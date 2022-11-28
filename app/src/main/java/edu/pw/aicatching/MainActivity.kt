@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
             topLevelDestinationIds = setOf(R.id.mainFragment, R.id.authorizationFragment),
             fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )
+        setSupportActionBar(main_toolbar)
         main_toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
