@@ -1,5 +1,6 @@
 package edu.pw.aicatching.wardrobe
 
+import android.view.View
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -10,7 +11,13 @@ import edu.pw.aicatching.models.Cloth
 class ClothViewHolder(
     private val wardrobeGalleryItemBinding: ItemClothBinding,
 ) : RecyclerView.ViewHolder(wardrobeGalleryItemBinding.root) {
-    fun bind(cloth: Cloth, listener: (Cloth) -> Unit) {
+    fun bind(
+        cloth: Cloth,
+        onClickListener: (Cloth, View) -> Unit,
+        onLongClickListener: (Cloth, View) -> Boolean,
+        viewHolderColor: Int
+    ) {
+        wardrobeGalleryItemBinding.cardView.setBackgroundColor(viewHolderColor)
         cloth.imgSrcUrl.let {
             val imgUri = it.toUri().buildUpon().scheme("https").build()
             wardrobeGalleryItemBinding.clothImage.load(imgUri) {
@@ -19,6 +26,7 @@ class ClothViewHolder(
             }
         }
         wardrobeGalleryItemBinding.clothCategory.text = cloth.id.toString()
-        wardrobeGalleryItemBinding.cardView.setOnClickListener { listener(cloth) }
+        wardrobeGalleryItemBinding.cardView.setOnClickListener { view -> onClickListener(cloth, view) }
+        wardrobeGalleryItemBinding.cardView.setOnLongClickListener { view -> onLongClickListener(cloth, view) }
     }
 }
