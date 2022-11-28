@@ -22,12 +22,6 @@ interface AICatchingApiService {
     @POST("user/login_session")
     fun postLogIn(@Body credentials: Credentials): Call<User>
 
-//    @Multipart
-//    @POST("cloth/")
-//    fun uploadImage(
-//        @Part image: MultipartBody.Part,
-//        @Part("desc") desc: RequestBody): Call<UploadResponse>
-
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"
         private val moshi: Moshi = Moshi.Builder()
