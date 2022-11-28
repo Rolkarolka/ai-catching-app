@@ -18,6 +18,11 @@ class WardrobeGalleryAdapter(
         notifyDataSetChanged()
     }
 
+    fun filterList(filteredCloths: MutableList<Cloth>) {
+        cloths = filteredCloths
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothViewHolder {
         val from = LayoutInflater.from(parent.context)
         val binding = ItemClothBinding.inflate(from, parent, false)
@@ -31,3 +36,4 @@ class WardrobeGalleryAdapter(
 
     override fun getItemCount(): Int = cloths.size
 }
+
