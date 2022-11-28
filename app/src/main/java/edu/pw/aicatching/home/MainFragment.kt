@@ -28,8 +28,8 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (viewModel.userLiveData.value != null) {
-            username.text = "${viewModel.userLiveData.value!!.name} ${viewModel.userLiveData.value!!.surname}"
             viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
+                username.text = user?.name + user?.surname
                 user?.photoUrl?.let { photo ->
                     userAvatar.setImageURI(Uri.parse(photo))
                 }

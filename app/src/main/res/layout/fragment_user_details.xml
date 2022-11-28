@@ -9,7 +9,6 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_margin="16dp"
-        android:contentDescription="@string/user_avatar"
         android:src="@drawable/ic_avatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,7 +20,7 @@
         android:background="@color/pink"
         android:layout_margin="10dp"
         android:padding="10dp"
-        android:text="Change Avatar"
+        android:text="@string/change_avatar"
         app:layout_constraintBottom_toBottomOf="@id/currentUserAvatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/currentUserAvatar"
@@ -51,7 +50,7 @@
         android:id="@+id/favColorLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Favourite color"
+        android:text="@string/fav_color"
         android:layout_margin="15dp"
         app:layout_constraintStart_toEndOf="@id/favColorPickerView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +62,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/RhombusWithText"
-        android:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="@id/favColorPickerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/favColorPickerView"
@@ -84,7 +82,7 @@
         android:id="@+id/clothSizeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cloth size"
+        android:text="@string/cloth_size"
         android:layout_margin="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/clothSizeSpinner"
@@ -107,7 +105,7 @@
         android:id="@+id/shoeSizeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Shoe size"
+        android:text="@string/shoe_size"
         android:layout_margin="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/shoeSizeSpinner"
@@ -145,7 +143,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/pink"
-        android:text="Log Out"
+        android:text="@string/log_out"
         />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -157,6 +155,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/pink"
-        android:text="Delete Account"
+        android:text="@string/delete_account"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

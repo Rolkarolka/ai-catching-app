@@ -27,8 +27,8 @@ interface AICatchingApiService {
         private val moshi: Moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
-        var aiCatchingApiService: AICatchingApiService? = null
-        var okHttpClient: OkHttpClient = OkHttpClient.Builder()
+        private var aiCatchingApiService: AICatchingApiService? = null
+        private var okHttpClient: OkHttpClient = OkHttpClient.Builder()
             .addInterceptor(CookieInterceptor())
             .build()
 
@@ -41,7 +41,7 @@ interface AICatchingApiService {
                     .build()
                 aiCatchingApiService = retrofit.create(AICatchingApiService::class.java)
             }
-            return aiCatchingApiService!! // TODO without !!
+            return aiCatchingApiService!!
         }
     }
 }

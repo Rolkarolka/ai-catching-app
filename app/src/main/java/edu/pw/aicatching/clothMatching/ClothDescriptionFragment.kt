@@ -34,7 +34,7 @@ class ClothDescriptionFragment : Fragment() {
             val bundle = bundleOf("clothCategory" to it.id, "clothImage" to it.imgSrcUrl)
             view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.clothDescriptionFragment, bundle) }
         }
-        viewModel = ViewModelProvider(this, OutfitViewModelFactory(MainRepository(service))).get(OutfitViewModel::class.java)
+        viewModel = ViewModelProvider(this, OutfitViewModelFactory(MainRepository(service)))[OutfitViewModel::class.java]
         viewModel.outfitList.observe(
             viewLifecycleOwner
         ) {

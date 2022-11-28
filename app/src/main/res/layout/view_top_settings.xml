@@ -15,7 +15,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="16dp"
-        android:contentDescription="@string/user_avatar"
         android:src="@drawable/ic_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +27,7 @@
         android:layout_margin="16dp"
         android:gravity="fill_vertical"
         android:padding="8dp"
-        android:text="Username"
+        android:text="@string/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/userAvatar"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +36,7 @@
         android:id="@+id/clothSizeAttribute"
         style="@style/RhombusWithText"
         android:layout_marginStart="16dp"
-        android:text="Cloth\nsize"
+        android:text="@string/cloth_size_before_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/userAvatar"
@@ -48,7 +47,7 @@
         style="@style/RhombusWithText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Shoe\nsize"
+        android:text="@string/shoe_size_before_set"
         app:layout_constraintStart_toEndOf="@+id/clothSizeAttribute"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
@@ -57,7 +56,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/RhombusWithText"
-        android:backgroundTint="@color/black"
         app:layout_constraintStart_toEndOf="@+id/shoeSizeAttribute"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
