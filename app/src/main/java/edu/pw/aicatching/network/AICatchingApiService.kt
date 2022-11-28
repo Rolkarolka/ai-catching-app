@@ -5,16 +5,11 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import edu.pw.aicatching.models.Cloth
 import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.models.User
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
+import okhttp3.*
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 
 interface AICatchingApiService {
@@ -27,6 +22,12 @@ interface AICatchingApiService {
 
     @POST("user/login_session")
     fun postLogIn(@Body credentials: Credentials): Call<User>
+
+//    @Multipart
+//    @POST("cloth/")
+//    fun uploadImage(
+//        @Part image: MultipartBody.Part,
+//        @Part("desc") desc: RequestBody): Call<UploadResponse>
 
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"
