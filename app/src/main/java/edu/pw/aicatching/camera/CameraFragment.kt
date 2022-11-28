@@ -7,6 +7,7 @@ import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,9 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import edu.pw.aicatching.R
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -74,20 +77,21 @@ class CameraFragment : Fragment() {
                 .build()
         }
 
-        this.context?.let { ContextCompat.getMainExecutor(it) }?.let {
+        this.context?.let { ContextCompat.getMainExecutor(it) }?.let { executor ->
             if (outputOptions != null) {
                 imageCapture.takePicture(
-                    outputOptions,
-                    it,
-                    object : ImageCapture.OnImageSavedCallback {
-                        override fun onError(exc: ImageCaptureException) {
-                            println("Error")
+                    executor,
+                    object : ImageCapture.OnImageCapturedCallback() {
+
+                        override fun onCaptureSuccess(image: ImageProxy) {
+                            super.onCaptureSuccess(image)
+                            // TODO send to server
+                            val bundle = bundleOf("clothCategory" to 1, "clothImage" to "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631300503690E01_DXXX.jpg")
+                            view?.let { Navigation.findNavController(it).navigate(R.id.clothDescriptionFragment, bundle) }
                         }
 
-                        override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                            val msg = "Photo capture succeeded: ${output.savedUri}"
-                            Toast.makeText(view?.context, msg, Toast.LENGTH_SHORT).show()
-                            println("Err")
+                        override fun onError(exc: ImageCaptureException) {
+                            exc.message?.let { it1 -> Log.e("Camera:takePhoto", it1) }
                         }
                     }
                 )
@@ -148,8 +152,7 @@ class CameraFragment : Fragment() {
                             this, cameraSelector, preview, imageCapture
                         )
                     } catch (exc: Exception) {
-                        // TODO log
-                        println("Error")
+                        exc.message?.let { message -> Log.d("Camera:startCamera", message) }
                     }
                 },
                 it
