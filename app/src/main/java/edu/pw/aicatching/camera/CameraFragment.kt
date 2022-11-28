@@ -13,7 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.camera.core.*
-import androidx.camera.core.impl.utils.executor.CameraXExecutors
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -25,7 +24,6 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlinx.android.synthetic.main.fragment_camera.*
 import kotlinx.android.synthetic.main.fragment_camera.view.*
-
 
 class CameraFragment : Fragment() {
 
@@ -95,7 +93,8 @@ class CameraFragment : Fragment() {
                         override fun onError(exc: ImageCaptureException) {
                             exc.message?.let { it1 -> Log.e("Camera:takePhoto", it1) }
                         }
-                    })
+                    }
+                )
             }
         }
     }

@@ -22,12 +22,12 @@ import edu.pw.aicatching.authorization.AuthorizationViewModel
 import edu.pw.aicatching.models.UserPreferences
 import kotlinx.android.synthetic.main.fragment_user_details.*
 
-
-class UserDetailsFragment: Fragment() {
+class UserDetailsFragment : Fragment() {
     private val viewModel: AuthorizationViewModel by activityViewModels()
     private lateinit var colorPickerManager: ColorPickerPreferenceManager
     private val pickMediaResult = registerForActivityResult(
-        ActivityResultContracts.PickVisualMedia()) { uri ->
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
         if (uri != null) {
             Log.d("UserDetailsFragment:PhotoPicker", "Selected URI: $uri")
             currentUserAvatar.setImageURI(uri)
@@ -69,7 +69,6 @@ class UserDetailsFragment: Fragment() {
         }
     }
 
-
     private fun setClothSpinner(clothSizesArray: ArrayList<String>) {
         clothSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, clothSizesArray)
 
@@ -84,14 +83,15 @@ class UserDetailsFragment: Fragment() {
                         .value?.copy(preferences = UserPreferences(clothSize = clothSizesArray[position]))
                 } else {
                     viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(preferences = viewModel.userLiveData.value
-                            ?.preferences?.copy(clothSize = clothSizesArray[position]))
+                        .value?.copy(
+                            preferences = viewModel.userLiveData.value
+                                ?.preferences?.copy(clothSize = clothSizesArray[position])
+                        )
                 }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }.also { clothSizeSpinner.onItemSelectedListener = it }
-
     }
 
     private fun setShoeSpinner(shoeSizesArray: List<String>) {
@@ -107,8 +107,10 @@ class UserDetailsFragment: Fragment() {
                         .value?.copy(preferences = UserPreferences(shoeSize = shoeSizesArray[position]))
                 } else {
                     viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(preferences = viewModel.userLiveData.value
-                            ?.preferences?.copy(shoeSize = shoeSizesArray[position]))
+                        .value?.copy(
+                            preferences = viewModel.userLiveData.value
+                                ?.preferences?.copy(shoeSize = shoeSizesArray[position])
+                        )
                 }
             }
 
@@ -118,24 +120,31 @@ class UserDetailsFragment: Fragment() {
 
     private fun setColorPicker() {
         favColorPickerView.preferenceName = "FavColorPicker"
-        viewModel.userLiveData.value?.preferences?.let { it.favouriteColor?.let { favColor ->
-            colorPickerManager.setColor("FavColorPicker", favColor) } }
-
-        favColorPickerView.setColorListener(ColorListener { color, _ ->
-            favouriteColorView.backgroundTintList = ColorStateList.valueOf(color)
-            if (viewModel.userLiveData.value?.preferences == null) {
-                viewModel.userLiveData.value = viewModel.userLiveData
-                    .value?.copy(preferences = UserPreferences(favouriteColor = color))
-            } else {
-                viewModel.userLiveData.value = viewModel.userLiveData
-                    .value?.copy(preferences = viewModel.userLiveData.value
-                        ?.preferences?.copy(favouriteColor = color))
+        viewModel.userLiveData.value?.preferences?.let {
+            it.favouriteColor?.let { favColor ->
+                colorPickerManager.setColor("FavColorPicker", favColor)
             }
-        })
+        }
+
+        favColorPickerView.setColorListener(
+            ColorListener { color, _ ->
+                favouriteColorView.backgroundTintList = ColorStateList.valueOf(color)
+                if (viewModel.userLiveData.value?.preferences == null) {
+                    viewModel.userLiveData.value = viewModel.userLiveData
+                        .value?.copy(preferences = UserPreferences(favouriteColor = color))
+                } else {
+                    viewModel.userLiveData.value = viewModel.userLiveData
+                        .value?.copy(
+                            preferences = viewModel.userLiveData.value
+                                ?.preferences?.copy(favouriteColor = color)
+                        )
+                }
+            }
+        )
     }
 
     private fun setAvatar() {
-        viewModel.userLiveData.value?.photoUrl?.let{ photo ->
+        viewModel.userLiveData.value?.photoUrl?.let { photo ->
             currentUserAvatar.setImageURI(Uri.parse(photo))
         }
         changeUserPhotoButton.setOnClickListener {
@@ -143,4 +152,3 @@ class UserDetailsFragment: Fragment() {
         }
     }
 }
-

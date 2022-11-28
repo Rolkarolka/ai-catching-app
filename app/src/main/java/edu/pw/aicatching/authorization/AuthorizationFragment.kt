@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_authorization.*
 class AuthorizationFragment : Fragment() {
     private val viewModel: AuthorizationViewModel by activityViewModels()
 
-
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
     private lateinit var signUpRequest: BeginSignInRequest

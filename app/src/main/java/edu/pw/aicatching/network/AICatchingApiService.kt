@@ -11,7 +11,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 
-
 interface AICatchingApiService {
 
     @GET("user/wardrobe")
@@ -38,7 +37,6 @@ interface AICatchingApiService {
         var okHttpClient: OkHttpClient = OkHttpClient.Builder()
             .addInterceptor(CookieInterceptor())
             .build()
-
 
         fun getInstance(): AICatchingApiService {
             if (aiCatchingApiService == null) {
@@ -73,4 +71,3 @@ internal class CookieInterceptor : Interceptor {
         return response
     }
 }
-

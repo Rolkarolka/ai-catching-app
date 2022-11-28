@@ -4,18 +4,18 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.ItemClothBinding
 import edu.pw.aicatching.models.Cloth
 
-class WardrobeGalleryAdapter:
+class WardrobeGalleryAdapter :
     RecyclerView.Adapter<ClothViewHolder>() {
     var multiSelect: Boolean = false
     val selectedClothes = mutableListOf<Cloth>()
@@ -36,7 +36,6 @@ class WardrobeGalleryAdapter:
         val binding = ItemClothBinding.inflate(from, parent, false)
         binding.root.layoutParams.height = parent.measuredWidth / 2
         return ClothViewHolder(binding)
-
     }
 
     override fun onBindViewHolder(holder: ClothViewHolder, position: Int) {
@@ -95,6 +94,4 @@ class WardrobeGalleryAdapter:
     }
 
     override fun getItemCount(): Int = cloths.size
-
 }
-

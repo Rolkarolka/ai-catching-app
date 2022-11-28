@@ -8,7 +8,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
-import edu.pw.aicatching.models.User
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             topLevelDestinationIds = setOf(R.id.mainFragment, R.id.authorizationFragment),
             fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )
-        setSupportActionBar(main_toolbar);
+        setSupportActionBar(main_toolbar)
         main_toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 

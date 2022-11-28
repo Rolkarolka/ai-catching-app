@@ -13,13 +13,11 @@ import edu.pw.aicatching.network.AICatchingApiService
 import edu.pw.aicatching.repositories.MainRepository
 import kotlinx.android.synthetic.main.fragment_wardrobe.view.*
 
-
 class WardrobeFragment : Fragment() {
     private val service = AICatchingApiService.getInstance()
     lateinit var viewModel: WardrobeViewModel
     private lateinit var adapter: WardrobeGalleryAdapter
     private var clothListCopy = mutableListOf<Cloth>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +49,7 @@ class WardrobeFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.toolbar_main, menu)
-        super.onCreateOptionsMenu(menu,inflater)
+        super.onCreateOptionsMenu(menu, inflater)
         val searchView = menu.findItem(R.id.actionSearch).actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {

@@ -30,7 +30,7 @@ class MainFragment : Fragment() {
         if (viewModel.userLiveData.value != null) {
             username.text = "${viewModel.userLiveData.value!!.name} ${viewModel.userLiveData.value!!.surname}"
             viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
-                user?.photoUrl?.let{ photo ->
+                user?.photoUrl?.let { photo ->
                     userAvatar.setImageURI(Uri.parse(photo))
                 }
                 favColorAttribute.backgroundTintList = user?.preferences?.favouriteColor
@@ -46,7 +46,6 @@ class MainFragment : Fragment() {
                     "Shoe\nSize"
             }
         }
-
 
         showWardrobeButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.wardrobeFragment)
