@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import edu.pw.aicatching.repositories.MainRepository
 
 class OutfitViewModelFactory constructor(private val repository: MainRepository) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(OutfitViewModel::class.java)) {
             OutfitViewModel(this.repository) as T

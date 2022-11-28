@@ -1,20 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Theme.AICatching" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
         <item name="colorPrimary">@color/pink</item>
         <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/pink</item>
         <item name="colorSecondaryVariant">@color/white</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:actionModeBackground">@color/pink</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/pink</item>
-        <!-- Customize your theme here. -->
     </style>
     <style name="LaunchTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
         <item name="android:windowBackground" >@drawable/splash_screen</item>
         <item name="android:statusBarColor">@color/white</item>
     </style>

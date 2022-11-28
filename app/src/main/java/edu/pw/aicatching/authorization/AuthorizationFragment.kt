@@ -1,7 +1,6 @@
 package edu.pw.aicatching.authorization
 
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.content.IntentSender
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -23,7 +22,7 @@ import edu.pw.aicatching.models.Credentials
 import kotlinx.android.synthetic.main.fragment_authorization.*
 
 class AuthorizationFragment : Fragment() {
-    private lateinit var viewModel: AuthorizationViewModel
+    private val viewModel: AuthorizationViewModel by activityViewModels()
 
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
@@ -43,11 +42,11 @@ class AuthorizationFragment : Fragment() {
         } catch (e: ApiException) {
             when (e.statusCode) {
                 CommonStatusCodes.NETWORK_ERROR -> {
-                    Log.d(TAG, "One-tap encountered a network error.")
+                    Log.d("Authorization:OneTapLoggingResult:NetworkError", "One-tap encountered a network error.")
                 }
                 else -> {
                     Log.d(
-                        TAG,
+                        "Authorization:OneTapLoggingResult:OtherError",
                         "Couldn't get credential from result." +
                             " (${e.localizedMessage})"
                     )
@@ -62,11 +61,10 @@ class AuthorizationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val viewBinding = inflater.inflate(R.layout.fragment_authorization, container, false)
-        viewModel = ViewModelProvider(this).get(AuthorizationViewModel::class.java)
         viewModel.userLiveData.observe(
             this.viewLifecycleOwner
-        ) {
-            if (it != null) {
+        ) { user ->
+            if (user != null) {
                 view?.let { view ->
                     Navigation.findNavController(view).navigate(R.id.mainFragment)
                 }
@@ -112,11 +110,11 @@ class AuthorizationFragment : Fragment() {
                     val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent).build()
                     oneTapLoggingResult.launch(intentSenderRequest)
                 } catch (e: IntentSender.SendIntentException) {
-                    e.localizedMessage?.let { Log.d(TAG, it) }
+                    e.localizedMessage?.let { Log.d("AuthorizationFragment:Sign:OnSuccessListener", it) }
                 }
             }
             .addOnFailureListener(this.requireActivity()) { e ->
-                e.localizedMessage?.let { Log.d(TAG, it) }
+                e.localizedMessage?.let { Log.d("AuthorizationFragment:Sign:OnFailureListener", it) }
                 sign(signUpRequest)
             }
     }
