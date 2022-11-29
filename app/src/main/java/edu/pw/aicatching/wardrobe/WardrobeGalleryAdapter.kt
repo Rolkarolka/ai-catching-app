@@ -13,7 +13,8 @@ import edu.pw.aicatching.databinding.ItemClothBinding
 import edu.pw.aicatching.models.Cloth
 
 class WardrobeGalleryAdapter(
-    val listener: (Cloth) -> Unit
+    val listener: (Cloth) -> Unit,
+    val actionModeListener: (Cloth) -> Unit
 ) :
     RecyclerView.Adapter<ClothViewHolder>() {
     var multiSelect: Boolean = false
@@ -68,7 +69,8 @@ class WardrobeGalleryAdapter(
 
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             for (cloth in selectedClothes) {
-                cloths.remove(cloth) // TODO remove from server
+                cloths.remove(cloth)
+                actionModeListener(cloth)
             }
             mode?.finish()
             return true

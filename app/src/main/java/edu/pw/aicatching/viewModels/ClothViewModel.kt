@@ -58,4 +58,8 @@ class ClothViewModel : ViewModel() {
     fun updateClothAttributes() {
         // TODO
     }
+
+    fun deleteCloth(cloth: Cloth) {
+        // TODO
+    }
 }
