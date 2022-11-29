@@ -1,23 +1,22 @@
 package edu.pw.aicatching.wardrobe
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentWardrobeBinding
 import edu.pw.aicatching.models.Cloth
-import edu.pw.aicatching.network.AICatchingApiService
-import edu.pw.aicatching.repositories.MainRepository
 import edu.pw.aicatching.viewModels.ClothViewModel
-import edu.pw.aicatching.viewModels.ClothViewModelFactory
 import kotlinx.android.synthetic.main.fragment_wardrobe.view.*
 
 class WardrobeFragment : Fragment() {
-    private val service = AICatchingApiService.getInstance()
-    lateinit var viewModel: ClothViewModel
+    private val viewModel: ClothViewModel by activityViewModels()
+
     private lateinit var adapter: WardrobeGalleryAdapter
     private var clothListCopy = mutableListOf<Cloth>()
 
@@ -33,17 +32,20 @@ class WardrobeFragment : Fragment() {
             layoutManager = GridLayoutManager(mainActivity.activity, 2)
         }
 
-        adapter = WardrobeGalleryAdapter()
+        adapter = WardrobeGalleryAdapter{ cloth ->
+            viewModel.mainCloth.value = cloth
+            Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
+        }
         view.wardrobeGallery.adapter = adapter
 
-        viewModel = ViewModelProvider(this, ClothViewModelFactory(MainRepository(service)))[ClothViewModel::class.java]
         viewModel.wardrobeList.observe(
             viewLifecycleOwner
         ) {
             clothListCopy = it.toMutableList()
             adapter.setClothList(it)
         }
-        viewModel.wardrobeErrorMessage.observe(viewLifecycleOwner) { }
+        viewModel.wardrobeErrorMessage.observe(viewLifecycleOwner
+        ) { Log.d(this::class.simpleName, "Creating new observer on wardrobeErrorMessage") }
         viewModel.getWardrobe()
         setHasOptionsMenu(true)
         return view

@@ -6,15 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentEditAttributesBinding
+import edu.pw.aicatching.models.Cloth
+import edu.pw.aicatching.models.ClothAttributes
+import edu.pw.aicatching.models.asMap
+import edu.pw.aicatching.viewModels.ClothViewModel
+import kotlin.reflect.KClass
+import kotlin.reflect.full.memberProperties
 import kotlinx.android.synthetic.main.fragment_edit_attributes.*
 import kotlinx.android.synthetic.main.fragment_edit_attributes.view.*
 
 
 class EditAttributesFragment : Fragment() {
+    private val viewModel: ClothViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,7 +32,8 @@ class EditAttributesFragment : Fragment() {
         val binding = FragmentEditAttributesBinding.inflate(inflater, container, false)
 
         val adapter = EditAttributeAdapter()
-        adapter.setAttributesMap(mapOf("Color" to "Blue", "Type" to "Dots", "Example" to "it")) // TODO list from cloth
+        viewModel.mainCloth.value = viewModel.mainCloth.value?.copy(attributes = ClothAttributes(pattern = "ladny", color = null))
+        viewModel.mainCloth.value?.attributes?.asMap()?.let { adapter.setAttributesMap(it) }
 
         binding.root.editAttributesList.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -37,9 +46,15 @@ class EditAttributesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         saveAttributesValueButton.setOnClickListener{
-            val bundle = bundleOf("clothCategory" to 1, "clothImage" to "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631300503690E01_DXXX.jpg")
-            Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment, bundle)
+            viewModel.mainCloth.value = updateCloth()
+            Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
         }
     }
-}
 
+    private fun updateCloth(): Cloth? {
+        // TODO read attributes from fields, validate and set
+        // if changes send new object to server
+        return viewModel.mainCloth.value
+    }
+
+}

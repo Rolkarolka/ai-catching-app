@@ -3,12 +3,13 @@ package edu.pw.aicatching.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.pw.aicatching.models.Cloth
-import edu.pw.aicatching.repositories.MainRepository
+import edu.pw.aicatching.network.AICatchingApiService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ClothViewModel constructor(private val repository: MainRepository) : ViewModel() {
+class ClothViewModel : ViewModel() {
+    private val service = AICatchingApiService.getInstance()
 
     val mainCloth = MutableLiveData<Cloth>()
     val outfitList = MutableLiveData<List<Cloth>>()
@@ -18,7 +19,7 @@ class ClothViewModel constructor(private val repository: MainRepository) : ViewM
     val wardrobeErrorMessage = MutableLiveData<String>()
 
     fun getOutfit() {
-        val response = repository.getOutfit()
+        val response = service.getOutfit()
         response.enqueue(object : Callback<List<Cloth>> {
             override fun onResponse(call: Call<List<Cloth>>, response: Response<List<Cloth>>) {
                 outfitList.postValue(response.body())
@@ -30,7 +31,7 @@ class ClothViewModel constructor(private val repository: MainRepository) : ViewM
     }
 
     fun getWardrobe() {
-        val response = repository.getWardrobe()
+        val response = service.getWardrobe()
         response.enqueue(object : Callback<List<Cloth>> {
             override fun onResponse(call: Call<List<Cloth>>, response: Response<List<Cloth>>) {
                 wardrobeList.postValue(response.body())
