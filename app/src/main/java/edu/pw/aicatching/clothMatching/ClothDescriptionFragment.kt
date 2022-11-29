@@ -16,13 +16,16 @@ import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentClothDescriptionBinding
 import edu.pw.aicatching.network.AICatchingApiService
 import edu.pw.aicatching.repositories.MainRepository
+import edu.pw.aicatching.viewModels.ClothViewModel
+import edu.pw.aicatching.viewModels.ClothViewModelFactory
 import kotlinx.android.synthetic.main.fragment_cloth_description.*
 import kotlinx.android.synthetic.main.fragment_cloth_description.view.*
 import kotlinx.android.synthetic.main.item_cloth.view.*
 
 class ClothDescriptionFragment : Fragment() {
     private val service = AICatchingApiService.getInstance()
-    private lateinit var viewModel: OutfitViewModel
+    private lateinit var viewModel: ClothViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,13 +38,13 @@ class ClothDescriptionFragment : Fragment() {
             val bundle = bundleOf("clothCategory" to it.id, "clothImage" to it.imgSrcUrl)
             view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.clothDescriptionFragment, bundle) }
         }
-        viewModel = ViewModelProvider(this, OutfitViewModelFactory(MainRepository(service)))[OutfitViewModel::class.java]
+        viewModel = ViewModelProvider(this, ClothViewModelFactory(MainRepository(service)))[ClothViewModel::class.java]
         viewModel.outfitList.observe(
             viewLifecycleOwner
         ) {
             adapter.setClothList(it)
         }
-        viewModel.errorMessage.observe(viewLifecycleOwner) { }
+        viewModel.outfitErrorMessage.observe(viewLifecycleOwner) { }
         viewModel.getOutfit()
 
         val view = binding.root

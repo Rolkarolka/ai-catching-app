@@ -18,7 +18,7 @@ import androidx.navigation.Navigation
 import com.skydoves.colorpickerview.listeners.ColorListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import edu.pw.aicatching.R
-import edu.pw.aicatching.authorization.AuthorizationViewModel
+import edu.pw.aicatching.viewModels.AuthorizationViewModel
 import edu.pw.aicatching.models.UserPreferences
 import kotlinx.android.synthetic.main.fragment_user_details.*
 

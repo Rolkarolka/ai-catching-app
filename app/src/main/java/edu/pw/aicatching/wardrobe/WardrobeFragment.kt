@@ -11,11 +11,13 @@ import edu.pw.aicatching.databinding.FragmentWardrobeBinding
 import edu.pw.aicatching.models.Cloth
 import edu.pw.aicatching.network.AICatchingApiService
 import edu.pw.aicatching.repositories.MainRepository
+import edu.pw.aicatching.viewModels.ClothViewModel
+import edu.pw.aicatching.viewModels.ClothViewModelFactory
 import kotlinx.android.synthetic.main.fragment_wardrobe.view.*
 
 class WardrobeFragment : Fragment() {
     private val service = AICatchingApiService.getInstance()
-    lateinit var viewModel: WardrobeViewModel
+    lateinit var viewModel: ClothViewModel
     private lateinit var adapter: WardrobeGalleryAdapter
     private var clothListCopy = mutableListOf<Cloth>()
 
@@ -34,14 +36,14 @@ class WardrobeFragment : Fragment() {
         adapter = WardrobeGalleryAdapter()
         view.wardrobeGallery.adapter = adapter
 
-        viewModel = ViewModelProvider(this, WardrobeViewModelFactory(MainRepository(service)))[WardrobeViewModel::class.java]
+        viewModel = ViewModelProvider(this, ClothViewModelFactory(MainRepository(service)))[ClothViewModel::class.java]
         viewModel.wardrobeList.observe(
             viewLifecycleOwner
         ) {
             clothListCopy = it.toMutableList()
             adapter.setClothList(it)
         }
-        viewModel.errorMessage.observe(viewLifecycleOwner) { }
+        viewModel.wardrobeErrorMessage.observe(viewLifecycleOwner) { }
         viewModel.getWardrobe()
         setHasOptionsMenu(true)
         return view

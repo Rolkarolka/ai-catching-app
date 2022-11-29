@@ -69,5 +69,9 @@
         android:name="edu.pw.aicatching.editAttributes.EditAttributesFragment"
         android:label="Edit Cloth Attributes"
         tools:layout="@layout/fragment_edit_attributes" >
+
+        <action
+            android:id="@+id/action_editAttributesFragment_to_clothDescriptionFragment"
+            app:destination="@id/clothDescriptionFragment" />
     </fragment>
 </navigation>

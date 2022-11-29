@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import edu.pw.aicatching.R
-import edu.pw.aicatching.authorization.AuthorizationViewModel
+import edu.pw.aicatching.viewModels.AuthorizationViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.view_top_settings.*
 

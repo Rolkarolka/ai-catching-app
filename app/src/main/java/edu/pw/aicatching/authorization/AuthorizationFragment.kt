@@ -19,6 +19,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import edu.pw.aicatching.R
 import edu.pw.aicatching.models.Credentials
+import edu.pw.aicatching.viewModels.AuthorizationViewModel
 import kotlinx.android.synthetic.main.fragment_authorization.*
 
 class AuthorizationFragment : Fragment() {

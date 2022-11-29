@@ -1,14 +1,14 @@
-package edu.pw.aicatching.clothMatching
+package edu.pw.aicatching.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import edu.pw.aicatching.repositories.MainRepository
 
-class OutfitViewModelFactory constructor(private val repository: MainRepository) : ViewModelProvider.Factory {
+class ClothViewModelFactory constructor(private val repository: MainRepository) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(OutfitViewModel::class.java)) {
-            OutfitViewModel(this.repository) as T
+        return if (modelClass.isAssignableFrom(ClothViewModel::class.java)) {
+            ClothViewModel(this.repository) as T
         } else {
             throw IllegalArgumentException("ViewModel Not Found")
         }

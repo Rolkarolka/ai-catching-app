@@ -1,4 +1,4 @@
-package edu.pw.aicatching.authorization
+package edu.pw.aicatching.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
