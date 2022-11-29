@@ -30,7 +30,6 @@ class EditAttributesFragment : Fragment() {
         val view = binding.root
         val adapter = EditAttributeAdapter(viewModel.getValuesOfClothAttributes()) { key, value ->
             changedAttrValuesMap[key] = value
-
         }
 
         if (viewModel.mainCloth.value?.attributes != null) {
@@ -58,12 +57,11 @@ class EditAttributesFragment : Fragment() {
                 attributes = ClothAttributes(
                     color = changedAttrValuesMap["Color"].equalOrBlank(viewModel.mainCloth.value?.attributes?.color),
                     pattern = changedAttrValuesMap["Pattern"].equalOrBlank(viewModel.mainCloth.value?.attributes?.pattern),
-                ))
+                )
+            )
             viewModel.updateClothAttributes()
         }
     }
-
-
 
     private fun String?.equalOrBlank(prevValue: String?) =
         if (this.isNullOrEmpty() || this == prevValue) prevValue else this
