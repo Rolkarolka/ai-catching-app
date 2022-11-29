@@ -15,6 +15,7 @@ import coil.load
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentClothDescriptionBinding
 import edu.pw.aicatching.models.ClothAttributes
+import edu.pw.aicatching.models.asMap
 import edu.pw.aicatching.viewModels.ClothViewModel
 import kotlin.reflect.full.memberProperties
 import kotlinx.android.synthetic.main.fragment_cloth_description.*
@@ -60,10 +61,11 @@ class ClothDescriptionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val attributesArray = ClothAttributes::class.memberProperties.associateBy { it ->
-            it.name.replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase() else it.toString()
-        } }.keys.toList()
+        val attributesArray = viewModel.mainCloth.value?.attributes?.asMap()?.map { mapEntry -> "${mapEntry.key}: ${mapEntry.value}" } ?: ClothAttributes::class.memberProperties.associateBy { it ->
+                it.name.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase() else it.toString()
+                } }.keys.toList()
+
         view.attributesListView.adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, attributesArray) }
         editButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.editAttributesFragment)

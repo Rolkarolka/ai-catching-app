@@ -30,19 +30,15 @@
                 android:text="@string/category_place_holder"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-            <EditText
-                android:id="@+id/clothAttributeEditText"
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/clothAttributeSpinner"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintStart_toEndOf="@id/clothAttributeLabel"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@android:drawable/btn_dropdown"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:hint="@string/editAttributeValue"
-                android:inputType="text" />
+                app:layout_constraintStart_toEndOf="@id/clothAttributeLabel"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

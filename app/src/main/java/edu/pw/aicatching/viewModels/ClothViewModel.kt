@@ -48,5 +48,12 @@ class ClothViewModel : ViewModel() {
         return Cloth(1, "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631300503690E01_DXXX.jpg", "cat", null,)
     }
 
+    fun getValuesOfClothAttributes(): Map<String, List<String>> { // TODO
+        return mapOf(
+            "color" to listOf("black", "white"),
+            "pattern" to listOf("dots", "lines")
+        )
+    }
+
 
 }

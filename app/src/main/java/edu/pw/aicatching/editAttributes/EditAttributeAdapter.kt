@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.pw.aicatching.databinding.ItemEditAttriibuteBinding
 
 
-class EditAttributeAdapter() : RecyclerView.Adapter<AttributeViewHolder>() {
+class EditAttributeAdapter(
+    private val availableValues: Map<String, List<String>>,
+) : RecyclerView.Adapter<AttributeViewHolder>() {
 
     private var attributes = mutableMapOf<String, String>()
 
@@ -23,8 +25,10 @@ class EditAttributeAdapter() : RecyclerView.Adapter<AttributeViewHolder>() {
 
 
     override fun getItemCount(): Int = attributes.size
+
     override fun onBindViewHolder(holder: AttributeViewHolder, position: Int) {
         val key = attributes.keys.toList()[position]
-        attributes[key]?.let { holder.bind(key, it) }
+        val value = attributes[key.lowercase()]
+        availableValues[key.lowercase()]?.let { holder.bind(key, value, it) }
     }
 }
