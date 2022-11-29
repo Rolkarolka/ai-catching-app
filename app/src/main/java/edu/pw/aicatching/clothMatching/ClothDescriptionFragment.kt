@@ -33,7 +33,7 @@ class ClothDescriptionFragment : Fragment() {
         val binding = FragmentClothDescriptionBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val adapter = OutfitGalleryAdapter{ cloth ->
+        val adapter = OutfitGalleryAdapter { cloth ->
             viewModel.mainCloth.value = cloth
             Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
         }
@@ -43,7 +43,8 @@ class ClothDescriptionFragment : Fragment() {
         ) {
             adapter.setClothList(it)
         }
-        viewModel.outfitErrorMessage.observe(viewLifecycleOwner
+        viewModel.outfitErrorMessage.observe(
+            viewLifecycleOwner
         ) { Log.d(this::class.simpleName, "Creating new observer on outfitErrorMessage") }
         viewModel.getOutfit()
 
@@ -62,9 +63,10 @@ class ClothDescriptionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val attributesArray = viewModel.mainCloth.value?.attributes?.asMap()?.map { mapEntry -> "${mapEntry.key}: ${mapEntry.value}" } ?: ClothAttributes::class.memberProperties.associateBy { it ->
-                it.name.replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase() else it.toString()
-                } }.keys.toList()
+            it.name.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase() else it.toString()
+            }
+        }.keys.toList()
 
         view.attributesListView.adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, attributesArray) }
         editButton.setOnClickListener(

@@ -7,7 +7,7 @@ import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
 import edu.pw.aicatching.databinding.ItemEditAttriibuteBinding
 
-class AttributeViewHolder (
+class AttributeViewHolder(
     private val editAttributeItemBinding: ItemEditAttriibuteBinding,
 ) : RecyclerView.ViewHolder(editAttributeItemBinding.root) {
     var selectedValue: String? = null
@@ -24,11 +24,10 @@ class AttributeViewHolder (
 
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                selectedValue= clothAttributeList[position]
+                selectedValue = clothAttributeList[position]
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }.also { editAttributeItemBinding.clothAttributeSpinner.onItemSelectedListener = it }
     }
 }
-

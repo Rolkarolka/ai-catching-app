@@ -54,6 +54,4 @@ class ClothViewModel : ViewModel() {
             "pattern" to listOf("dots", "lines")
         )
     }
-
-
 }

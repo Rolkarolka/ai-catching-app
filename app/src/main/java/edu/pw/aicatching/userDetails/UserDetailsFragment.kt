@@ -18,8 +18,8 @@ import com.skydoves.colorpickerview.listeners.ColorListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import edu.pw.aicatching.R
 import edu.pw.aicatching.models.ClothSize
-import edu.pw.aicatching.viewModels.UserViewModel
 import edu.pw.aicatching.models.UserPreferences
+import edu.pw.aicatching.viewModels.UserViewModel
 import kotlinx.android.synthetic.main.fragment_user_details.*
 
 class UserDetailsFragment : Fragment() {

@@ -15,7 +15,6 @@ import edu.pw.aicatching.viewModels.ClothViewModel
 import kotlinx.android.synthetic.main.fragment_edit_attributes.*
 import kotlinx.android.synthetic.main.fragment_edit_attributes.view.*
 
-
 class EditAttributesFragment : Fragment() {
     private val viewModel: ClothViewModel by activityViewModels()
 
@@ -44,7 +43,7 @@ class EditAttributesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        saveAttributesValueButton.setOnClickListener{
+        saveAttributesValueButton.setOnClickListener {
             viewModel.mainCloth.value = updateCloth()
         }
     }
@@ -53,5 +52,4 @@ class EditAttributesFragment : Fragment() {
         // TODO read attributes from fields, validate and set
         return viewModel.mainCloth.value
     }
-
 }

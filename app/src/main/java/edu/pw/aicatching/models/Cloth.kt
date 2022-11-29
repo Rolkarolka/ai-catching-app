@@ -16,11 +16,12 @@ data class ClothAttributes(
     val color: String?
 )
 
-fun ClothAttributes.asMap() : Map<String, String> {
-    val properties= ClothAttributes::class.memberProperties.associateBy { it ->
+fun ClothAttributes.asMap(): Map<String, String> {
+    val properties = ClothAttributes::class.memberProperties.associateBy { it ->
         it.name.replaceFirstChar {
             if (it.isLowerCase()) it.titlecase() else it.toString()
-        } }
+        }
+    }
     return properties.keys.associate {
         val value = properties[it]?.get(this)
         if (value == null) it to "" else it to value.toString()

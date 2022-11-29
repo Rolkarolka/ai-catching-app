@@ -23,8 +23,6 @@ class Credentials(
     val token: String?
 )
 
-
-enum class ClothSize{
+enum class ClothSize {
     UNKNOWN, XS, S, M, L, XL, XXL
 }
-

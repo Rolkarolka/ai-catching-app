@@ -32,7 +32,7 @@ class WardrobeFragment : Fragment() {
             layoutManager = GridLayoutManager(mainActivity.activity, 2)
         }
 
-        adapter = WardrobeGalleryAdapter{ cloth ->
+        adapter = WardrobeGalleryAdapter { cloth ->
             viewModel.mainCloth.value = cloth
             Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
         }
@@ -44,7 +44,8 @@ class WardrobeFragment : Fragment() {
             clothListCopy = it.toMutableList()
             adapter.setClothList(it)
         }
-        viewModel.wardrobeErrorMessage.observe(viewLifecycleOwner
+        viewModel.wardrobeErrorMessage.observe(
+            viewLifecycleOwner
         ) { Log.d(this::class.simpleName, "Creating new observer on wardrobeErrorMessage") }
         viewModel.getWardrobe()
         setHasOptionsMenu(true)

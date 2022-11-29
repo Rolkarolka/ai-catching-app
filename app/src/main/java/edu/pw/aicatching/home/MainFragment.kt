@@ -41,7 +41,8 @@ class MainFragment : Fragment() {
                 favColorAttribute.backgroundTintList = user?.preferences?.favouriteColor
                     ?.let { ColorStateList.valueOf(it) }
                 clothSizeAttribute.text = user?.preferences?.clothSize?.let {
-                        it -> if (it != ClothSize.UNKNOWN) it.name else "Cloth\nSize"
+                    it ->
+                    if (it != ClothSize.UNKNOWN) it.name else "Cloth\nSize"
                 } ?: "Cloth\nSize"
                 shoeSizeAttribute.text = if (user?.preferences?.shoeSize?.isNotEmpty() == true)
                     user.preferences.shoeSize

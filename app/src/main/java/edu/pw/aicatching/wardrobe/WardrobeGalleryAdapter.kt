@@ -8,10 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
-import androidx.core.os.bundleOf
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.ItemClothBinding
 import edu.pw.aicatching.models.Cloth
 

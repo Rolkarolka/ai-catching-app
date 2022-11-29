@@ -8,7 +8,7 @@ import edu.pw.aicatching.models.Cloth
 
 class OutfitGalleryAdapter(
     private val listener: (Cloth) -> Unit
-):
+) :
     RecyclerView.Adapter<ClothViewHolder>() {
 
     private var cloths = mutableListOf<Cloth>()

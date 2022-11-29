@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import edu.pw.aicatching.databinding.ItemEditAttriibuteBinding
 
-
 class EditAttributeAdapter(
     private val availableValues: Map<String, List<String>>,
 ) : RecyclerView.Adapter<AttributeViewHolder>() {
@@ -22,7 +21,6 @@ class EditAttributeAdapter(
         val binding = ItemEditAttriibuteBinding.inflate(from, parent, false)
         return AttributeViewHolder(binding)
     }
-
 
     override fun getItemCount(): Int = attributes.size
 
