@@ -1,5 +1,6 @@
 package edu.pw.aicatching.viewModels
 
+import androidx.camera.core.ImageProxy
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.pw.aicatching.models.Cloth
@@ -42,6 +43,9 @@ class ClothViewModel : ViewModel() {
         })
     }
 
+    fun sendPhoto(image: ImageProxy): Cloth? {
+        return Cloth(1, "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631300503690E01_DXXX.jpg", "cat", null,)
+    }
 
 
 }

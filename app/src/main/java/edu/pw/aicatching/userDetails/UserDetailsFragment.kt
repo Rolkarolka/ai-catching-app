@@ -13,7 +13,6 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import com.skydoves.colorpickerview.listeners.ColorListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
@@ -31,7 +30,7 @@ class UserDetailsFragment : Fragment() {
         if (uri != null) {
             Log.d("UserDetailsFragment:PhotoPicker", "Selected URI: $uri")
             currentUserAvatar.setImageURI(uri)
-            // TODO send image to server
+            viewModel.updateUserPhoto(uri)
             viewModel.userLiveData.value = viewModel.userLiveData.value?.copy(photoUrl = uri.toString())
         } else {
             Log.d("UserDetailsFragment:PhotoPicker", "No media selected")
@@ -57,14 +56,12 @@ class UserDetailsFragment : Fragment() {
         setAvatar()
 
         logOutButton.setOnClickListener {
-            // TODO call server
-            viewModel.userLiveData = MutableLiveData()
+            viewModel.logOut()
             this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
         }
 
         deleteAccountButton.setOnClickListener {
-            // TODO call server
-            viewModel.userLiveData = MutableLiveData()
+            viewModel.deleteUser()
             this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
         }
     }

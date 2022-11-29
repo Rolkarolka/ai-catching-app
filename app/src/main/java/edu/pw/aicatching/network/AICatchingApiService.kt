@@ -1,5 +1,6 @@
 package edu.pw.aicatching.network
 
+import androidx.camera.view.PreviewView
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import edu.pw.aicatching.models.Cloth

@@ -71,9 +71,9 @@ class WardrobeFragment : Fragment() {
         val filteredCloths = mutableListOf<Cloth>()
 
         if (text.isNotEmpty()) {
-            for (item in clothListCopy) {
-                if (item.id.toString() == text) { // TODO filter with more attributes
-                    filteredCloths.add(item)
+            for (cloth in clothListCopy) {
+                if (cloth.category == text) {
+                    filteredCloths.add(cloth)
                 }
             }
         } else {

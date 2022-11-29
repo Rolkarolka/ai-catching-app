@@ -1,5 +1,6 @@
 package edu.pw.aicatching.viewModels
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.pw.aicatching.models.Credentials
@@ -32,4 +33,25 @@ class AuthorizationViewModel : ViewModel() {
             }
         })
     }
+
+    fun deleteUser() { // TODO
+//        val response = service.postDeleteUser()
+//        response.enqueue(object : Callback<User> {
+//            override fun onFailure(call: Call<User>, t: Throwable) {
+//                errorMessage.postValue(t.message)
+//            }
+//
+//            override fun onResponse(call: Call<User>, response: Response<User>) {
+//                if (response.isSuccessful) {
+//                    userLiveData = MutableLiveData()
+//                } else {
+//                    errorMessage.postValue(response.code().toString())
+//                }
+//            }
+//        })
+    }
+
+    fun logOut() {} // TODO
+
+    fun updateUserPhoto(uri: Uri) {} // TODO
 }

@@ -32,7 +32,6 @@ class EditAttributesFragment : Fragment() {
         val binding = FragmentEditAttributesBinding.inflate(inflater, container, false)
 
         val adapter = EditAttributeAdapter()
-        viewModel.mainCloth.value = viewModel.mainCloth.value?.copy(attributes = ClothAttributes(pattern = "ladny", color = null))
         viewModel.mainCloth.value?.attributes?.asMap()?.let { adapter.setAttributesMap(it) }
 
         binding.root.editAttributesList.apply {
