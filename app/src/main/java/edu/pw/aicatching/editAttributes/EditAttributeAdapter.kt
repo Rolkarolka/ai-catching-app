@@ -7,6 +7,7 @@ import edu.pw.aicatching.databinding.ItemEditAttriibuteBinding
 
 class EditAttributeAdapter(
     private val availableValues: Map<String, List<String>>,
+    private val listener: (String, String) -> Unit
 ) : RecyclerView.Adapter<AttributeViewHolder>() {
 
     private var attributes = mutableMapOf<String, String>()
@@ -27,6 +28,6 @@ class EditAttributeAdapter(
     override fun onBindViewHolder(holder: AttributeViewHolder, position: Int) {
         val key = attributes.keys.toList()[position]
         val value = attributes[key.lowercase()]
-        availableValues[key.lowercase()]?.let { holder.bind(key, value, it) }
+        availableValues[key.lowercase()]?.let { holder.bind(key, value, it, listener) }
     }
 }

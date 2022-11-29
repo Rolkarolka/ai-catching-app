@@ -10,21 +10,17 @@ import edu.pw.aicatching.databinding.ItemEditAttriibuteBinding
 class AttributeViewHolder(
     private val editAttributeItemBinding: ItemEditAttriibuteBinding,
 ) : RecyclerView.ViewHolder(editAttributeItemBinding.root) {
-    var selectedValue: String? = null
 
-    fun bind(attributeName: String, attributeValue: String?, availableValues: List<String>) {
+    fun bind(attributeName: String, attributeValue: String?, availableValues: List<String>, listener: (String, String) -> Unit) {
         editAttributeItemBinding.clothAttributeLabel.text = attributeName
-        selectedValue = attributeValue
-        setClothAttributeSpinner(attributeValue, listOf("") + availableValues)
-    }
+        val clothAttributeList = listOf("") + availableValues
 
-    private fun setClothAttributeSpinner(value: String?, clothAttributeList: List<String>) {
         editAttributeItemBinding.clothAttributeSpinner.adapter = ArrayAdapter(this.itemView.context, R.layout.simple_spinner_dropdown_item, clothAttributeList)
-        editAttributeItemBinding.clothAttributeSpinner.setSelection(clothAttributeList.indexOf(value))
+        editAttributeItemBinding.clothAttributeSpinner.setSelection(clothAttributeList.indexOf(attributeValue))
 
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                selectedValue = clothAttributeList[position]
+                listener(attributeName, clothAttributeList[position])
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
