@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import edu.pw.aicatching.R
+import edu.pw.aicatching.models.ClothSize
 import edu.pw.aicatching.viewModels.AuthorizationViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.view_top_settings.*
@@ -29,17 +30,15 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (viewModel.userLiveData.value != null) {
             viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
-                username.text = user?.name + user?.surname
+                username.text = user?.name + " " + user?.surname
                 user?.photoUrl?.let { photo ->
                     userAvatar.setImageURI(Uri.parse(photo))
                 }
                 favColorAttribute.backgroundTintList = user?.preferences?.favouriteColor
                     ?.let { ColorStateList.valueOf(it) }
-                clothSizeAttribute.text =
-                    if (user?.preferences?.clothSize?.isNotEmpty() == true)
-                        user.preferences.clothSize
-                    else
-                        "Cloth\nSize"
+                clothSizeAttribute.text = user?.preferences?.clothSize?.let {
+                        it -> if (it != ClothSize.UNKNOWN) it.name else "Cloth\nSize"
+                } ?: "Cloth\nSize"
                 shoeSizeAttribute.text = if (user?.preferences?.shoeSize?.isNotEmpty() == true)
                     user.preferences.shoeSize
                 else

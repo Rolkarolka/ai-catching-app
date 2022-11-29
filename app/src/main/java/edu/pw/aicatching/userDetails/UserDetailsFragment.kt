@@ -17,6 +17,7 @@ import androidx.navigation.Navigation
 import com.skydoves.colorpickerview.listeners.ColorListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import edu.pw.aicatching.R
+import edu.pw.aicatching.models.ClothSize
 import edu.pw.aicatching.viewModels.AuthorizationViewModel
 import edu.pw.aicatching.models.UserPreferences
 import kotlinx.android.synthetic.main.fragment_user_details.*
@@ -48,10 +49,8 @@ class UserDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val clothSizesArray = arrayListOf("", "XS", "S", "M", "L", "XL", "XXL")
-        setClothSpinner(clothSizesArray)
-        val shoeSizesArray = listOf("") + (35..45).toList().map { it.toString() }
-        setShoeSpinner(shoeSizesArray)
+        setClothSpinner(ClothSize.values().map { it.toString() }.toList())
+        setShoeSpinner(listOf("UNKNOWN") + (35..45).toList().map { it.toString() })
         setColorPicker()
         setAvatar()
 
@@ -66,23 +65,23 @@ class UserDetailsFragment : Fragment() {
         }
     }
 
-    private fun setClothSpinner(clothSizesArray: ArrayList<String>) {
+    private fun setClothSpinner(clothSizesArray: List<String>) {
         clothSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, clothSizesArray)
 
         viewModel.userLiveData.value?.preferences
-            ?.let { clothSizesArray.indexOf(it.clothSize) }
+            ?.let { clothSizesArray.indexOf(it.clothSize.toString()) }
             ?.let { clothSizeSpinner.setSelection(it) }
 
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 if (viewModel.userLiveData.value?.preferences == null) {
                     viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(preferences = UserPreferences(clothSize = clothSizesArray[position]))
+                        .value?.copy(preferences = UserPreferences(clothSize = ClothSize.valueOf(clothSizesArray[position])))
                 } else {
                     viewModel.userLiveData.value = viewModel.userLiveData
                         .value?.copy(
                             preferences = viewModel.userLiveData.value
-                                ?.preferences?.copy(clothSize = clothSizesArray[position])
+                                ?.preferences?.copy(clothSize = ClothSize.valueOf(clothSizesArray[position]))
                         )
                 }
             }

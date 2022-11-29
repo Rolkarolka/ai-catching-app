@@ -11,8 +11,8 @@ data class User(
 )
 
 data class UserPreferences(
-    val shoeSize: String? = null, // TODO enum?
-    val clothSize: String? = null, // TODO enum?
+    val shoeSize: String? = null,
+    val clothSize: ClothSize? = ClothSize.UNKNOWN,
     val favouriteColor: Int? = null
 )
 
@@ -22,3 +22,9 @@ class Credentials(
     @Json(name = "password")
     val token: String?
 )
+
+
+enum class ClothSize{
+    UNKNOWN, XS, S, M, L, XL, XXL
+}
+
