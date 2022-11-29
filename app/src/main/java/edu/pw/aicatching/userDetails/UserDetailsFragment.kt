@@ -18,12 +18,12 @@ import com.skydoves.colorpickerview.listeners.ColorListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import edu.pw.aicatching.R
 import edu.pw.aicatching.models.ClothSize
-import edu.pw.aicatching.viewModels.AuthorizationViewModel
+import edu.pw.aicatching.viewModels.UserViewModel
 import edu.pw.aicatching.models.UserPreferences
 import kotlinx.android.synthetic.main.fragment_user_details.*
 
 class UserDetailsFragment : Fragment() {
-    private val viewModel: AuthorizationViewModel by activityViewModels()
+    private val viewModel: UserViewModel by activityViewModels()
     private lateinit var colorPickerManager: ColorPickerPreferenceManager
     private val pickMediaResult = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()

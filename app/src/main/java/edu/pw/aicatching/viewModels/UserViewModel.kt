@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AuthorizationViewModel : ViewModel() {
+class UserViewModel : ViewModel() {
     private val service = AICatchingApiService.getInstance()
 
     var userLiveData: MutableLiveData<User?> = MutableLiveData()
@@ -54,4 +54,7 @@ class AuthorizationViewModel : ViewModel() {
     fun logOut() {} // TODO
 
     fun updateUserPhoto(uri: Uri) {} // TODO
+    fun getInspiration(): String { // TODO
+        return "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631300503690E01_DXXX.jpg"
+    }
 }

@@ -52,7 +52,6 @@ class EditAttributesFragment : Fragment() {
 
     private fun updateCloth(): Cloth? {
         // TODO read attributes from fields, validate and set
-        // if changes send new object to server
         return viewModel.mainCloth.value
     }
 

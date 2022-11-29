@@ -6,17 +6,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import coil.load
 import edu.pw.aicatching.R
 import edu.pw.aicatching.models.ClothSize
-import edu.pw.aicatching.viewModels.AuthorizationViewModel
+import edu.pw.aicatching.viewModels.UserViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_main.view.*
+import kotlinx.android.synthetic.main.item_cloth.view.*
 import kotlinx.android.synthetic.main.view_top_settings.*
 
 class MainFragment : Fragment() {
-    private val viewModel: AuthorizationViewModel by activityViewModels()
+    private val viewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +49,10 @@ class MainFragment : Fragment() {
                     "Shoe\nSize"
             }
         }
+
+        val inspirationUrl = viewModel.getInspiration()
+        val imgUri = inspirationUrl.toUri().buildUpon()?.scheme("https")?.build()
+        view.inspiration.load(imgUri)
 
         showWardrobeButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.wardrobeFragment)
