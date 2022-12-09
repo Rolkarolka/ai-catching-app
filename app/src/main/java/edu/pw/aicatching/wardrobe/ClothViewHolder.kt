@@ -25,7 +25,7 @@ class ClothViewHolder(
                 error(R.drawable.ic_damage_image)
             }
         }
-        wardrobeGalleryItemBinding.clothCategory.text = cloth.part.toString()
+        wardrobeGalleryItemBinding.clothCategory.text = cloth.part
         wardrobeGalleryItemBinding.cardView.setOnClickListener { view -> onClickListener(cloth, view) }
         wardrobeGalleryItemBinding.cardView.setOnLongClickListener { view -> onLongClickListener(cloth, view) }
     }

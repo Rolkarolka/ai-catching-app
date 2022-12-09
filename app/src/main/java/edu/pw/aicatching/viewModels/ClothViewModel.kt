@@ -45,7 +45,7 @@ class ClothViewModel : ViewModel() {
 
     fun sendPhoto(image: ImageProxy): Cloth? {
         // TODO send image to server
-        return Cloth(imgSrcUrl = "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631300503690E01_DXXX.jpg", part = "cat", attributes = null, garmentID = 1)
+        return Cloth(imgSrcUrl = "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631300503690E01_DXXX.jpg", part = "cat", attributes = null,)
     }
 
     fun getValuesOfClothAttributes(): Map<String, List<String>> { // TODO
