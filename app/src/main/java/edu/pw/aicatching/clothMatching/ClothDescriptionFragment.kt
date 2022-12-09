@@ -49,7 +49,7 @@ class ClothDescriptionFragment : Fragment() {
         viewModel.getOutfit()
 
         val imgUri = viewModel.mainCloth.value?.imgSrcUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-        view.clothCategory.text = viewModel.mainCloth.value?.category ?: "Cloth"
+        view.clothCategory.text = viewModel.mainCloth.value?.part ?: "Cloth"
         view.clothImage.load(imgUri)
 
         view.outfitMatching.apply {

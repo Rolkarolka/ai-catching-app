@@ -3,16 +3,19 @@ package edu.pw.aicatching.models
 import com.squareup.moshi.Json
 
 data class User(
+    @Json(name = "user_id")
+    val userID: Int,
+    @Json(name = "first_name")
     val name: String,
     val surname: String,
     val email: String,
-    val photoUrl: String?,
-    val preferences: UserPreferences?
+    val preferences: UserPreferences? = null
 )
 
 data class UserPreferences(
+    val photoUrl: String? = null,
     val shoeSize: String? = null,
-    val clothSize: ClothSize? = ClothSize.UNKNOWN,
+    val clothSize: ClothSize? = null,
     val favouriteColor: Int? = null
 )
 
@@ -24,5 +27,5 @@ class Credentials(
 )
 
 enum class ClothSize {
-    UNKNOWN, XS, S, M, L, XL, XXL
+    XS, S, M, L, XL, XXL
 }

@@ -35,8 +35,8 @@ class UserViewModel : ViewModel() {
     }
 
     fun deleteUser() { // TODO
-//        val response = service.postDeleteUser()
-//        response.enqueue(object : Callback<User> {
+//        val response = service.deleteUser()
+//        response.enqueue(object : Callback<Response> {
 //            override fun onFailure(call: Call<User>, t: Throwable) {
 //                errorMessage.postValue(t.message)
 //            }

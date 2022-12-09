@@ -78,7 +78,7 @@ class WardrobeFragment : Fragment() {
 
         if (text.isNotEmpty()) {
             for (cloth in clothListCopy) {
-                if (cloth.category == text) {
+                if (cloth.part == text) {
                     filteredCloths.add(cloth)
                 }
             }

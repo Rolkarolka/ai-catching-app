@@ -32,7 +32,16 @@ class UserDetailsFragment : Fragment() {
             Log.d("UserDetailsFragment:PhotoPicker", "Selected URI: $uri")
             currentUserAvatar.setImageURI(uri)
             viewModel.updateUserPhoto(uri)
-            viewModel.userLiveData.value = viewModel.userLiveData.value?.copy(photoUrl = uri.toString())
+            if (viewModel.userLiveData.value?.preferences == null) {
+                viewModel.userLiveData.value = viewModel.userLiveData
+                    .value?.copy(preferences = UserPreferences(photoUrl = uri.toString()))
+            } else {
+                viewModel.userLiveData.value = viewModel.userLiveData
+                    .value?.copy(
+                        preferences = viewModel.userLiveData.value
+                            ?.preferences?.copy(photoUrl = uri.toString())
+                    )
+            }
         } else {
             Log.d("UserDetailsFragment:PhotoPicker", "No media selected")
         }
@@ -140,7 +149,7 @@ class UserDetailsFragment : Fragment() {
     }
 
     private fun setAvatar() {
-        viewModel.userLiveData.value?.photoUrl?.let { photo ->
+        viewModel.userLiveData.value?.preferences?.photoUrl?.let { photo ->
             currentUserAvatar.setImageURI(Uri.parse(photo))
         }
         changeUserPhotoButton.setOnClickListener {

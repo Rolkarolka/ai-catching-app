@@ -35,7 +35,7 @@ class EditAttributesFragment : Fragment() {
         if (viewModel.mainCloth.value?.attributes != null) {
             viewModel.mainCloth.value?.attributes?.asMap()?.let { adapter.setAttributesMap(it) }
         } else {
-            ClothAttributes(null, null).asMap().let { adapter.setAttributesMap(it) }
+            ClothAttributes(null, null, null).asMap().let { adapter.setAttributesMap(it) }
         }
 
         view.editAttributesList.apply {
@@ -44,7 +44,7 @@ class EditAttributesFragment : Fragment() {
         view.editAttributesList.adapter = adapter
 
         val imgUri = viewModel.mainCloth.value?.imgSrcUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-        view.clothCategory.text = viewModel.mainCloth.value?.category ?: "Cloth"
+        view.clothCategory.text = viewModel.mainCloth.value?.part ?: "Cloth"
         view.clothImage.load(imgUri)
 
         return view

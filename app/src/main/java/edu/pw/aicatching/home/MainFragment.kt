@@ -35,15 +35,12 @@ class MainFragment : Fragment() {
         if (viewModel.userLiveData.value != null) {
             viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
                 username.text = user?.name + " " + user?.surname
-                user?.photoUrl?.let { photo ->
+                user?.preferences?.photoUrl?.let { photo ->
                     userAvatar.setImageURI(Uri.parse(photo))
                 }
                 favColorAttribute.backgroundTintList = user?.preferences?.favouriteColor
                     ?.let { ColorStateList.valueOf(it) }
-                clothSizeAttribute.text = user?.preferences?.clothSize?.let {
-                    it ->
-                    if (it != ClothSize.UNKNOWN) it.name else "Cloth\nSize"
-                } ?: "Cloth\nSize"
+                clothSizeAttribute.text = user?.preferences?.clothSize?.let { it.name } ?: "Cloth\nSize"
                 shoeSizeAttribute.text = if (user?.preferences?.shoeSize?.isNotEmpty() == true)
                     user.preferences.shoeSize
                 else
