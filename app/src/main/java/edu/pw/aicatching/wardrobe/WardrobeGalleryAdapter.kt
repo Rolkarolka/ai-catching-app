@@ -8,14 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
-import androidx.core.os.bundleOf
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.ItemClothBinding
 import edu.pw.aicatching.models.Cloth
 
-class WardrobeGalleryAdapter :
+class WardrobeGalleryAdapter(
+    val listener: (Cloth) -> Unit,
+    val actionModeListener: (Cloth) -> Unit
+) :
     RecyclerView.Adapter<ClothViewHolder>() {
     var multiSelect: Boolean = false
     val selectedClothes = mutableListOf<Cloth>()
@@ -43,8 +43,7 @@ class WardrobeGalleryAdapter :
             if (this.multiSelect) {
                 this.selectClothes(cloth, view)
             } else {
-                val bundle = bundleOf("clothCategory" to cloth.id, "clothImage" to cloth.imgSrcUrl)
-                Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment, bundle)
+                listener(cloth)
             }
         }
         val onLongClickListener: (Cloth, View) -> Boolean = { cloth, view ->
@@ -70,7 +69,8 @@ class WardrobeGalleryAdapter :
 
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             for (cloth in selectedClothes) {
-                cloths.remove(cloth) // TODO remove from server
+                cloths.remove(cloth)
+                actionModeListener(cloth)
             }
             mode?.finish()
             return true

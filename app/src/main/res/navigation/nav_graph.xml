@@ -60,5 +60,14 @@
         <argument
             android:name="category"
             app:argType="string" />
+        <action
+            android:id="@+id/action_clothDescriptionFragment_to_editAttributesFragment"
+            app:destination="@id/editAttributesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editAttributesFragment"
+        android:name="edu.pw.aicatching.editAttributes.EditAttributesFragment"
+        android:label="Edit Cloth Attributes"
+        tools:layout="@layout/fragment_edit_attributes" >
     </fragment>
 </navigation>
