@@ -23,4 +23,5 @@
     <string name="cloth_size">Cloth size</string>
     <string name="web_client_id">TODO google id placement</string>
     <string name="welcome">Welcome in your outfit creator!</string>
+    <string name="editAttributeValue">Attribute Value</string>
 </resources>
