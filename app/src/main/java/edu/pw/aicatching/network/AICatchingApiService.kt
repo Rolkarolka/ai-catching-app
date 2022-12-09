@@ -13,14 +13,20 @@ import retrofit2.http.*
 
 interface AICatchingApiService {
 
-    @GET("user/wardrobe")
+    @GET("garment/wardrobe")
     fun getWardrobe(): Call<List<Cloth>>
 
-    @GET("user/wardrobe")
+    @GET("garment/wardrobe")
     fun getOutfit(): Call<List<Cloth>>
 
     @POST("user/login_session")
     fun postLogIn(@Body credentials: Credentials): Call<User>
+
+    @DELETE("user/logout_session")
+    fun deleteSession()
+
+    @DELETE("user/delete")
+    fun deleteUser(): Call<Response>
 
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"

@@ -13,17 +13,17 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import com.skydoves.colorpickerview.listeners.ColorListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import edu.pw.aicatching.R
-import edu.pw.aicatching.authorization.AuthorizationViewModel
+import edu.pw.aicatching.models.ClothSize
 import edu.pw.aicatching.models.UserPreferences
+import edu.pw.aicatching.viewModels.UserViewModel
 import kotlinx.android.synthetic.main.fragment_user_details.*
 
 class UserDetailsFragment : Fragment() {
-    private val viewModel: AuthorizationViewModel by activityViewModels()
+    private val viewModel: UserViewModel by activityViewModels()
     private lateinit var colorPickerManager: ColorPickerPreferenceManager
     private val pickMediaResult = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -31,8 +31,17 @@ class UserDetailsFragment : Fragment() {
         if (uri != null) {
             Log.d("UserDetailsFragment:PhotoPicker", "Selected URI: $uri")
             currentUserAvatar.setImageURI(uri)
-            // TODO send image to server
-            viewModel.userLiveData.value = viewModel.userLiveData.value?.copy(photoUrl = uri.toString())
+            viewModel.updateUserPhoto(uri)
+            if (viewModel.userLiveData.value?.preferences == null) {
+                viewModel.userLiveData.value = viewModel.userLiveData
+                    .value?.copy(preferences = UserPreferences(photoUrl = uri.toString()))
+            } else {
+                viewModel.userLiveData.value = viewModel.userLiveData
+                    .value?.copy(
+                        preferences = viewModel.userLiveData.value
+                            ?.preferences?.copy(photoUrl = uri.toString())
+                    )
+            }
         } else {
             Log.d("UserDetailsFragment:PhotoPicker", "No media selected")
         }
@@ -49,43 +58,39 @@ class UserDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val clothSizesArray = arrayListOf("", "XS", "S", "M", "L", "XL", "XXL")
-        setClothSpinner(clothSizesArray)
-        val shoeSizesArray = listOf("") + (35..45).toList().map { it.toString() }
-        setShoeSpinner(shoeSizesArray)
+        setClothSpinner(ClothSize.values().map { it.toString() }.toList())
+        setShoeSpinner(listOf("UNKNOWN") + (35..45).toList().map { it.toString() })
         setColorPicker()
         setAvatar()
 
         logOutButton.setOnClickListener {
-            // TODO call server
-            viewModel.userLiveData = MutableLiveData()
+            viewModel.logOut()
             this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
         }
 
         deleteAccountButton.setOnClickListener {
-            // TODO call server
-            viewModel.userLiveData = MutableLiveData()
+            viewModel.deleteUser()
             this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
         }
     }
 
-    private fun setClothSpinner(clothSizesArray: ArrayList<String>) {
+    private fun setClothSpinner(clothSizesArray: List<String>) {
         clothSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, clothSizesArray)
 
         viewModel.userLiveData.value?.preferences
-            ?.let { clothSizesArray.indexOf(it.clothSize) }
+            ?.let { clothSizesArray.indexOf(it.clothSize.toString()) }
             ?.let { clothSizeSpinner.setSelection(it) }
 
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 if (viewModel.userLiveData.value?.preferences == null) {
                     viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(preferences = UserPreferences(clothSize = clothSizesArray[position]))
+                        .value?.copy(preferences = UserPreferences(clothSize = ClothSize.valueOf(clothSizesArray[position])))
                 } else {
                     viewModel.userLiveData.value = viewModel.userLiveData
                         .value?.copy(
                             preferences = viewModel.userLiveData.value
-                                ?.preferences?.copy(clothSize = clothSizesArray[position])
+                                ?.preferences?.copy(clothSize = ClothSize.valueOf(clothSizesArray[position]))
                         )
                 }
             }
@@ -144,7 +149,7 @@ class UserDetailsFragment : Fragment() {
     }
 
     private fun setAvatar() {
-        viewModel.userLiveData.value?.photoUrl?.let { photo ->
+        viewModel.userLiveData.value?.preferences?.photoUrl?.let { photo ->
             currentUserAvatar.setImageURI(Uri.parse(photo))
         }
         changeUserPhotoButton.setOnClickListener {
