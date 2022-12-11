@@ -28,8 +28,14 @@ class EditAttributesFragment : Fragment() {
     ): View {
         val binding = FragmentEditAttributesBinding.inflate(inflater, container, false)
         val view = binding.root
-        val adapter = EditAttributeAdapter(viewModel.getValuesOfClothAttributes()) { key, value ->
+        viewModel.getValuesOfClothAttributes()
+        val adapter = EditAttributeAdapter() { key, value ->
             changedAttrValuesMap[key] = value
+        }
+        viewModel.availableAttributesValues.observe(
+            viewLifecycleOwner
+        ) {
+            adapter.setAttributesValues(it)
         }
 
         if (viewModel.mainClothAttributes.value != null) {

@@ -35,6 +35,9 @@ interface AICatchingApiService {
     @GET("garment/attributes")
     fun getGarmentAttributes(@Query("garment_id") garmentID: Int): Call<ClothAttributes>
 
+    @GET("garment/available_attributes")
+    fun getAttributesValue(): Call<Map<String, List<String>>>
+
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"
         private val moshi: Moshi = Moshi.Builder()

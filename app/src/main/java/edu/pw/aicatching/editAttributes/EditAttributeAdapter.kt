@@ -6,14 +6,19 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.pw.aicatching.databinding.ItemEditAttriibuteBinding
 
 class EditAttributeAdapter(
-    private val availableValues: Map<String, List<String>>,
     private val listener: (String, String) -> Unit
 ) : RecyclerView.Adapter<AttributeViewHolder>() {
 
     private var attributes = mutableMapOf<String, String>()
+    private var availableValues = mapOf<String, List<String>>()
 
     fun setAttributesMap(attributes: Map<String, String>) {
         this.attributes = attributes.toMutableMap()
+        notifyDataSetChanged()
+    }
+
+    fun setAttributesValues(availableValues: Map<String, List<String>>) {
+        this.availableValues = availableValues
         notifyDataSetChanged()
     }
 
@@ -27,7 +32,11 @@ class EditAttributeAdapter(
 
     override fun onBindViewHolder(holder: AttributeViewHolder, position: Int) {
         val key = attributes.keys.toList()[position]
-        val value = attributes[key.lowercase()]
-        availableValues[key.lowercase()]?.let { holder.bind(key, value, it, listener) }
+        val formattedKey =  key.split(Regex("(?<=.)(?=\\p{Lu})")).joinToString(separator=" ").lowercase()
+        val currentValue = attributes[key]
+        val availableValuesOfKey = availableValues[formattedKey]
+        if (availableValuesOfKey != null) {
+            holder.bind(formattedKey, currentValue, availableValuesOfKey, listener)
+        }
     }
 }

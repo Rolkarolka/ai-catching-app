@@ -17,10 +17,12 @@ class ClothViewModel : ViewModel() {
     val mainClothAttributes = MutableLiveData<ClothAttributes>()
     val outfitList = MutableLiveData<List<Cloth>>()
     val outfitErrorMessage = MutableLiveData<String>()
+    val availableAttributesValues = MutableLiveData<Map<String, List<String>>>()
 
     val wardrobeList = MutableLiveData<List<Cloth>>()
     val wardrobeErrorMessage = MutableLiveData<String>()
     val mainClothAttributesErrorMessage = MutableLiveData<String>()
+    val availableAttributesValuesErrorMessage = MutableLiveData<String>()
 
     fun getOutfit() {
         val response = service.getOutfit()
@@ -51,11 +53,16 @@ class ClothViewModel : ViewModel() {
         return Cloth(imgSrcUrl = "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631300503690E01_DXXX.jpg", part = "cat", garmentID = 1111)
     }
 
-    fun getValuesOfClothAttributes(): Map<String, List<String>> { // TODO
-        return mapOf(
-            "color" to listOf("black", "white"),
-            "pattern" to listOf("dots", "lines")
-        )
+    fun getValuesOfClothAttributes() {
+        val response = service.getAttributesValue()
+        response.enqueue(object : Callback<Map<String, List<String>>> {
+            override fun onResponse(call: Call<Map<String, List<String>>>, response: Response<Map<String, List<String>>>) {
+                availableAttributesValues.postValue(response.body())
+            }
+            override fun onFailure(call: Call<Map<String, List<String>>>, t: Throwable) {
+                availableAttributesValuesErrorMessage.postValue(t.message)
+            }
+        })
     }
 
     fun updateClothAttributes() {
