@@ -54,8 +54,8 @@ class ClothDescriptionFragment : Fragment() {
             val imgUri = it.imgSrcUrl.toUri().buildUpon()?.scheme("https")?.build()
             view.clothCategory.text = it.part ?: "Cloth"
             view.clothImage.load(imgUri) {
-                    placeholder(R.drawable.ic_loading)
-                    error(R.drawable.ic_damage_image)
+                placeholder(R.drawable.ic_loading)
+                error(R.drawable.ic_damage_image)
             }
         }
 
@@ -81,9 +81,10 @@ class ClothDescriptionFragment : Fragment() {
         viewModel.mainClothAttributes.value
             ?.asMap()
             ?.map { mapEntry ->
-                val formattedKeys = mapEntry.key.split(Regex("(?=\\p{Upper})")) .joinToString(separator=" ")
+                val formattedKeys = mapEntry.key.split(Regex("(?=\\p{Upper})")).joinToString(separator = " ")
                 val formattedValues = mapEntry.value.split("_")[0].capitalize()
-                "$formattedKeys: $formattedValues" }
+                "$formattedKeys: $formattedValues"
+            }
             ?: ClothAttributes::class.memberProperties.associateBy {
                 it.name.capitalize()
             }.keys.toList()

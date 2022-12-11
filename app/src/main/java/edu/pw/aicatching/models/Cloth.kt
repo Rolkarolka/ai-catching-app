@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import kotlin.reflect.full.memberProperties
 
 data class Cloth(
-    @Json(name="garment_id")
+    @Json(name = "garment_id")
     val garmentID: Int,
     @Json(name = "photo_url")
     val imgSrcUrl: String,
@@ -13,11 +13,11 @@ data class Cloth(
 
 data class ClothAttributes(
     val texture: String? = null,
-    @Json(name="sleeve_length")
+    @Json(name = "sleeve_length")
     val sleeveLength: String? = null,
-    @Json(name="garment_length")
+    @Json(name = "garment_length")
     val garmentLength: String? = null,
-    @Json(name="neckline_type")
+    @Json(name = "neckline_type")
     val necklineType: String? = null,
     val fabric: String? = null,
     val color: String? = null,

@@ -43,7 +43,7 @@ interface AICatchingApiService {
 
     @Multipart
     @POST("garment/create")
-    fun postGarment(@Part photo:  MultipartBody.Part): Call<Cloth>
+    fun postGarment(@Part photo: MultipartBody.Part): Call<Cloth>
 
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"
@@ -88,4 +88,3 @@ internal class CookieInterceptor : Interceptor {
         return response
     }
 }
-

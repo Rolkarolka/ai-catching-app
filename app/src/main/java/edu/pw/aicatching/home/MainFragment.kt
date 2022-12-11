@@ -12,7 +12,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import coil.load
 import edu.pw.aicatching.R
-import edu.pw.aicatching.models.ClothSize
 import edu.pw.aicatching.viewModels.UserViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*

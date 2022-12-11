@@ -59,14 +59,15 @@ class EditAttributesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         saveAttributesValueButton.setOnClickListener {
-            viewModel.mainClothAttributes.value =  ClothAttributes(
-                    color = changedAttrValuesMap["color"].equalOrBlank(viewModel.mainClothAttributes.value?.color),
-                    texture = changedAttrValuesMap["texture"].equalOrBlank(viewModel.mainClothAttributes.value?.texture),
-                    sleeveLength = changedAttrValuesMap["sleeveLength"].equalOrBlank(viewModel.mainClothAttributes.value?.sleeveLength),
-                    garmentLength = changedAttrValuesMap["garmentLength"].equalOrBlank(viewModel.mainClothAttributes.value?.garmentLength),
-                    necklineType = changedAttrValuesMap["necklineType"].equalOrBlank(viewModel.mainClothAttributes.value?.necklineType),
-                    fabric = changedAttrValuesMap["fabric"].equalOrBlank(viewModel.mainClothAttributes.value?.fabric)
-                    )
+            viewModel.mainClothAttributes.value = ClothAttributes(
+                color = changedAttrValuesMap["color"].equalOrBlank(viewModel.mainClothAttributes.value?.color),
+                texture = changedAttrValuesMap["texture"].equalOrBlank(viewModel.mainClothAttributes.value?.texture),
+                sleeveLength = changedAttrValuesMap["sleeveLength"].equalOrBlank(viewModel.mainClothAttributes.value?.sleeveLength),
+                garmentLength = changedAttrValuesMap["garmentLength"].equalOrBlank(viewModel.mainClothAttributes.value?.garmentLength),
+                necklineType = changedAttrValuesMap["necklineType"].equalOrBlank(viewModel.mainClothAttributes.value?.necklineType),
+                fabric = changedAttrValuesMap["fabric"].equalOrBlank(viewModel.mainClothAttributes.value?.fabric)
+            )
+            println(changedAttrValuesMap)
             viewModel.updateClothAttributes()
         }
     }

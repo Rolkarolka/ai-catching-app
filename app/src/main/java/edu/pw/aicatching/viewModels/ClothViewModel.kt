@@ -1,14 +1,10 @@
 package edu.pw.aicatching.viewModels
 
-import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import androidx.camera.core.ImageProxy
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.pw.aicatching.models.Cloth
 import edu.pw.aicatching.models.ClothAttributes
 import edu.pw.aicatching.network.AICatchingApiService
-import java.io.ByteArrayOutputStream
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -55,7 +51,6 @@ class ClothViewModel : ViewModel() {
         })
     }
 
-
     fun createGarment(image: ByteArray?) {
         val reqFile: RequestBody = image.let { RequestBody.create(MediaType.parse("multipart/form-data"), it) }
         val body = reqFile.let { MultipartBody.Part.createFormData("photo", "photo-name", it) }
@@ -84,7 +79,6 @@ class ClothViewModel : ViewModel() {
     }
 
     fun updateClothAttributes() {
-        // TODO
     }
 
     fun deleteGarment(garmentID: Int) {
@@ -103,4 +97,3 @@ class ClothViewModel : ViewModel() {
         })
     }
 }
-
