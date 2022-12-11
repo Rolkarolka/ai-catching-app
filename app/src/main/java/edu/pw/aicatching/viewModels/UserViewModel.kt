@@ -17,7 +17,7 @@ class UserViewModel : ViewModel() {
     val errorMessage = MutableLiveData<String>()
 
     fun logIn(credentials: Credentials) {
-        val response = service.postLogIn(credentials)
+        val response = service.putLogIn(credentials)
         response.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
                 errorMessage.postValue(t.message)
@@ -57,4 +57,6 @@ class UserViewModel : ViewModel() {
     fun getInspiration(): String { // TODO
         return "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631300503690E01_DXXX.jpg"
     }
+
+    fun updateUserPreferences() {} // TODO
 }

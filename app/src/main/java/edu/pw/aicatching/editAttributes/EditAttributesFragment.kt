@@ -32,8 +32,8 @@ class EditAttributesFragment : Fragment() {
             changedAttrValuesMap[key] = value
         }
 
-        if (viewModel.mainCloth.value?.attributes != null) {
-            viewModel.mainCloth.value?.attributes?.asMap()?.let { adapter.setAttributesMap(it) }
+        if (viewModel.mainClothAttributes.value != null) {
+            viewModel.mainClothAttributes.value?.asMap()?.let { adapter.setAttributesMap(it) }
         } else {
             ClothAttributes(null, null, null).asMap().let { adapter.setAttributesMap(it) }
         }
@@ -53,12 +53,14 @@ class EditAttributesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         saveAttributesValueButton.setOnClickListener {
-            viewModel.mainCloth.value = viewModel.mainCloth.value?.copy(
-                attributes = ClothAttributes(
-                    color = changedAttrValuesMap["Color"].equalOrBlank(viewModel.mainCloth.value?.attributes?.color),
-                    pattern = changedAttrValuesMap["Pattern"].equalOrBlank(viewModel.mainCloth.value?.attributes?.pattern),
-                )
-            )
+            viewModel.mainClothAttributes.value =  ClothAttributes(
+                    color = changedAttrValuesMap["color"].equalOrBlank(viewModel.mainClothAttributes.value?.color),
+                    texture = changedAttrValuesMap["texture"].equalOrBlank(viewModel.mainClothAttributes.value?.texture),
+                    sleeveLength = changedAttrValuesMap["sleeveLength"].equalOrBlank(viewModel.mainClothAttributes.value?.sleeveLength),
+                    garmentLength = changedAttrValuesMap["garmentLength"].equalOrBlank(viewModel.mainClothAttributes.value?.garmentLength),
+                    necklineType = changedAttrValuesMap["necklineType"].equalOrBlank(viewModel.mainClothAttributes.value?.necklineType),
+                    fabric = changedAttrValuesMap["fabric"].equalOrBlank(viewModel.mainClothAttributes.value?.fabric)
+                    )
             viewModel.updateClothAttributes()
         }
     }

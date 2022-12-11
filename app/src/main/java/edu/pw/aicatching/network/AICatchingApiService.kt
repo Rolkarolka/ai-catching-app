@@ -3,6 +3,7 @@ package edu.pw.aicatching.network
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import edu.pw.aicatching.models.Cloth
+import edu.pw.aicatching.models.ClothAttributes
 import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.models.User
 import okhttp3.*
@@ -19,14 +20,20 @@ interface AICatchingApiService {
     @GET("garment/wardrobe")
     fun getOutfit(): Call<List<Cloth>>
 
-    @POST("user/login_session")
-    fun postLogIn(@Body credentials: Credentials): Call<User>
+    @PUT("user/login_session")
+    fun putLogIn(@Body credentials: Credentials): Call<User>
 
     @DELETE("user/logout_session")
     fun deleteSession()
 
     @DELETE("user/delete")
     fun deleteUser(): Call<Response>
+
+//    @GET("garment/photo")
+//    fun getGarmentPhoto(): Call<>
+
+    @GET("garment/attributes")
+    fun getGarmentAttributes(@Query("garment_id") garmentID: Int): Call<ClothAttributes>
 
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"
@@ -71,3 +78,4 @@ internal class CookieInterceptor : Interceptor {
         return response
     }
 }
+//ac671ad674eb7921602af629699bee5511251bbb54a946265fa05d31b9cdf5eed71cf2d532731fd7af24496a19e2089b1386b3e93796b3e0a5a367ea13890416
