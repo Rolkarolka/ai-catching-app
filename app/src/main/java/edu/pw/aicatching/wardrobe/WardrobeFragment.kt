@@ -36,9 +36,9 @@ class WardrobeFragment : Fragment() {
             viewModel.mainCloth.value = cloth
             Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
         }
-        val actionModeListener: (Cloth) -> Unit = { cloth ->
-            viewModel.deleteCloth(cloth)
-            viewModel.wardrobeList.value = viewModel.wardrobeList.value?.filter { it != cloth }
+        val actionModeListener: (Cloth) -> Unit = { garment ->
+            viewModel.deleteGarment(garment.garmentID)
+            viewModel.wardrobeList.value = viewModel.wardrobeList.value?.filter { it != garment }
         }
         adapter = WardrobeGalleryAdapter(listener, actionModeListener)
         view.wardrobeGallery.adapter = adapter

@@ -1,11 +1,17 @@
 package edu.pw.aicatching.viewModels
 
+import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import androidx.camera.core.ImageProxy
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.pw.aicatching.models.Cloth
 import edu.pw.aicatching.models.ClothAttributes
 import edu.pw.aicatching.network.AICatchingApiService
+import java.io.ByteArrayOutputStream
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,6 +29,7 @@ class ClothViewModel : ViewModel() {
     val wardrobeErrorMessage = MutableLiveData<String>()
     val mainClothAttributesErrorMessage = MutableLiveData<String>()
     val availableAttributesValuesErrorMessage = MutableLiveData<String>()
+    val mainClothErrorMessage = MutableLiveData<String>()
 
     fun getOutfit() {
         val response = service.getOutfit()
@@ -48,9 +55,20 @@ class ClothViewModel : ViewModel() {
         })
     }
 
-    fun sendPhoto(image: ImageProxy): Cloth? {
-        // TODO send image to server
-        return Cloth(imgSrcUrl = "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631300503690E01_DXXX.jpg", part = "cat", garmentID = 1111)
+
+    fun createGarment(image: ByteArray?) {
+        val reqFile: RequestBody = image.let { RequestBody.create(MediaType.parse("multipart/form-data"), it) }
+        val body = reqFile.let { MultipartBody.Part.createFormData("photo", "photo-name", it) }
+        val response = body.let { service.postGarment(it) }
+        response.enqueue(object : Callback<Cloth> {
+            override fun onResponse(call: Call<Cloth>, response: Response<Cloth>) {
+                mainCloth.postValue(response.body())
+            }
+
+            override fun onFailure(call: Call<Cloth>, t: Throwable) {
+                mainClothErrorMessage.postValue(t.message)
+            }
+        })
     }
 
     fun getValuesOfClothAttributes() {
@@ -69,8 +87,8 @@ class ClothViewModel : ViewModel() {
         // TODO
     }
 
-    fun deleteCloth(cloth: Cloth) {
-        // TODO
+    fun deleteGarment(garmentID: Int) {
+        service.deleteGarment(garmentID)
     }
 
     fun getAttributes(clothID: Int) {
@@ -85,3 +103,4 @@ class ClothViewModel : ViewModel() {
         })
     }
 }
+

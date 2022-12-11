@@ -47,11 +47,19 @@ class ClothDescriptionFragment : Fragment() {
             viewLifecycleOwner
         ) { Log.d(this::class.simpleName, "Creating new observer on outfitErrorMessage") }
         viewModel.getOutfit()
-        viewModel.mainCloth.value?.garmentID?.let { viewModel.getAttributes(it) }
-        val imgUri = viewModel.mainCloth.value?.imgSrcUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-        view.clothCategory.text = viewModel.mainCloth.value?.part ?: "Cloth"
-        view.clothImage.load(imgUri)
 
+        viewModel.mainCloth.observe(
+            viewLifecycleOwner
+        ) {
+            val imgUri = it.imgSrcUrl.toUri().buildUpon()?.scheme("https")?.build()
+            view.clothCategory.text = it.part ?: "Cloth"
+            view.clothImage.load(imgUri) {
+                    placeholder(R.drawable.ic_loading)
+                    error(R.drawable.ic_damage_image)
+            }
+        }
+
+        viewModel.mainCloth.value?.garmentID?.let { viewModel.getAttributes(it) }
         view.outfitMatching.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }

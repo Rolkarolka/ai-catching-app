@@ -8,7 +8,7 @@ data class Cloth(
     val garmentID: Int,
     @Json(name = "photo_url")
     val imgSrcUrl: String,
-    val part: String
+    val part: String?
 )
 
 data class ClothAttributes(

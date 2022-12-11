@@ -7,7 +7,11 @@
 
     <include
         android:id="@+id/item"
-        layout="@layout/item_cloth" />
+        layout="@layout/item_cloth"
+        android:layout_height="300dp"
+        android:layout_width="300dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/description"
