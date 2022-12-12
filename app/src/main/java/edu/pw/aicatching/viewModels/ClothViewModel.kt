@@ -21,6 +21,9 @@ class ClothViewModel : ViewModel() {
     val outfitErrorMessage = MutableLiveData<String>()
     val availableAttributesValues = MutableLiveData<Map<String, List<String>>>()
 
+    val amountOfUpdatedAttributes = MutableLiveData<Map<String, Int>>()
+    val errorWhileUpdatingAttributes = MutableLiveData<String>()
+
     val wardrobeList = MutableLiveData<List<Cloth>>()
     val wardrobeErrorMessage = MutableLiveData<String>()
     val mainClothAttributesErrorMessage = MutableLiveData<String>()
@@ -78,7 +81,16 @@ class ClothViewModel : ViewModel() {
         })
     }
 
-    fun updateClothAttributes() {
+    fun updateClothAttributes(garmentID: Int, updatedClothesAttributes: ClothAttributes) {
+        val response = service.putEditAttributes(garmentID, updatedClothesAttributes)
+        response.enqueue(object : Callback<Map<String, Int>> {
+            override fun onResponse(call: Call<Map<String, Int>>, response: Response<Map<String, Int>>) {
+                amountOfUpdatedAttributes.postValue(response.body())
+            }
+            override fun onFailure(call: Call<Map<String, Int>>, t: Throwable) {
+                errorWhileUpdatingAttributes.postValue(t.message)
+            }
+        })
     }
 
     fun deleteGarment(garmentID: Int) {

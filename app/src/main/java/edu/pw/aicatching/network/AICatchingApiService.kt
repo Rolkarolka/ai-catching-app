@@ -1,5 +1,6 @@
 package edu.pw.aicatching.network
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import edu.pw.aicatching.models.Cloth
@@ -7,6 +8,7 @@ import edu.pw.aicatching.models.ClothAttributes
 import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.models.User
 import okhttp3.*
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -29,9 +31,6 @@ interface AICatchingApiService {
     @DELETE("user/delete")
     fun deleteUser(): Call<Response>
 
-//    @GET("garment/photo")
-//    fun getGarmentPhoto(): Call<>
-
     @DELETE("garment/delete")
     fun deleteGarment(@Query("garment_id") garmentID: Int)
 
@@ -44,6 +43,9 @@ interface AICatchingApiService {
     @Multipart
     @POST("garment/create")
     fun postGarment(@Part photo: MultipartBody.Part): Call<Cloth>
+
+    @PUT("garment/edit")
+    fun putEditAttributes(@Query("garment_id") garmentID: Int, @Body attributes: ClothAttributes): Call<Map<String, Int>>
 
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"

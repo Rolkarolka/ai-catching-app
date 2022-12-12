@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -49,6 +50,14 @@ class EditAttributesFragment : Fragment() {
         }
         view.editAttributesList.adapter = adapter
 
+        viewModel.amountOfUpdatedAttributes.observe(
+            viewLifecycleOwner
+        ) {
+            if (it["Amount of updated rows"] == 1) {
+                Toast.makeText(context, "Attributes were edited", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         val imgUri = viewModel.mainCloth.value?.imgSrcUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
         view.clothCategory.text = viewModel.mainCloth.value?.part ?: "Cloth"
         view.clothImage.load(imgUri)
@@ -59,19 +68,19 @@ class EditAttributesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         saveAttributesValueButton.setOnClickListener {
-            viewModel.mainClothAttributes.value = ClothAttributes(
-                color = changedAttrValuesMap["color"].equalOrBlank(viewModel.mainClothAttributes.value?.color),
-                texture = changedAttrValuesMap["texture"].equalOrBlank(viewModel.mainClothAttributes.value?.texture),
-                sleeveLength = changedAttrValuesMap["sleeveLength"].equalOrBlank(viewModel.mainClothAttributes.value?.sleeveLength),
-                garmentLength = changedAttrValuesMap["garmentLength"].equalOrBlank(viewModel.mainClothAttributes.value?.garmentLength),
-                necklineType = changedAttrValuesMap["necklineType"].equalOrBlank(viewModel.mainClothAttributes.value?.necklineType),
-                fabric = changedAttrValuesMap["fabric"].equalOrBlank(viewModel.mainClothAttributes.value?.fabric)
+            val updatedClothesAttributes = ClothAttributes(
+                color = changedAttrValuesMap["color"].compareChange(viewModel.mainClothAttributes.value?.color),
+                texture = changedAttrValuesMap["texture"].compareChange(viewModel.mainClothAttributes.value?.texture),
+                sleeveLength = changedAttrValuesMap["sleeveLength"].compareChange(viewModel.mainClothAttributes.value?.sleeveLength),
+                garmentLength = changedAttrValuesMap["garmentLength"].compareChange(viewModel.mainClothAttributes.value?.garmentLength),
+                necklineType = changedAttrValuesMap["necklineType"].compareChange(viewModel.mainClothAttributes.value?.necklineType),
+                fabric = changedAttrValuesMap["fabric"].compareChange(viewModel.mainClothAttributes.value?.fabric)
             )
-            println(changedAttrValuesMap)
-            viewModel.updateClothAttributes()
+            viewModel.mainCloth.value?.garmentID?.let { it1 -> viewModel.updateClothAttributes(it1, updatedClothesAttributes) }
         }
     }
 
-    private fun String?.equalOrBlank(prevValue: String?) =
-        if (this.isNullOrEmpty() || this == prevValue) prevValue else this
+    private fun String?.compareChange(prevValue: String?) =
+        if (this == prevValue || this.isNullOrBlank()) null else this
 }
+
