@@ -121,7 +121,6 @@ class AuthorizationFragment : Fragment() {
                 if (signUpTryCounter <= 3) {
                     signUpTryCounter += 1
                     sign(signUpRequest)
-
                 } else {
                     Toast.makeText(
                         this.context,

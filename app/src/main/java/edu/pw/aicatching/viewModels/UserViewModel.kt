@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.models.User
+import edu.pw.aicatching.models.UserPreferences
 import edu.pw.aicatching.network.AICatchingApiService
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,7 +15,10 @@ class UserViewModel : ViewModel() {
     private val service = AICatchingApiService.getInstance()
 
     var userLiveData: MutableLiveData<User?> = MutableLiveData()
+    val userPreferencesLiveData: MutableLiveData<UserPreferences> = MutableLiveData()
     var userErrorMessage = MutableLiveData<String>()
+    var loggingMessage = MutableLiveData<Map<String, String>?>()
+    var loggingErrorMessage = MutableLiveData<String>()
 
     var inspirationLiveData: MutableLiveData<Map<String, String>> = MutableLiveData()
     var inspirationErrorMessage = MutableLiveData<String>()
@@ -38,15 +42,48 @@ class UserViewModel : ViewModel() {
     }
 
     fun deleteUser() {
-        service.deleteUser()
+        val response = service.deleteUser()
+        userLiveData.postValue(null)
+        response.enqueue(object : Callback<Void?> {
+            override fun onResponse(call: Call<Void?>, response: Response<Void?>) { }
+
+            override fun onFailure(call: Call<Void?>, t: Throwable) {
+                loggingErrorMessage.postValue(t.message)
+            }
+        })
     }
 
     fun logOut() {
-        service.deleteSession()
+        val response = service.deleteSession()
+        userLiveData.postValue(null)
+        response.enqueue(object : Callback<Void?> {
+            override fun onResponse(call: Call<Void?>, response: Response<Void?>) { }
+
+            override fun onFailure(call: Call<Void?>, t: Throwable) {
+                loggingErrorMessage.postValue(t.message)
+            }
+        })
     }
 
     fun updateUserPhoto(uri: Uri) {
 //        val response = service.updateUserPhoto()
+    }
+
+    fun updateUserPreferences(preferences: UserPreferences) {
+        val response = service.updateUserPreferences(preferences)
+        response.enqueue(object : Callback<UserPreferences> {
+            override fun onFailure(call: Call<UserPreferences>, t: Throwable) {
+                userErrorMessage.postValue(t.message)
+            }
+
+            override fun onResponse(call: Call<UserPreferences>, response: Response<UserPreferences>) {
+                if (response.isSuccessful) {
+                    userPreferencesLiveData.postValue(response.body())
+                } else {
+                    inspirationLiveData.postValue(null)
+                }
+            }
+        })
     }
 
     fun getInspiration() {

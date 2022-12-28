@@ -1,7 +1,6 @@
 package edu.pw.aicatching.home
 
 import android.content.res.ColorStateList
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import coil.load
 import edu.pw.aicatching.R
-import edu.pw.aicatching.models.ClothSize
 import edu.pw.aicatching.viewModels.UserViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
@@ -55,7 +53,7 @@ class MainFragment : Fragment() {
         viewModel.inspirationLiveData.observe(viewLifecycleOwner) {
             val inspirationUrl = it["link"]
             val imgUri = inspirationUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-            view.inspiration.load(imgUri)  {
+            view.inspiration.load(imgUri) {
                 placeholder(R.drawable.ic_loading)
                 error(R.drawable.ic_damage_image)
             }
