@@ -37,7 +37,10 @@ class MainFragment : Fragment() {
             viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
                 username.text = user?.name + " " + user?.surname
                 user?.preferences?.photoUrl?.let { photo ->
-                    userAvatar.setImageURI(Uri.parse(photo))
+                    userAvatar.load(photo.toUri().buildUpon()?.scheme("https")?.build()) {
+                        placeholder(R.drawable.ic_loading)
+                        error(R.drawable.ic_avatar)
+                    }
                 }
                 favColorAttribute.backgroundTintList = user?.preferences?.favouriteColor
                     ?.let { ColorStateList.valueOf(it) }

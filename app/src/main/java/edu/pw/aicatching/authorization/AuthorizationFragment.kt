@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -28,6 +29,7 @@ class AuthorizationFragment : Fragment() {
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
     private lateinit var signUpRequest: BeginSignInRequest
+    private var signUpTryCounter: Int = 0
     private val oneTapLoggingResult = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
@@ -116,7 +118,18 @@ class AuthorizationFragment : Fragment() {
             }
             .addOnFailureListener(this.requireActivity()) { e ->
                 e.localizedMessage?.let { Log.d("AuthorizationFragment:Sign:OnFailureListener", it) }
-                sign(signUpRequest)
+                if (signUpTryCounter <= 3) {
+                    signUpTryCounter += 1
+                    sign(signUpRequest)
+
+                } else {
+                    Toast.makeText(
+                        this.context,
+                        "Check your Google Account. You must be logged in to your account on your phone, before logging into app.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    signUpTryCounter = 0
+                }
             }
     }
 }

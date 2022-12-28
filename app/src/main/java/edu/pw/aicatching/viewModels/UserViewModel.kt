@@ -37,26 +37,18 @@ class UserViewModel : ViewModel() {
         })
     }
 
-    fun deleteUser() { // TODO
-//        val response = service.deleteUser()
-//        response.enqueue(object : Callback<Response> {
-//            override fun onFailure(call: Call<User>, t: Throwable) {
-//                errorMessage.postValue(t.message)
-//            }
-//
-//            override fun onResponse(call: Call<User>, response: Response<User>) {
-//                if (response.isSuccessful) {
-//                    userLiveData = MutableLiveData()
-//                } else {
-//                    errorMessage.postValue(response.code().toString())
-//                }
-//            }
-//        })
+    fun deleteUser() {
+        service.deleteUser()
     }
 
-    fun logOut() {} // TODO
+    fun logOut() {
+        service.deleteSession()
+    }
 
-    fun updateUserPhoto(uri: Uri) {} // TODO
+    fun updateUserPhoto(uri: Uri) {
+//        val response = service.updateUserPhoto()
+    }
+
     fun getInspiration() {
         val response = service.getInspiration()
         response.enqueue(object : Callback<Map<String, String>> {

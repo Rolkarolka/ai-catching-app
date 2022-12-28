@@ -30,8 +30,7 @@ class UserDetailsFragment : Fragment() {
     ) { uri ->
         if (uri != null) {
             Log.d("UserDetailsFragment:PhotoPicker", "Selected URI: $uri")
-            currentUserAvatar.setImageURI(uri)
-            viewModel.updateUserPhoto(uri)
+            viewModel.updateUserPhoto(uri) // TODO
             if (viewModel.userLiveData.value?.preferences == null) {
                 viewModel.userLiveData.value = viewModel.userLiveData
                     .value?.copy(preferences = UserPreferences(photoUrl = uri.toString()))
