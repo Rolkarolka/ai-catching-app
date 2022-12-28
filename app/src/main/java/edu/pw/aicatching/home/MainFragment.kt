@@ -27,6 +27,7 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.getInspiration()
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
@@ -48,9 +49,14 @@ class MainFragment : Fragment() {
             }
         }
 
-        val inspirationUrl = viewModel.getInspiration()
-        val imgUri = inspirationUrl.toUri().buildUpon()?.scheme("https")?.build()
-        view.inspiration.load(imgUri)
+        viewModel.inspirationLiveData.observe(viewLifecycleOwner) {
+            val inspirationUrl = it["link"]
+            val imgUri = inspirationUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
+            view.inspiration.load(imgUri)  {
+                placeholder(R.drawable.ic_loading)
+                error(R.drawable.ic_damage_image)
+            }
+        }
 
         showWardrobeButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.wardrobeFragment)

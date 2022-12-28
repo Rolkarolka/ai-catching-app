@@ -9,14 +9,18 @@ data class User(
     val name: String,
     val surname: String,
     val email: String,
+    @Json(name = "preference")
     val preferences: UserPreferences? = null
 )
 
 data class UserPreferences(
+    @Json(name = "photo_path")
     val photoUrl: String? = null,
+    @Json(name = "shoe_size")
     val shoeSize: String? = null,
+    @Json(name = "cloth_size")
     val clothSize: ClothSize? = null,
-    val favouriteColor: Int? = null
+    val favouriteColor: Int? = null  // TODO fav color from api
 )
 
 class Credentials(

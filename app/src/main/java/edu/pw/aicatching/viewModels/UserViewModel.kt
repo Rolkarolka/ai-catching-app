@@ -14,13 +14,16 @@ class UserViewModel : ViewModel() {
     private val service = AICatchingApiService.getInstance()
 
     var userLiveData: MutableLiveData<User?> = MutableLiveData()
-    val errorMessage = MutableLiveData<String>()
+    var userErrorMessage = MutableLiveData<String>()
+
+    var inspirationLiveData: MutableLiveData<Map<String, String>> = MutableLiveData()
+    var inspirationErrorMessage = MutableLiveData<String>()
 
     fun logIn(credentials: Credentials) {
-        val response = service.postLogIn(credentials)
+        val response = service.putLogIn(credentials)
         response.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
-                errorMessage.postValue(t.message)
+                userErrorMessage.postValue(t.message)
                 userLiveData.postValue(null)
             }
 
@@ -54,7 +57,21 @@ class UserViewModel : ViewModel() {
     fun logOut() {} // TODO
 
     fun updateUserPhoto(uri: Uri) {} // TODO
-    fun getInspiration(): String { // TODO
-        return "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631300503690E01_DXXX.jpg"
+    fun getInspiration() {
+        val response = service.getInspiration()
+        response.enqueue(object : Callback<Map<String, String>> {
+            override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {
+                inspirationErrorMessage.postValue(t.message)
+                inspirationLiveData.postValue(null)
+            }
+
+            override fun onResponse(call: Call<Map<String, String>>, response: Response<Map<String, String>>) {
+                if (response.isSuccessful) {
+                    inspirationLiveData.postValue(response.body())
+                } else {
+                    inspirationLiveData.postValue(null)
+                }
+            }
+        })
     }
 }
