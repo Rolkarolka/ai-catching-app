@@ -66,6 +66,7 @@ class UserViewModel : ViewModel() {
     }
 
     fun updateUserPhoto(uri: Uri) {
+        print(uri)
 //        val response = service.updateUserPhoto()
     }
 
@@ -80,7 +81,7 @@ class UserViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     userPreferencesLiveData.postValue(response.body())
                 } else {
-                    inspirationLiveData.postValue(null)
+                    userPreferencesLiveData.postValue(null)
                 }
             }
         })
@@ -91,14 +92,11 @@ class UserViewModel : ViewModel() {
         response.enqueue(object : Callback<Map<String, String>> {
             override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {
                 inspirationErrorMessage.postValue(t.message)
-                inspirationLiveData.postValue(null)
             }
 
             override fun onResponse(call: Call<Map<String, String>>, response: Response<Map<String, String>>) {
                 if (response.isSuccessful) {
                     inspirationLiveData.postValue(response.body())
-                } else {
-                    inspirationLiveData.postValue(null)
                 }
             }
         })

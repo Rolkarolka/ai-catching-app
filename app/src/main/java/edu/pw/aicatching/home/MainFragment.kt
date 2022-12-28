@@ -1,6 +1,7 @@
 package edu.pw.aicatching.home
 
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,13 +42,17 @@ class MainFragment : Fragment() {
                     }
                 }
                 favColorAttribute.backgroundTintList = user?.preferences?.favouriteColor
-                    ?.let { ColorStateList.valueOf(it) }
+                    ?.let { ColorStateList.valueOf(Color.parseColor(it.hexValue)) }
                 clothSizeAttribute.text = user?.preferences?.clothSize?.let { it.name } ?: "Cloth\nSize"
                 shoeSizeAttribute.text = if (user?.preferences?.shoeSize?.isNotEmpty() == true)
                     user.preferences.shoeSize
                 else
                     "Shoe\nSize"
             }
+        }
+
+        viewModel.userPreferencesLiveData.observe(viewLifecycleOwner) {
+            viewModel.userLiveData.value =
         }
 
         viewModel.inspirationLiveData.observe(viewLifecycleOwner) {

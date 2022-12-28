@@ -22,7 +22,7 @@ interface AICatchingApiService {
     fun updateUserPhoto(@Part photo: MultipartBody.Part): Call<UserPreferences>
 
     @POST("user/preferences/update")
-    fun updateUserPreferences(@Body preferences: UserPreferences): Call<UserPreferences>
+    fun updateUserPreferences(@Body new_preferences: UserPreferences): Call<UserPreferences>
 
     @PUT("user/login_session")
     fun putLogIn(@Body credentials: Credentials): Call<User>

@@ -14,10 +14,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 import com.skydoves.colorpickerview.listeners.ColorListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import edu.pw.aicatching.R
 import edu.pw.aicatching.models.ClothSize
+import edu.pw.aicatching.models.Color
 import edu.pw.aicatching.models.UserPreferences
 import edu.pw.aicatching.viewModels.UserViewModel
 import kotlinx.android.synthetic.main.fragment_user_details.*
@@ -31,20 +33,11 @@ class UserDetailsFragment : Fragment() {
         if (uri != null) {
             Log.d("UserDetailsFragment:PhotoPicker", "Selected URI: $uri")
             viewModel.updateUserPhoto(uri) // TODO
-            if (viewModel.userLiveData.value?.preferences == null) {
-                viewModel.userLiveData.value = viewModel.userLiveData
-                    .value?.copy(preferences = UserPreferences(photoUrl = uri.toString()))
-            } else {
-                viewModel.userLiveData.value = viewModel.userLiveData
-                    .value?.copy(
-                        preferences = viewModel.userLiveData.value
-                            ?.preferences?.copy(photoUrl = uri.toString())
-                    )
-            }
         } else {
             Log.d("UserDetailsFragment:PhotoPicker", "No media selected")
         }
     }
+    private val changedPrefValuesMap: MutableMap<String, Any> = mutableMapOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,10 +48,21 @@ class UserDetailsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_user_details, container, false)
     }
 
+    override fun onDestroyView() {
+        val updatedUserPreferences = UserPreferences(
+            shoeSize = changedPrefValuesMap["shoeSize"].toString().compareChange(viewModel.userLiveData.value?.preferences?.shoeSize.toString()),
+            clothSize = ClothSize.from(changedPrefValuesMap["clothSize"].toString().compareChange(viewModel.userLiveData.value?.preferences?.clothSize?.name.toString())),
+            favouriteColor = changedPrefValuesMap["favouriteColor"].toString().compareChange(viewModel.userLiveData.value?.preferences?.favouriteColor?.name.toString())
+                ?.let { Color.valueOf(it) }
+        )
+        viewModel.updateUserPreferences(updatedUserPreferences)
+        super.onDestroyView()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setClothSpinner(ClothSize.values().map { it.toString() }.toList())
-        setShoeSpinner(listOf("UNKNOWN") + (35..45).toList().map { it.toString() })
+        setShoeSpinner((35..45).toList().map { it.toString() })
         setColorPicker()
         setAvatar()
 
@@ -82,16 +86,7 @@ class UserDetailsFragment : Fragment() {
 
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                if (viewModel.userLiveData.value?.preferences == null) {
-                    viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(preferences = UserPreferences(clothSize = ClothSize.valueOf(clothSizesArray[position])))
-                } else {
-                    viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(
-                            preferences = viewModel.userLiveData.value
-                                ?.preferences?.copy(clothSize = ClothSize.valueOf(clothSizesArray[position]))
-                        )
-                }
+                changedPrefValuesMap["clothSize"] = ClothSize.valueOf(clothSizesArray[position])
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -106,16 +101,7 @@ class UserDetailsFragment : Fragment() {
 
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                if (viewModel.userLiveData.value?.preferences == null) {
-                    viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(preferences = UserPreferences(shoeSize = shoeSizesArray[position]))
-                } else {
-                    viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(
-                            preferences = viewModel.userLiveData.value
-                                ?.preferences?.copy(shoeSize = shoeSizesArray[position])
-                        )
-                }
+                changedPrefValuesMap["shoeSize"] = shoeSizesArray[position]
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -126,25 +112,18 @@ class UserDetailsFragment : Fragment() {
         favColorPickerView.preferenceName = "FavColorPicker"
         viewModel.userLiveData.value?.preferences?.let {
             it.favouriteColor?.let { favColor ->
-                colorPickerManager.setColor("FavColorPicker", favColor)
+                colorPickerManager.setColor("FavColorPicker", android.graphics.Color.parseColor(favColor.hexValue))
             }
         }
 
-        favColorPickerView.setColorListener(
-            ColorListener { color, _ ->
-                favouriteColorView.backgroundTintList = ColorStateList.valueOf(color)
-                if (viewModel.userLiveData.value?.preferences == null) {
-                    viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(preferences = UserPreferences(favouriteColor = color))
-                } else {
-                    viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(
-                            preferences = viewModel.userLiveData.value
-                                ?.preferences?.copy(favouriteColor = color)
-                        )
-                }
+        favColorPickerView.setColorListener(ColorEnvelopeListener { envelope, fromUser ->
+            favouriteColorView.backgroundTintList = ColorStateList.valueOf(envelope.color)
+//            val color = Color.from("#" + envelope.hexCode)
+            val color = Color.from("#00FFFF")
+            if (color != null) {
+                changedPrefValuesMap["favouriteColor"] = color.name
             }
-        )
+        })
     }
 
     private fun setAvatar() {
@@ -155,4 +134,7 @@ class UserDetailsFragment : Fragment() {
             pickMediaResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
+
+    private fun String?.compareChange(prevValue: String?) =
+        if (this == prevValue || this.isNullOrBlank()) null else this
 }
