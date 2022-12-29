@@ -40,6 +40,19 @@ interface AICatchingApiService {
     @GET("garment/wardrobe")
     fun getOutfit(): Call<List<Cloth>>
 
+    @GET("garment/attributes")
+    fun getGarmentAttributes(@Query("garment_id") garmentID: Int): Call<ClothAttributes>
+
+    @GET("garment/available_attributes")
+    fun getAttributesValue(): Call<Map<String, List<String>>>
+
+    @Multipart
+    @POST("garment/create")
+    fun postGarment(@Part photo: MultipartBody.Part): Call<Cloth>
+
+    @PUT("garment/edit")
+    fun putEditAttributes(@Query("garment_id") garmentID: Int, @Body attributes: ClothAttributes): Call<Cloth>
+
     @DELETE("garment/delete")
     fun deleteGarment(@Query("garment_id") garmentID: Int)
 
@@ -54,7 +67,7 @@ interface AICatchingApiService {
     fun postGarment(@Part photo: MultipartBody.Part): Call<Cloth>
 
     @PUT("garment/edit")
-    fun putEditAttributes(@Query("garment_id") garmentID: Int, @Body attributes: ClothAttributes): Call<Cloth>
+    fun putEditAttributes(@Query("garment_id") garmentID: Int, @Body attributes: ClothAttributes): Call<Map<String, Int>>
 
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"

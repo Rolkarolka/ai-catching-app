@@ -34,8 +34,7 @@
                 android:id="@+id/clothCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
+                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:text="@string/category_place_holder" />
         </androidx.constraintlayout.widget.ConstraintLayout>

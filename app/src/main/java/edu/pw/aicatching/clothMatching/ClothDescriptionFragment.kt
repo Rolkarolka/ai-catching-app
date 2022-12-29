@@ -48,27 +48,49 @@ class ClothDescriptionFragment : Fragment() {
         ) { Log.d(this::class.simpleName, "Creating new observer on outfitErrorMessage") }
         viewModel.getOutfit()
 
-        val imgUri = viewModel.mainCloth.value?.imgSrcUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-        view.clothCategory.text = viewModel.mainCloth.value?.part ?: "Cloth"
-        view.clothImage.load(imgUri)
+        viewModel.mainCloth.observe(
+            viewLifecycleOwner
+        ) {
+            val imgUri = it.imgSrcUrl.toUri().buildUpon()?.scheme("https")?.build()
+            view.clothCategory.text = it.part ?: "Cloth"
+            view.clothImage.load(imgUri) {
+                placeholder(R.drawable.ic_loading)
+                error(R.drawable.ic_damage_image)
+            }
+        }
 
+        viewModel.mainCloth.value?.garmentID?.let { viewModel.getAttributes(it) }
         view.outfitMatching.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
         view.outfitMatching.adapter = adapter
 
+        view.attributesListView.adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
+        viewModel.mainClothAttributes.observe(
+            viewLifecycleOwner
+        ) {
+            view.attributesListView.adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
+        }
+
         return view
     }
+    private fun String.capitalize() = this.replaceFirstChar { char ->
+        if (char.isLowerCase()) char.titlecase() else char.toString()
+    }
+    private fun createAttributesArray() =
+        viewModel.mainClothAttributes.value
+            ?.asMap()
+            ?.map { mapEntry ->
+                val formattedKeys = mapEntry.key.split(Regex("(?=\\p{Upper})")).joinToString(separator = " ")
+                val formattedValues = mapEntry.value.split("_")[0].capitalize()
+                "$formattedKeys: $formattedValues"
+            }
+            ?: ClothAttributes::class.memberProperties.associateBy {
+                it.name.capitalize()
+            }.keys.toList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val attributesArray = viewModel.mainCloth.value?.attributes?.asMap()?.map { mapEntry -> "${mapEntry.key}: ${mapEntry.value}" } ?: ClothAttributes::class.memberProperties.associateBy { it ->
-            it.name.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase() else it.toString()
-            }
-        }.keys.toList()
-
-        view.attributesListView.adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, attributesArray) }
         editButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.editAttributesFragment)
         )

@@ -1,9 +1,11 @@
 package edu.pw.aicatching.camera
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
+import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -84,9 +86,10 @@ class CameraFragment : Fragment() {
                     executor,
                     object : ImageCapture.OnImageCapturedCallback() {
 
+                        @SuppressLint("UnsafeOptInUsageError")
                         override fun onCaptureSuccess(image: ImageProxy) {
                             super.onCaptureSuccess(image)
-                            viewModel.mainCloth.value = viewModel.sendPhoto(image)
+                            viewModel.createGarment(image.image?.toByteArray())
                             view?.let { Navigation.findNavController(it).navigate(R.id.clothDescriptionFragment) }
                         }
 
@@ -172,4 +175,12 @@ class CameraFragment : Fragment() {
                 }
             }.toTypedArray()
     }
+}
+
+fun Image.toByteArray(): ByteArray { // TODO
+    val buffer = planes[0].buffer
+    buffer.rewind()
+    val bytes = ByteArray(buffer.capacity())
+    buffer.get(bytes)
+    return bytes
 }

@@ -113,4 +113,6 @@ class UserViewModel : ViewModel() {
             }
         })
     }
+
+    fun updateUserPreferences() {} // TODO
 }
