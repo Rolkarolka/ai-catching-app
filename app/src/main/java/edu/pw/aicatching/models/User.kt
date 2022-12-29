@@ -22,7 +22,7 @@ data class UserPreferences(
     val shoeSize: String? = null,
     @Json(name = "garment_size")
     val clothSize: ClothSize? = null,
-    @Json(name="favorite_color")
+    @Json(name = "favorite_color")
     val favouriteColor: Color? = null
 ) {
 //    constructor(photoUrl: String?, shoeSize: String?, clothSize: String?, favouriteColor: String?) :this(photoUrl, shoeSize, ClothSize.from(clothSize), Color.from(favouriteColor))
@@ -45,33 +45,32 @@ enum class ClothSize {
 enum class Color(val hexValue: String) {
     AQUA("#00FFFF"),
     BLACK("#000000"),
-    BLUE( "#0000FF"),
-    FUCHSIA( "#FF00FF"),
-    GREEN( "#008000"),
-    GREY( "#808080"),
-    LIME( "#00FF00"),
-    MAROON( "#800000"),
-    NAVY( "#000080"),
-    OLIVE( "#808000"),
-    PURPLE( "#800080"),
-    RED( "#FF0000"),
-    SILVER( "#C0C0C0"),
-    TEAL( "#008080"),
-    WHITE( "#FFFFFF"),
-    YELLOW( "#FFFF00");
-
+    BLUE("#0000FF"),
+    FUCHSIA("#FF00FF"),
+    GREEN("#008000"),
+    GREY("#808080"),
+    LIME("#00FF00"),
+    MAROON("#800000"),
+    NAVY("#000080"),
+    OLIVE("#808000"),
+    PURPLE("#800080"),
+    RED("#FF0000"),
+    SILVER("#C0C0C0"),
+    TEAL("#008080"),
+    WHITE("#FFFFFF"),
+    YELLOW("#FFFF00");
 
     companion object {
         private fun String.hexToIntArray(): IntArray {
             val code = this.removePrefix("#").takeLast(6)
-            val red = code.substring(0,2)
-            val green = code.substring(2,4)
-            val blue = code.substring(4,6)
+            val red = code.substring(0, 2)
+            val green = code.substring(2, 4)
+            val blue = code.substring(4, 6)
             return intArrayOf(red.toInt(16), green.toInt(16), blue.toInt(16))
         }
 
         private fun countDistance(c1: IntArray, c2: IntArray): Double {
-            return sqrt((c2[0]-c1[0]).toDouble().pow(2) + (c2[1]-c1[1]).toDouble().pow(2) + (c2[2]-c1[2]).toDouble().pow(2))
+            return sqrt((c2[0] - c1[0]).toDouble().pow(2) + (c2[1] - c1[1]).toDouble().pow(2) + (c2[2] - c1[2]).toDouble().pow(2))
         }
 
         infix fun from(argbValue: IntArray?): Color? =
@@ -85,6 +84,5 @@ enum class Color(val hexValue: String) {
 
                 closest
             } else null
-        }
-
+    }
 }

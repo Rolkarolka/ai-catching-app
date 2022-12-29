@@ -1,7 +1,8 @@
 package edu.pw.aicatching.userDetails
 
 import android.content.res.ColorStateList
-import android.net.Uri
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,17 +12,19 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import coil.load
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
-import com.skydoves.colorpickerview.listeners.ColorListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import edu.pw.aicatching.R
 import edu.pw.aicatching.models.ClothSize
 import edu.pw.aicatching.models.Color
 import edu.pw.aicatching.models.UserPreferences
 import edu.pw.aicatching.viewModels.UserViewModel
+import java.io.ByteArrayOutputStream
 import kotlinx.android.synthetic.main.fragment_user_details.*
 
 class UserDetailsFragment : Fragment() {
@@ -31,8 +34,12 @@ class UserDetailsFragment : Fragment() {
         ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         if (uri != null) {
+            currentUserAvatar.setImageURI(uri)
             Log.d("UserDetailsFragment:PhotoPicker", "Selected URI: $uri")
-            viewModel.updateUserPhoto(uri) // TODO
+            val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, uri))
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            viewModel.updateUserPhoto(stream.toByteArray())
         } else {
             Log.d("UserDetailsFragment:PhotoPicker", "No media selected")
         }
@@ -116,18 +123,23 @@ class UserDetailsFragment : Fragment() {
             }
         }
 
-        favColorPickerView.setColorListener(ColorEnvelopeListener { envelope, fromUser ->
-            favouriteColorView.backgroundTintList = ColorStateList.valueOf(envelope.color)
-            val color = Color.from(envelope.argb)
-            if (color != null) {
-                changedPrefValuesMap["favouriteColor"] = color.name
+        favColorPickerView.setColorListener(
+            ColorEnvelopeListener { envelope, fromUser ->
+                favouriteColorView.backgroundTintList = ColorStateList.valueOf(envelope.color)
+                val color = Color.from(envelope.argb)
+                if (color != null) {
+                    changedPrefValuesMap["favouriteColor"] = color.name
+                }
             }
-        })
+        )
     }
 
     private fun setAvatar() {
         viewModel.userLiveData.value?.preferences?.photoUrl?.let { photo ->
-            currentUserAvatar.setImageURI(Uri.parse(photo))
+            currentUserAvatar.load(photo.toUri().buildUpon()?.scheme("https")?.build()) {
+                placeholder(R.drawable.ic_loading)
+                error(R.drawable.ic_avatar)
+            }
         }
         changeUserPhotoButton.setOnClickListener {
             pickMediaResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))

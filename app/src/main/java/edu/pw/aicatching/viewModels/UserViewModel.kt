@@ -1,12 +1,14 @@
 package edu.pw.aicatching.viewModels
 
-import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.models.User
 import edu.pw.aicatching.models.UserPreferences
 import edu.pw.aicatching.network.AICatchingApiService
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,7 +19,7 @@ class UserViewModel : ViewModel() {
     var userLiveData: MutableLiveData<User?> = MutableLiveData()
     val userPreferencesLiveData: MutableLiveData<UserPreferences> = MutableLiveData()
     var userErrorMessage = MutableLiveData<String>()
-    var loggingMessage = MutableLiveData<Map<String, String>?>()
+    var userPreferencesErrorMessage = MutableLiveData<String>()
     var loggingErrorMessage = MutableLiveData<String>()
 
     var inspirationLiveData: MutableLiveData<Map<String, String>> = MutableLiveData()
@@ -65,9 +67,19 @@ class UserViewModel : ViewModel() {
         })
     }
 
-    fun updateUserPhoto(uri: Uri) {
-        print(uri)
-//        val response = service.updateUserPhoto()
+    fun updateUserPhoto(image: ByteArray) {
+        val reqFile: RequestBody = image.let { RequestBody.create(MediaType.parse("multipart/form-data"), it) }
+        val body = reqFile.let { MultipartBody.Part.createFormData("photo", "photo-name", it) }
+        val response = body.let { service.updateUserPhoto(it) }
+        response.enqueue(object : Callback<UserPreferences> {
+            override fun onResponse(call: Call<UserPreferences>, response: Response<UserPreferences>) {
+                userPreferencesLiveData.postValue(response.body())
+            }
+
+            override fun onFailure(call: Call<UserPreferences>, t: Throwable) {
+                userPreferencesErrorMessage.postValue(t.message)
+            }
+        })
     }
 
     fun updateUserPreferences(preferences: UserPreferences) {

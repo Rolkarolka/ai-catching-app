@@ -18,6 +18,7 @@ interface AICatchingApiService {
     @GET("user/inspiration")
     fun getInspiration(): Call<Map<String, String>>
 
+    @Multipart
     @POST("user/preferences/update_photo")
     fun updateUserPhoto(@Part photo: MultipartBody.Part): Call<UserPreferences>
 
