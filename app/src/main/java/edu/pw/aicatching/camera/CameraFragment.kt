@@ -1,9 +1,11 @@
 package edu.pw.aicatching.camera
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
+import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -16,10 +18,11 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import edu.pw.aicatching.R
+import edu.pw.aicatching.viewModels.ClothViewModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlinx.android.synthetic.main.fragment_camera.*
@@ -28,7 +31,7 @@ import kotlinx.android.synthetic.main.fragment_camera.view.*
 class CameraFragment : Fragment() {
 
     private var imageCapture: ImageCapture? = null
-
+    private val viewModel: ClothViewModel by activityViewModels()
     private lateinit var cameraExecutor: ExecutorService
 
     override fun onCreateView(
@@ -83,11 +86,11 @@ class CameraFragment : Fragment() {
                     executor,
                     object : ImageCapture.OnImageCapturedCallback() {
 
+                        @SuppressLint("UnsafeOptInUsageError")
                         override fun onCaptureSuccess(image: ImageProxy) {
                             super.onCaptureSuccess(image)
-                            // TODO send to server
-                            val bundle = bundleOf("clothCategory" to 1, "clothImage" to "https://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631300503690E01_DXXX.jpg")
-                            view?.let { Navigation.findNavController(it).navigate(R.id.clothDescriptionFragment, bundle) }
+                            viewModel.createGarment(image.image?.toByteArray())
+                            view?.let { Navigation.findNavController(it).navigate(R.id.clothDescriptionFragment) }
                         }
 
                         override fun onError(exc: ImageCaptureException) {
@@ -172,4 +175,12 @@ class CameraFragment : Fragment() {
                 }
             }.toTypedArray()
     }
+}
+
+fun Image.toByteArray(): ByteArray { // TODO
+    val buffer = planes[0].buffer
+    buffer.rewind()
+    val bytes = ByteArray(buffer.capacity())
+    buffer.get(bytes)
+    return bytes
 }
