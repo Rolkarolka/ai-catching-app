@@ -118,8 +118,7 @@ class UserDetailsFragment : Fragment() {
 
         favColorPickerView.setColorListener(ColorEnvelopeListener { envelope, fromUser ->
             favouriteColorView.backgroundTintList = ColorStateList.valueOf(envelope.color)
-//            val color = Color.from("#" + envelope.hexCode)
-            val color = Color.from("#00FFFF")
+            val color = Color.from(envelope.argb)
             if (color != null) {
                 changedPrefValuesMap["favouriteColor"] = color.name
             }

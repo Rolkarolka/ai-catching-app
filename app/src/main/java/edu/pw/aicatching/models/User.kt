@@ -1,6 +1,8 @@
 package edu.pw.aicatching.models
 
 import com.squareup.moshi.Json
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 data class User(
     @Json(name = "user_id")
@@ -23,7 +25,7 @@ data class UserPreferences(
     @Json(name="favorite_color")
     val favouriteColor: Color? = null
 ) {
-    constructor(photoUrl: String?, shoeSize: String?, clothSize: String?, favouriteColor: String?) :this(photoUrl, shoeSize, ClothSize.from(clothSize), Color.from(favouriteColor))
+//    constructor(photoUrl: String?, shoeSize: String?, clothSize: String?, favouriteColor: String?) :this(photoUrl, shoeSize, ClothSize.from(clothSize), Color.from(favouriteColor))
 }
 
 class Credentials(
@@ -58,7 +60,31 @@ enum class Color(val hexValue: String) {
     WHITE( "#FFFFFF"),
     YELLOW( "#FFFF00");
 
+
     companion object {
-        infix fun from(hexValue: String?): Color? = if (hexValue != null) Color.values().firstOrNull { it.hexValue == hexValue } else null // TODO nearby
-    }
+        private fun String.hexToIntArray(): IntArray {
+            val code = this.removePrefix("#").takeLast(6)
+            val red = code.substring(0,2)
+            val green = code.substring(2,4)
+            val blue = code.substring(4,6)
+            return intArrayOf(red.toInt(16), green.toInt(16), blue.toInt(16))
+        }
+
+        private fun countDistance(c1: IntArray, c2: IntArray): Double {
+            return sqrt((c2[0]-c1[0]).toDouble().pow(2) + (c2[1]-c1[1]).toDouble().pow(2) + (c2[2]-c1[2]).toDouble().pow(2))
+        }
+
+        infix fun from(argbValue: IntArray?): Color? =
+            if (argbValue != null) {
+                var closest = AQUA
+                for (color in values()) {
+                    if (countDistance(argbValue.takeLast(3).toIntArray(), closest.hexValue.hexToIntArray()) > countDistance(argbValue.takeLast(3).toIntArray(), color.hexValue.hexToIntArray())) {
+                        closest = color
+                    }
+                }
+
+                closest
+            } else null
+        }
+
 }

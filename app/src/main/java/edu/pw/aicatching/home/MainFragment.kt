@@ -15,7 +15,6 @@ import edu.pw.aicatching.R
 import edu.pw.aicatching.viewModels.UserViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
-import kotlinx.android.synthetic.main.item_cloth.view.*
 import kotlinx.android.synthetic.main.view_top_settings.*
 
 class MainFragment : Fragment() {
@@ -52,7 +51,8 @@ class MainFragment : Fragment() {
         }
 
         viewModel.userPreferencesLiveData.observe(viewLifecycleOwner) {
-            viewModel.userLiveData.value =
+            viewModel.userLiveData.value = viewModel.userLiveData
+                .value?.copy(preferences = it)
         }
 
         viewModel.inspirationLiveData.observe(viewLifecycleOwner) {
