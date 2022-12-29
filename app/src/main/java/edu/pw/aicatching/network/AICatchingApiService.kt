@@ -3,8 +3,10 @@ package edu.pw.aicatching.network
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import edu.pw.aicatching.models.Cloth
+import edu.pw.aicatching.models.ClothAttributes
 import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.models.User
+import edu.pw.aicatching.models.UserPreferences
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -13,20 +15,46 @@ import retrofit2.http.*
 
 interface AICatchingApiService {
 
+    @GET("user/inspiration")
+    fun getInspiration(): Call<Map<String, String>>
+
+    @Multipart
+    @POST("user/preferences/update_photo")
+    fun updateUserPhoto(@Part photo: MultipartBody.Part): Call<UserPreferences>
+
+    @POST("user/preferences/update")
+    fun updateUserPreferences(@Body new_preferences: UserPreferences): Call<UserPreferences>
+
+    @PUT("user/login_session")
+    fun putLogIn(@Body credentials: Credentials): Call<User>
+
+    @DELETE("user/logout_session")
+    fun deleteSession(): Call<Void>
+
+    @DELETE("user/delete")
+    fun deleteUser(): Call<Void>
+
     @GET("garment/wardrobe")
     fun getWardrobe(): Call<List<Cloth>>
 
     @GET("garment/wardrobe")
     fun getOutfit(): Call<List<Cloth>>
 
-    @POST("user/login_session")
-    fun postLogIn(@Body credentials: Credentials): Call<User>
+    @DELETE("garment/delete")
+    fun deleteGarment(@Query("garment_id") garmentID: Int)
 
-    @DELETE("user/logout_session")
-    fun deleteSession()
+    @GET("garment/attributes")
+    fun getGarmentAttributes(@Query("garment_id") garmentID: Int): Call<ClothAttributes>
 
-    @DELETE("user/delete")
-    fun deleteUser(): Call<Response>
+    @GET("garment/available_attributes")
+    fun getAttributesValue(): Call<Map<String, List<String>>>
+
+    @Multipart
+    @POST("garment/create")
+    fun postGarment(@Part photo: MultipartBody.Part): Call<Cloth>
+
+    @PUT("garment/edit")
+    fun putEditAttributes(@Query("garment_id") garmentID: Int, @Body attributes: ClothAttributes): Call<Cloth>
 
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"
