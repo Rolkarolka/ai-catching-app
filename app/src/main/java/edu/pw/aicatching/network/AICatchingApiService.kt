@@ -1,6 +1,5 @@
 package edu.pw.aicatching.network
 
-import com.squareup.moshi.Json
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import edu.pw.aicatching.models.Cloth
@@ -8,7 +7,6 @@ import edu.pw.aicatching.models.ClothAttributes
 import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.models.User
 import okhttp3.*
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory

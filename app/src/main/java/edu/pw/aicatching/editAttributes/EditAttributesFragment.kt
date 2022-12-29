@@ -83,4 +83,3 @@ class EditAttributesFragment : Fragment() {
     private fun String?.compareChange(prevValue: String?) =
         if (this == prevValue || this.isNullOrBlank()) null else this
 }
-
