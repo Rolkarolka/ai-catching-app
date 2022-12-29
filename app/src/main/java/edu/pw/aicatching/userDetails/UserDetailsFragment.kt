@@ -124,7 +124,7 @@ class UserDetailsFragment : Fragment() {
         }
 
         favColorPickerView.setColorListener(
-            ColorEnvelopeListener { envelope, fromUser ->
+            ColorEnvelopeListener { envelope, _ ->
                 favouriteColorView.backgroundTintList = ColorStateList.valueOf(envelope.color)
                 val color = Color.from(envelope.argb)
                 if (color != null) {
