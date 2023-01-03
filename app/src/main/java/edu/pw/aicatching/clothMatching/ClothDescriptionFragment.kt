@@ -1,11 +1,14 @@
 package edu.pw.aicatching.clothMatching
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentClothDescriptionBinding
+import edu.pw.aicatching.models.Cloth
 import edu.pw.aicatching.models.ClothAttributes
 import edu.pw.aicatching.models.asMap
 import edu.pw.aicatching.viewModels.ClothViewModel
@@ -22,8 +26,10 @@ import kotlinx.android.synthetic.main.fragment_cloth_description.*
 import kotlinx.android.synthetic.main.fragment_cloth_description.view.*
 import kotlinx.android.synthetic.main.item_cloth.view.*
 
+
 class ClothDescriptionFragment : Fragment() {
     private val viewModel: ClothViewModel by activityViewModels()
+    private lateinit var viewedCloth: Cloth // TODO bug clicking to cloth description in cloth description
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,17 +52,17 @@ class ClothDescriptionFragment : Fragment() {
         viewModel.outfitErrorMessage.observe(
             viewLifecycleOwner
         ) { Log.d(this::class.simpleName, "Creating new observer on outfitErrorMessage") }
-        viewModel.getOutfit()
 
         viewModel.mainCloth.observe(
             viewLifecycleOwner
-        ) {
+        ) { it ->
             val imgUri = it.imgSrcUrl.toUri().buildUpon()?.scheme("https")?.build()
             view.clothCategory.text = it.part ?: "Cloth"
             view.clothImage.load(imgUri) {
                 placeholder(R.drawable.ic_loading)
                 error(R.drawable.ic_damage_image)
             }
+            viewModel.getOutfit(it.garmentID)
         }
 
         viewModel.mainCloth.value?.garmentID?.let { viewModel.getAttributes(it) }

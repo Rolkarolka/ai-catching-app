@@ -30,8 +30,8 @@ class ClothViewModel : ViewModel() {
     val availableAttributesValuesErrorMessage = MutableLiveData<String>()
     val mainClothErrorMessage = MutableLiveData<String>()
 
-    fun getOutfit() {
-        val response = service.getOutfit()
+    fun getOutfit(garmentID: Int) {
+        val response = service.getOutfit(garmentID)
         response.enqueue(object : Callback<List<Cloth>> {
             override fun onResponse(call: Call<List<Cloth>>, response: Response<List<Cloth>>) {
                 outfitList.postValue(response.body())

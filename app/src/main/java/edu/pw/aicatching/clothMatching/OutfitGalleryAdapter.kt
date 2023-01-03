@@ -13,9 +13,14 @@ class OutfitGalleryAdapter(
 
     private var cloths = mutableListOf<Cloth>()
 
-    fun setClothList(cloths: List<Cloth>) {
-        this.cloths = cloths.toMutableList()
-        notifyDataSetChanged()
+    fun setClothList(cloths: List<Cloth>?) {
+        if (cloths == null) {
+            this.cloths = mutableListOf()
+        } else {
+            this.cloths = cloths.toMutableList()
+            notifyDataSetChanged()
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothViewHolder {

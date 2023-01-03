@@ -37,8 +37,8 @@ interface AICatchingApiService {
     @GET("garment/wardrobe")
     fun getWardrobe(): Call<List<Cloth>>
 
-    @GET("garment/wardrobe")
-    fun getOutfit(): Call<List<Cloth>>
+    @GET("garment/outfit")
+    fun getOutfit(@Query("garment_id") garmentID: Int): Call<List<Cloth>>
 
     @GET("garment/attributes")
     fun getGarmentAttributes(@Query("garment_id") garmentID: Int): Call<ClothAttributes>
@@ -49,25 +49,12 @@ interface AICatchingApiService {
     @Multipart
     @POST("garment/create")
     fun postGarment(@Part photo: MultipartBody.Part): Call<Cloth>
-
-    @PUT("garment/edit")
-    fun putEditAttributes(@Query("garment_id") garmentID: Int, @Body attributes: ClothAttributes): Call<Cloth>
 
     @DELETE("garment/delete")
     fun deleteGarment(@Query("garment_id") garmentID: Int)
 
-    @GET("garment/attributes")
-    fun getGarmentAttributes(@Query("garment_id") garmentID: Int): Call<ClothAttributes>
-
-    @GET("garment/available_attributes")
-    fun getAttributesValue(): Call<Map<String, List<String>>>
-
-    @Multipart
-    @POST("garment/create")
-    fun postGarment(@Part photo: MultipartBody.Part): Call<Cloth>
-
     @PUT("garment/edit")
-    fun putEditAttributes(@Query("garment_id") garmentID: Int, @Body attributes: ClothAttributes): Call<Map<String, Int>>
+    fun putEditAttributes(@Query("garment_id") garmentID: Int, @Body new_attributes: ClothAttributes): Call<Map<String, Int>>
 
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"
@@ -106,7 +93,7 @@ internal class CookieInterceptor : Interceptor {
         }
 
         val response = chain.proceed(request)
-        if (cookie == null) {
+        if (cookie == null && response != null) {
             cookie = response.headers("set-cookie")[0]
         }
         return response
