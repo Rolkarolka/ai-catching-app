@@ -93,7 +93,7 @@ internal class CookieInterceptor : Interceptor {
         }
 
         val response = chain.proceed(request)
-        if (cookie == null && response != null) {
+        if (cookie == null && response.isSuccessful) {
             cookie = response.headers("set-cookie")[0]
         }
         return response

@@ -78,7 +78,7 @@ class WardrobeFragment : Fragment() {
 
         if (text.isNotEmpty()) {
             for (cloth in clothListCopy) {
-                if (cloth.part == text) {
+                if (cloth.part?.lowercase()?.contains(text.lowercase()) == true) {
                     filteredCloths.add(cloth)
                 }
             }
