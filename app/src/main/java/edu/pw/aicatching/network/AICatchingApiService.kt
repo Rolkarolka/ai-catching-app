@@ -51,7 +51,7 @@ interface AICatchingApiService {
     fun postGarment(@Part photo: MultipartBody.Part): Call<Cloth>
 
     @DELETE("garment/delete")
-    fun deleteGarment(@Query("garment_id") garmentID: Int)
+    fun deleteGarment(@Query("garment_id") garmentID: Int): Call<Void>
 
     @PUT("garment/edit")
     fun putEditAttributes(@Query("garment_id") garmentID: Int, @Body new_attributes: ClothAttributes): Call<Map<String, Int>>
