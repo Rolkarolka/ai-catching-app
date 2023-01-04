@@ -40,6 +40,10 @@ class MainActivity : AppCompatActivity() {
             if (navController.currentDestination?.id == R.id.clothDescriptionFragment &&
                 navController.popBackStack(R.id.wardrobeFragment, false)
             ) {
+            } else if (navController.currentDestination?.id == R.id.clothDescriptionFragment &&
+                navController.popBackStack(R.id.cameraFragment, false)
+            ){
+
             } else {
                 navController.popBackStack()
             }

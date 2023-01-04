@@ -68,7 +68,7 @@ class EditAttributesFragment : Fragment() {
             fabric = changedAttrValuesMap["fabric"].compareChange(viewModel.mainClothAttributes.value?.fabric)
         )
         viewModel.mainCloth.value?.garmentID?.let { clothID ->
-            viewModel.updateClothAttributes(clothID, updatedClothesAttributes) // TODO this need to update also attributes for view
+            viewModel.updateClothAttributes(clothID, updatedClothesAttributes)
         }
         super.onDestroyView()
     }
