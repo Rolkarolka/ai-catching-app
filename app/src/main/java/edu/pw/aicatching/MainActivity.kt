@@ -37,12 +37,12 @@ class MainActivity : AppCompatActivity() {
         main_toolbar.setNavigationOnClickListener { view ->
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
             val navController = navHostFragment.navController
-            if(navController.currentDestination?.id == R.id.clothDescriptionFragment &&
-                navController.popBackStack(R.id.wardrobeFragment, false)) {
+            if (navController.currentDestination?.id == R.id.clothDescriptionFragment &&
+                navController.popBackStack(R.id.wardrobeFragment, false)
+            ) {
             } else {
                 navController.popBackStack()
             }
         }
     }
-
 }

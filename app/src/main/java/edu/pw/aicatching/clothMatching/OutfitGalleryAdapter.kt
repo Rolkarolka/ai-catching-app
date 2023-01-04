@@ -20,7 +20,6 @@ class OutfitGalleryAdapter(
             this.cloths = cloths.toMutableList()
             notifyDataSetChanged()
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothViewHolder {

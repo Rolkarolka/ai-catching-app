@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentClothDescriptionBinding
-import edu.pw.aicatching.models.Cloth
 import edu.pw.aicatching.models.ClothAttributes
 import edu.pw.aicatching.models.asMap
 import edu.pw.aicatching.viewModels.ClothViewModel
@@ -22,7 +21,6 @@ import kotlin.reflect.full.memberProperties
 import kotlinx.android.synthetic.main.fragment_cloth_description.*
 import kotlinx.android.synthetic.main.fragment_cloth_description.view.*
 import kotlinx.android.synthetic.main.item_cloth.view.*
-
 
 class ClothDescriptionFragment : Fragment() {
     private val viewModel: ClothViewModel by activityViewModels()
