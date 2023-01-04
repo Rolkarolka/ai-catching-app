@@ -92,7 +92,7 @@
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/clothSizeSpinner"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_margin="10dp"
         style="@style/Spinner"
         app:layout_constraintTop_toBottomOf="@id/colorSectionLineBottom"
@@ -114,7 +114,7 @@
         android:id="@+id/shoeSizeSpinner"
         android:layout_width="300dp"
         android:layout_margin="10dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         style="@style/Spinner"
         app:layout_constraintTop_toBottomOf="@id/clothSizeSpinner"
         app:layout_constraintStart_toEndOf="@id/shoeSizeLabel"
