@@ -1,15 +1,11 @@
 package edu.pw.aicatching
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -34,12 +30,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
         appBarConfiguration = AppBarConfiguration(
-            topLevelDestinationIds = setOf(R.id.mainFragment, R.id.authorizationFragment),
-            fallbackOnNavigateUpListener = ::onSupportNavigateUp
+            topLevelDestinationIds = setOf(R.id.mainFragment, R.id.authorizationFragment)
         )
         setSupportActionBar(main_toolbar)
         main_toolbar.setupWithNavController(navController, appBarConfiguration)
+        main_toolbar.setNavigationOnClickListener { view ->
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            val navController = navHostFragment.navController
+            if(navController.currentDestination?.id == R.id.clothDescriptionFragment &&
+                navController.popBackStack(R.id.wardrobeFragment, false)) {
+            } else {
+                navController.popBackStack()
+            }
+        }
     }
 
-    override fun onSupportNavigateUp() = navController.navigateUp(appBarConfiguration)
 }
