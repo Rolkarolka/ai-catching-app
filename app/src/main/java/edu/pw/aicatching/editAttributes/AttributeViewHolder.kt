@@ -22,10 +22,10 @@ class AttributeViewHolder(
 
         editAttributeItemBinding.clothAttributeSpinner.apply {
             adapter = ArrayAdapter(
-                    this@AttributeViewHolder.itemView.context,
-                    simple_spinner_dropdown_item,
-                    clothAttributeList
-                )
+                this@AttributeViewHolder.itemView.context,
+                simple_spinner_dropdown_item,
+                clothAttributeList
+            )
             setSelection(clothAttributeList.indexOf(attributeValue))
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(

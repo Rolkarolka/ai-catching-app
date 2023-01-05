@@ -45,6 +45,16 @@ class EditAttributesFragment : Fragment() {
         return view
     }
 
+    override fun onDestroyView() {
+        viewModel.mainCloth.value?.garmentID?.let { clothID ->
+            compareGarmentChanges()?.let {
+                viewModel.updateClothAttributes(clothID, it)
+            }
+        }
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun RecyclerView.setAttributesList() {
         val editAttributesAdapter = EditAttributeAdapter { key, value ->
             changedAttrValuesMap[key] = value
@@ -60,28 +70,16 @@ class EditAttributesFragment : Fragment() {
         adapter = editAttributesAdapter
     }
 
-     private fun ItemClothBinding.loadImage(url: String?) {
-         val imgUri =url?.toUri()?.buildUpon()?.scheme("https")?.build()
-         clothImage.load(imgUri) {
-             placeholder(R.drawable.ic_loading)
-             error(R.drawable.ic_damage_image)
-         }
-     }
+    private fun ItemClothBinding.loadImage(url: String?) {
+        val imgUri = url?.toUri()?.buildUpon()?.scheme("https")?.build()
+        clothImage.load(imgUri) {
+            placeholder(R.drawable.ic_loading)
+            error(R.drawable.ic_damage_image)
+        }
+    }
 
     private fun ItemClothBinding.setCategory(category: String?) {
         clothCategory.text = category ?: "Cloth"
-    }
-
-
-
-    override fun onDestroyView() {
-        viewModel.mainCloth.value?.garmentID?.let { clothID ->
-            compareGarmentChanges()?.let {
-                viewModel.updateClothAttributes(clothID, it)
-            }
-        }
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun compareGarmentChanges(): ClothAttributes? {
@@ -106,5 +104,4 @@ class EditAttributesFragment : Fragment() {
 
     private fun String?.compareChange(prevValue: String?) =
         if (this == prevValue || this.isNullOrBlank()) null else this
-
 }

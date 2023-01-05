@@ -14,9 +14,9 @@ import coil.load
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentMainBinding
 import edu.pw.aicatching.databinding.ViewTopSettingsBinding
-import edu.pw.aicatching.models.User
-import edu.pw.aicatching.models.Color as FavColor
 import edu.pw.aicatching.models.ClothSize
+import edu.pw.aicatching.models.Color as FavColor
+import edu.pw.aicatching.models.User
 import edu.pw.aicatching.viewModels.UserViewModel
 
 class MainFragment : Fragment() {
@@ -70,7 +70,6 @@ class MainFragment : Fragment() {
                     }
                 }
             }
-
         }
         viewModel.userPreferencesLiveData.observe(viewLifecycleOwner) {
             viewModel.userLiveData.value = viewModel.userLiveData.value?.copy(preferences = it)
@@ -105,7 +104,6 @@ class MainFragment : Fragment() {
         else
             "Shoe\nSize"
     }
-
 
     private fun setInspirationImage() {
         viewModel.inspirationLiveData.observe(viewLifecycleOwner) {

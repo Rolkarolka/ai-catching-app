@@ -35,8 +35,10 @@ class EditAttributeAdapter(
         val formattedKey = key.split(Regex(CAMELCASE_REGEX_SPLITTING_WORDS)).joinToString(separator = "_").lowercase()
         val currentValue = attributes[key]
         availableValues[formattedKey]?.let {
-            holder.bind(formattedKey, currentValue,
-                it, listener)
+            holder.bind(
+                formattedKey, currentValue,
+                it, listener
+            )
         }
     }
 
