@@ -52,6 +52,11 @@ class MainFragment : Fragment() {
         )
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setMainToolbarUserInfo() {
         if (viewModel.userLiveData.value != null) {
             viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
@@ -111,10 +116,5 @@ class MainFragment : Fragment() {
                 error(R.drawable.ic_damage_image)
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

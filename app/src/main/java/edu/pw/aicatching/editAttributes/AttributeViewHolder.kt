@@ -19,20 +19,26 @@ class AttributeViewHolder(
     ) {
         editAttributeItemBinding.clothAttributeLabel.text = attributeName
         val clothAttributeList = availableValues.toMutableList()
-        if (attributeValue == null) {
-            clothAttributeList.add(0, "")
-        }
 
-        editAttributeItemBinding.clothAttributeSpinner.adapter =
-            ArrayAdapter(this.itemView.context, simple_spinner_dropdown_item, clothAttributeList)
-        editAttributeItemBinding.clothAttributeSpinner.setSelection(clothAttributeList.indexOf(attributeValue))
+        editAttributeItemBinding.clothAttributeSpinner.apply {
+            adapter = ArrayAdapter(
+                    this@AttributeViewHolder.itemView.context,
+                    simple_spinner_dropdown_item,
+                    clothAttributeList
+                )
+            setSelection(clothAttributeList.indexOf(attributeValue))
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parentView: AdapterView<*>?,
+                    selectedItemView: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    listener(attributeName, clothAttributeList[position])
+                }
 
-        object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                listener(attributeName, clothAttributeList[position])
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }.also { editAttributeItemBinding.clothAttributeSpinner.onItemSelectedListener = it }
+        }
     }
 }

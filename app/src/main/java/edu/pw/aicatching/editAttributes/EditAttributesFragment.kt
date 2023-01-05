@@ -8,8 +8,11 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentEditAttributesBinding
+import edu.pw.aicatching.databinding.ItemClothBinding
 import edu.pw.aicatching.models.ClothAttributes
 import edu.pw.aicatching.models.asMap
 import edu.pw.aicatching.viewModels.ClothViewModel
@@ -27,56 +30,81 @@ class EditAttributesFragment : Fragment() {
     ): View {
         _binding = FragmentEditAttributesBinding.inflate(inflater, container, false)
         val view = binding.root
+
         viewModel.getValuesOfClothAttributes()
-        val adapter = EditAttributeAdapter { key, value ->
+        binding.editAttributesList.apply {
+            setAttributesList()
+        }
+        viewModel.mainCloth.value?.let { garment ->
+            binding.item.apply {
+                loadImage(garment.imgSrcUrl)
+                setCategory(garment.part)
+            }
+        }
+
+        return view
+    }
+
+    private fun RecyclerView.setAttributesList() {
+        val editAttributesAdapter = EditAttributeAdapter { key, value ->
             changedAttrValuesMap[key] = value
         }
         viewModel.availableAttributesValues.observe(
             viewLifecycleOwner
-        ) {
-            adapter.setAttributesValues(it)
+        ) { editAttributesAdapter.setAttributesValues(it) }
+
+        val attributes = viewModel.mainClothAttributes.value ?: ClothAttributes(null, null, null)
+        editAttributesAdapter.setAttributesMap(attributes.asMap())
+
+        layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        adapter = editAttributesAdapter
+    }
+
+     private fun ItemClothBinding.loadImage(url: String?) {
+         val imgUri =url?.toUri()?.buildUpon()?.scheme("https")?.build()
+         clothImage.load(imgUri) {
+             placeholder(R.drawable.ic_loading)
+             error(R.drawable.ic_damage_image)
+         }
+     }
+
+    private fun ItemClothBinding.setCategory(category: String?) {
+        clothCategory.text = category ?: "Cloth"
+    }
+
+
+
+    override fun onDestroyView() {
+        viewModel.mainCloth.value?.garmentID?.let { clothID ->
+            compareGarmentChanges()?.let {
+                viewModel.updateClothAttributes(clothID, it)
+            }
         }
+        super.onDestroyView()
+        _binding = null
+    }
 
-        if (viewModel.mainClothAttributes.value != null) {
-            viewModel.mainClothAttributes.value?.asMap()?.let { adapter.setAttributesMap(it) }
-        } else {
-            ClothAttributes(null, null, null).asMap().let { adapter.setAttributesMap(it) }
+    private fun compareGarmentChanges(): ClothAttributes? {
+        viewModel.mainClothAttributes.value?.let { attributes ->
+            return ClothAttributes(
+                color = changedAttrValuesMap["color"]
+                    .compareChange(attributes.color),
+                texture = changedAttrValuesMap["texture"]
+                    .compareChange(attributes.texture),
+                sleeveLength = changedAttrValuesMap["sleeve_length"]
+                    .compareChange(attributes.sleeveLength),
+                garmentLength = changedAttrValuesMap["garment_length"]
+                    .compareChange(attributes.garmentLength),
+                necklineType = changedAttrValuesMap["neckline_type"]
+                    .compareChange(attributes.necklineType),
+                fabric = changedAttrValuesMap["fabric"]
+                    .compareChange(attributes.fabric)
+            ) // TODO if none parameter has changed return null
         }
-
-        binding.editAttributesList.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        }
-        binding.editAttributesList.adapter = adapter
-
-        val imgUri = viewModel.mainCloth.value?.imgSrcUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-        binding.item.clothCategory.text = viewModel.mainCloth.value?.part ?: "Cloth"
-        binding.item.clothImage.load(imgUri)
-
-        return view
+        return null
     }
 
     private fun String?.compareChange(prevValue: String?) =
         if (this == prevValue || this.isNullOrBlank()) null else this
 
-    override fun onDestroyView() {
-        val updatedClothesAttributes = ClothAttributes(
-            color = changedAttrValuesMap["color"]
-                .compareChange(viewModel.mainClothAttributes.value?.color),
-            texture = changedAttrValuesMap["texture"]
-                .compareChange(viewModel.mainClothAttributes.value?.texture),
-            sleeveLength = changedAttrValuesMap["sleeve_length"]
-                .compareChange(viewModel.mainClothAttributes.value?.sleeveLength),
-            garmentLength = changedAttrValuesMap["garment_length"]
-                .compareChange(viewModel.mainClothAttributes.value?.garmentLength),
-            necklineType = changedAttrValuesMap["neckline_type"]
-                .compareChange(viewModel.mainClothAttributes.value?.necklineType),
-            fabric = changedAttrValuesMap["fabric"]
-                .compareChange(viewModel.mainClothAttributes.value?.fabric)
-        )
-        viewModel.mainCloth.value?.garmentID?.let { clothID ->
-            viewModel.updateClothAttributes(clothID, updatedClothesAttributes)
-        }
-        super.onDestroyView()
-        _binding = null
-    }
 }
