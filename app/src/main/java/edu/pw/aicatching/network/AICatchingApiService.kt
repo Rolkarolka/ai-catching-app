@@ -7,21 +7,21 @@ import edu.pw.aicatching.models.ClothAttributes
 import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.models.User
 import edu.pw.aicatching.models.UserPreferences
-import okhttp3.MultipartBody
 import okhttp3.Interceptor
-import okhttp3.Response
-import okhttp3.Request
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Multipart
-import retrofit2.http.PUT
-import retrofit2.http.DELETE
-import retrofit2.http.Part
 import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Query
 
 interface AICatchingApiService {
@@ -107,7 +107,7 @@ internal class CookieInterceptor : Interceptor {
         }
 
         val response = chain.proceed(request)
-        if (cookie == null && response.isSuccessful) {
+        if (cookie == null && response.isSuccessful) { // TODO
             cookie = response.headers("set-cookie")[0]
         }
         return response

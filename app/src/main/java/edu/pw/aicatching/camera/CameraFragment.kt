@@ -41,7 +41,7 @@ class CameraFragment : Fragment() {
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = _binding!!
 
-    val requestPermissionLauncher = registerForActivityResult(
+    private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
@@ -54,7 +54,6 @@ class CameraFragment : Fragment() {
             ).show()
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

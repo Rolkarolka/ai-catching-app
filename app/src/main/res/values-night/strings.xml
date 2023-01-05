@@ -24,4 +24,5 @@
     <string name="web_client_id">1030459182-pbc99pgfovl6244mlhm0i7j8lc0ps4ee.apps.googleusercontent.com</string>
     <string name="welcome">Welcome in your outfit creator!</string>
     <string name="editAttributeValue">Attribute Value</string>
+    <string name="search">Search</string>
 </resources>

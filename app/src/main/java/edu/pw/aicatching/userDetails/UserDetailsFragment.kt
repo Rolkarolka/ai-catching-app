@@ -64,8 +64,10 @@ class UserDetailsFragment : Fragment() {
         val updatedUserPreferences = UserPreferences(
             shoeSize = changedPrefValuesMap["shoeSize"].toString()
                 .compareChange(viewModel.userLiveData.value?.preferences?.shoeSize.toString()),
-            clothSize = ClothSize.from(changedPrefValuesMap["clothSize"]
-                .toString().compareChange(viewModel.userLiveData.value?.preferences?.clothSize?.name.toString())),
+            clothSize = ClothSize.from(
+                changedPrefValuesMap["clothSize"]
+                    .toString().compareChange(viewModel.userLiveData.value?.preferences?.clothSize?.name.toString())
+            ),
             favouriteColor = changedPrefValuesMap["favouriteColor"]
                 .toString().compareChange(viewModel.userLiveData.value?.preferences?.favouriteColor?.name.toString())
                 ?.let { Color.valueOf(it) }

@@ -81,9 +81,9 @@ enum class Color(val hexValue: String) {
 
         private fun countDistance(c1: IntArray, c2: IntArray): Double {
             return sqrt(
-                (c2[0] - c1[0]).toDouble().pow(2)
-                    + (c2[1] - c1[1]).toDouble().pow(2)
-                    + (c2[2] - c1[2]).toDouble().pow(2)
+                (c2[0] - c1[0]).toDouble().pow(2) +
+                    (c2[1] - c1[1]).toDouble().pow(2) +
+                    (c2[2] - c1[2]).toDouble().pow(2)
             )
         }
 
@@ -95,8 +95,9 @@ enum class Color(val hexValue: String) {
                             argbValue.takeLast(RGB_PLACES).toIntArray(),
                             closest.hexValue.hexToIntArray()
                         ) > countDistance(
-                            argbValue.takeLast(RGB_PLACES).toIntArray(),
-                            color.hexValue.hexToIntArray())
+                                argbValue.takeLast(RGB_PLACES).toIntArray(),
+                                color.hexValue.hexToIntArray()
+                            )
                     ) {
                         closest = color
                     }

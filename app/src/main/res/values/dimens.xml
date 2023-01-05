@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="outfit_of_the_day_padding">8dp</dimen>
+<!-- TODO other dimens here -->
 </resources>

@@ -2,10 +2,10 @@ package edu.pw.aicatching.wardrobe
 
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
@@ -66,24 +66,27 @@ class WardrobeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
-                inflater.inflate(R.menu.toolbar_main, menu)
-                val searchView = menu.findItem(R.id.actionSearch).actionView as SearchView
-                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String): Boolean {
-                        return false
-                    }
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
+                    inflater.inflate(R.menu.toolbar_main, menu)
+                    val searchView = menu.findItem(R.id.actionSearch).actionView as SearchView
+                    searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                        override fun onQueryTextSubmit(query: String): Boolean {
+                            return false
+                        }
 
-                    override fun onQueryTextChange(newText: String): Boolean {
-                        filter(newText)
-                        return false
-                    }
-                })
-            }
+                        override fun onQueryTextChange(newText: String): Boolean {
+                            filter(newText)
+                            return false
+                        }
+                    })
+                }
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean { return false }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean { return false }
+            },
+            viewLifecycleOwner, Lifecycle.State.RESUMED
+        )
     }
 
     override fun onDestroyView() {
