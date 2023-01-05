@@ -20,21 +20,25 @@ import coil.load
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import edu.pw.aicatching.R
+import edu.pw.aicatching.databinding.FragmentClothDescriptionBinding
+import edu.pw.aicatching.databinding.FragmentUserDetailsBinding
 import edu.pw.aicatching.models.ClothSize
 import edu.pw.aicatching.models.Color
 import edu.pw.aicatching.models.UserPreferences
 import edu.pw.aicatching.viewModels.UserViewModel
 import java.io.ByteArrayOutputStream
-import kotlinx.android.synthetic.main.fragment_user_details.*
 
 class UserDetailsFragment : Fragment() {
     private val viewModel: UserViewModel by activityViewModels()
     private lateinit var colorPickerManager: ColorPickerPreferenceManager
+    private var _binding: FragmentUserDetailsBinding? = null
+    private val binding get() = _binding!!
+
     private val pickMediaResult = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         if (uri != null) {
-            currentUserAvatar.setImageURI(uri)
+            binding.currentUserAvatar.setImageURI(uri)
             Log.d("UserDetailsFragment:PhotoPicker", "Selected URI: $uri")
             val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, uri))
             val stream = ByteArrayOutputStream()
@@ -51,8 +55,10 @@ class UserDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
+        val view = binding.root
         colorPickerManager = ColorPickerPreferenceManager.getInstance(this.context)
-        return inflater.inflate(R.layout.fragment_user_details, container, false)
+        return view
     }
 
     override fun onDestroyView() {
@@ -64,7 +70,10 @@ class UserDetailsFragment : Fragment() {
         )
         viewModel.updateUserPreferences(updatedUserPreferences)
         super.onDestroyView()
+        _binding = null
+
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -73,23 +82,23 @@ class UserDetailsFragment : Fragment() {
         setColorPicker()
         setAvatar()
 
-        logOutButton.setOnClickListener {
+        binding.logOutButton.setOnClickListener {
             viewModel.logOut()
             this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
         }
 
-        deleteAccountButton.setOnClickListener {
+        binding.deleteAccountButton.setOnClickListener {
             viewModel.deleteUser()
             this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
         }
     }
 
     private fun setClothSpinner(clothSizesArray: List<String>) {
-        clothSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, clothSizesArray)
+        binding.clothSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, clothSizesArray)
 
         viewModel.userLiveData.value?.preferences
             ?.let { clothSizesArray.indexOf(it.clothSize.toString()) }
-            ?.let { clothSizeSpinner.setSelection(it) }
+            ?.let { binding.clothSizeSpinner.setSelection(it) }
 
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
@@ -97,14 +106,14 @@ class UserDetailsFragment : Fragment() {
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }.also { clothSizeSpinner.onItemSelectedListener = it }
+        }.also { binding.clothSizeSpinner.onItemSelectedListener = it }
     }
 
     private fun setShoeSpinner(shoeSizesArray: List<String>) {
-        shoeSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, shoeSizesArray)
+        binding.shoeSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, shoeSizesArray)
         viewModel.userLiveData.value?.preferences
             ?.let { shoeSizesArray.indexOf(it.shoeSize) }
-            ?.let { shoeSizeSpinner.setSelection(it) }
+            ?.let { binding.shoeSizeSpinner.setSelection(it) }
 
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
@@ -112,20 +121,20 @@ class UserDetailsFragment : Fragment() {
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }.also { shoeSizeSpinner.onItemSelectedListener = it }
+        }.also { binding.shoeSizeSpinner.onItemSelectedListener = it }
     }
 
     private fun setColorPicker() {
-        favColorPickerView.preferenceName = "FavColorPicker"
+        binding.favColorPickerView.preferenceName = "FavColorPicker"
         viewModel.userLiveData.value?.preferences?.let {
             it.favouriteColor?.let { favColor ->
                 colorPickerManager.setColor("FavColorPicker", android.graphics.Color.parseColor(favColor.hexValue))
             }
         }
 
-        favColorPickerView.setColorListener(
+        binding.favColorPickerView.setColorListener(
             ColorEnvelopeListener { envelope, _ ->
-                favouriteColorView.backgroundTintList = ColorStateList.valueOf(envelope.color)
+                binding.favouriteColorView.backgroundTintList = ColorStateList.valueOf(envelope.color)
                 val color = Color.from(envelope.argb)
                 if (color != null) {
                     changedPrefValuesMap["favouriteColor"] = color.name
@@ -136,12 +145,12 @@ class UserDetailsFragment : Fragment() {
 
     private fun setAvatar() {
         viewModel.userLiveData.value?.preferences?.photoUrl?.let { photo ->
-            currentUserAvatar.load(photo.toUri().buildUpon()?.scheme("https")?.build()) {
+            binding.currentUserAvatar.load(photo.toUri().buildUpon()?.scheme("https")?.build()) {
                 placeholder(R.drawable.ic_loading)
                 error(R.drawable.ic_avatar)
             }
         }
-        changeUserPhotoButton.setOnClickListener {
+        binding.changeUserPhotoButton.setOnClickListener {
             pickMediaResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }

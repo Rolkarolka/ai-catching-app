@@ -12,20 +12,20 @@ import coil.load
 import edu.pw.aicatching.databinding.FragmentEditAttributesBinding
 import edu.pw.aicatching.models.*
 import edu.pw.aicatching.viewModels.ClothViewModel
-import kotlinx.android.synthetic.main.fragment_edit_attributes.*
-import kotlinx.android.synthetic.main.fragment_edit_attributes.view.*
-import kotlinx.android.synthetic.main.item_cloth.view.*
 
 class EditAttributesFragment : Fragment() {
     private val viewModel: ClothViewModel by activityViewModels()
     private val changedAttrValuesMap = mutableMapOf<String, String>()
+    private var _binding: FragmentEditAttributesBinding? = null
+    private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentEditAttributesBinding.inflate(inflater, container, false)
+        _binding = FragmentEditAttributesBinding.inflate(inflater, container, false)
         val view = binding.root
         viewModel.getValuesOfClothAttributes()
         val adapter = EditAttributeAdapter() { key, value ->
@@ -43,14 +43,14 @@ class EditAttributesFragment : Fragment() {
             ClothAttributes(null, null, null).asMap().let { adapter.setAttributesMap(it) }
         }
 
-        view.editAttributesList.apply {
+        binding.editAttributesList.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
-        view.editAttributesList.adapter = adapter
+        binding.editAttributesList.adapter = adapter
 
         val imgUri = viewModel.mainCloth.value?.imgSrcUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-        view.clothCategory.text = viewModel.mainCloth.value?.part ?: "Cloth"
-        view.clothImage.load(imgUri)
+        binding.item.clothCategory.text = viewModel.mainCloth.value?.part ?: "Cloth"
+        binding.item.clothImage.load(imgUri)
 
         return view
     }
@@ -71,5 +71,7 @@ class EditAttributesFragment : Fragment() {
             viewModel.updateClothAttributes(clothID, updatedClothesAttributes)
         }
         super.onDestroyView()
+        _binding = null
+
     }
 }

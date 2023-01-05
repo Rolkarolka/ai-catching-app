@@ -18,18 +18,19 @@ import edu.pw.aicatching.models.ClothAttributes
 import edu.pw.aicatching.models.asMap
 import edu.pw.aicatching.viewModels.ClothViewModel
 import kotlin.reflect.full.memberProperties
-import kotlinx.android.synthetic.main.fragment_cloth_description.*
-import kotlinx.android.synthetic.main.fragment_cloth_description.view.*
-import kotlinx.android.synthetic.main.item_cloth.view.*
 
 class ClothDescriptionFragment : Fragment() {
     private val viewModel: ClothViewModel by activityViewModels()
+    private var _binding: FragmentClothDescriptionBinding? = null
+
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentClothDescriptionBinding.inflate(inflater, container, false)
+        _binding = FragmentClothDescriptionBinding.inflate(inflater, container, false)
         val view = binding.root
 
         val adapter = OutfitGalleryAdapter { cloth ->
@@ -50,8 +51,8 @@ class ClothDescriptionFragment : Fragment() {
             viewLifecycleOwner
         ) { it ->
             val imgUri = it.imgSrcUrl.toUri().buildUpon()?.scheme("https")?.build()
-            view.clothCategory.text = it.part ?: "Cloth"
-            view.clothImage.load(imgUri) {
+            binding.item.clothCategory.text = it.part ?: "Cloth"
+            binding.item.clothImage.load(imgUri) {
                 placeholder(R.drawable.ic_loading)
                 error(R.drawable.ic_damage_image)
             }
@@ -59,16 +60,16 @@ class ClothDescriptionFragment : Fragment() {
         }
 
         viewModel.mainCloth.value?.garmentID?.let { viewModel.getAttributes(it) }
-        view.outfitMatching.apply {
+        binding.outfitMatching.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
-        view.outfitMatching.adapter = adapter
+        binding.outfitMatching.adapter = adapter
 
-        view.attributesListView.adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
+        binding.attributesListView.adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
         viewModel.mainClothAttributes.observe(
             viewLifecycleOwner
         ) {
-            view.attributesListView.adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
+            binding.attributesListView.adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
         }
 
         return view
@@ -90,7 +91,7 @@ class ClothDescriptionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        editButton.setOnClickListener(
+        binding.editButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.editAttributesFragment)
         )
     }

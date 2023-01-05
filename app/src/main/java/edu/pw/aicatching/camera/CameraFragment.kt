@@ -22,11 +22,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import edu.pw.aicatching.R
+import edu.pw.aicatching.databinding.FragmentCameraBinding
 import edu.pw.aicatching.viewModels.ClothViewModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import kotlinx.android.synthetic.main.fragment_camera.*
-import kotlinx.android.synthetic.main.fragment_camera.view.*
 
 class CameraFragment : Fragment() {
 
@@ -34,12 +33,17 @@ class CameraFragment : Fragment() {
     private val viewModel: ClothViewModel by activityViewModels()
     private lateinit var cameraExecutor: ExecutorService
 
+    private var _binding: FragmentCameraBinding? = null
+    private val binding get() = _binding!!
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewBinding = inflater.inflate(R.layout.fragment_camera, container, false)
+        _binding = FragmentCameraBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         if (allPermissionsGranted()) {
             startCamera()
@@ -50,10 +54,10 @@ class CameraFragment : Fragment() {
                 )
             }
         }
-        viewBinding.takePhotoButton.setOnClickListener { takePhoto() }
+        binding.takePhotoButton.setOnClickListener { takePhoto() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
-        return viewBinding
+        return view
     }
 
     private fun takePhoto() {
@@ -134,6 +138,12 @@ class CameraFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
     private fun startCamera() {
         val cameraProviderFuture = this.context?.let { ProcessCameraProvider.getInstance(it) }
 
@@ -144,7 +154,7 @@ class CameraFragment : Fragment() {
                     val preview = Preview.Builder()
                         .build()
                         .also { it1 ->
-                            it1.setSurfaceProvider(cameraView.surfaceProvider)
+                            it1.setSurfaceProvider(binding.cameraView.surfaceProvider)
                         }
                     imageCapture = ImageCapture.Builder().build()
                     val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA

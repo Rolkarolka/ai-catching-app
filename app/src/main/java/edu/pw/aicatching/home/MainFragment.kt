@@ -12,13 +12,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import coil.load
 import edu.pw.aicatching.R
+import edu.pw.aicatching.databinding.FragmentMainBinding
 import edu.pw.aicatching.viewModels.UserViewModel
-import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
-import kotlinx.android.synthetic.main.view_top_settings.*
 
 class MainFragment : Fragment() {
     private val viewModel: UserViewModel by activityViewModels()
+
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,24 +28,25 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel.getInspiration()
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (viewModel.userLiveData.value != null) {
             viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
-                username.text = user?.name + " " + user?.surname
+                binding.mainPageToolbar.username.text = user?.name + " " + user?.surname
                 user?.preferences?.photoUrl?.let { photo ->
-                    userAvatar.load(photo.toUri().buildUpon()?.scheme("https")?.build()) {
+                    binding.mainPageToolbar.userAvatar.load(photo.toUri().buildUpon()?.scheme("https")?.build()) {
                         placeholder(R.drawable.ic_loading)
                         error(R.drawable.ic_avatar)
                     }
                 }
-                favColorAttribute.backgroundTintList = user?.preferences?.favouriteColor
+                binding.mainPageToolbar.favColorAttribute.backgroundTintList = user?.preferences?.favouriteColor
                     ?.let { ColorStateList.valueOf(Color.parseColor(it.hexValue)) }
-                clothSizeAttribute.text = user?.preferences?.clothSize?.let { it.name } ?: "Cloth\nSize"
-                shoeSizeAttribute.text = if (user?.preferences?.shoeSize?.isNotEmpty() == true)
+                binding.mainPageToolbar.clothSizeAttribute.text = user?.preferences?.clothSize?.let { it.name } ?: "Cloth\nSize"
+                binding.mainPageToolbar.shoeSizeAttribute.text = if (user?.preferences?.shoeSize?.isNotEmpty() == true)
                     user.preferences.shoeSize
                 else
                     "Shoe\nSize"
@@ -58,22 +61,28 @@ class MainFragment : Fragment() {
         viewModel.inspirationLiveData.observe(viewLifecycleOwner) {
             val inspirationUrl = it["link"]
             val imgUri = inspirationUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-            view.inspiration.load(imgUri) {
+            binding.inspiration.load(imgUri) {
                 placeholder(R.drawable.ic_loading)
                 error(R.drawable.ic_damage_image)
             }
         }
 
-        showWardrobeButton.setOnClickListener(
+        binding.showWardrobeButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.wardrobeFragment)
         )
 
-        openCameraButton.setOnClickListener(
+        binding.openCameraButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.cameraFragment)
         )
 
-        appendUserDetails.setOnClickListener(
+        binding.mainPageToolbar.appendUserDetails.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.userDetailsFragment)
         )
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }

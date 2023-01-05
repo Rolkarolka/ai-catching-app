@@ -55,10 +55,10 @@ class ClothViewModel : ViewModel() {
     }
 
     fun createGarment(image: ByteArray?) {
-        val reqFile: RequestBody = image.let { RequestBody.create(MediaType.parse("multipart/form-data"), it) }
-        val body = reqFile.let { MultipartBody.Part.createFormData("photo", "photo-name", it) }
-        val response = body.let { service.postGarment(it) }
-        response.enqueue(object : Callback<Cloth> {
+        val reqFile: RequestBody? = image?.let { RequestBody.create(MediaType.parse("multipart/form-data"), it) }
+        val body = reqFile?.let { MultipartBody.Part.createFormData("photo", "photo-name", it) }
+        val response = body?.let { service.postGarment(it) }
+        response?.enqueue(object : Callback<Cloth> {
             override fun onResponse(call: Call<Cloth>, response: Response<Cloth>) {
                 mainCloth.postValue(response.body())
             }

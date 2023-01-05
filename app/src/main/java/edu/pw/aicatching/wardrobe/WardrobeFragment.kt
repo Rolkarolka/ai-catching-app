@@ -12,23 +12,25 @@ import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentWardrobeBinding
 import edu.pw.aicatching.models.Cloth
 import edu.pw.aicatching.viewModels.ClothViewModel
-import kotlinx.android.synthetic.main.fragment_wardrobe.view.*
 
 class WardrobeFragment : Fragment() {
     private val viewModel: ClothViewModel by activityViewModels()
 
     private lateinit var adapter: WardrobeGalleryAdapter
     private var clothListCopy = mutableListOf<Cloth>()
+    private var _binding: FragmentWardrobeBinding? = null
+    private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentWardrobeBinding.inflate(inflater)
-        val mainActivity = this
+        _binding = FragmentWardrobeBinding.inflate(inflater, container, false)
         val view = binding.root
-        view.wardrobeGallery.apply {
+        val mainActivity = this
+        binding.wardrobeGallery.apply {
             layoutManager = GridLayoutManager(mainActivity.activity, 2)
         }
 
@@ -41,7 +43,7 @@ class WardrobeFragment : Fragment() {
             viewModel.wardrobeList.value = viewModel.wardrobeList.value?.filter { it != garment }
         }
         adapter = WardrobeGalleryAdapter(listener, actionModeListener)
-        view.wardrobeGallery.adapter = adapter
+        binding.wardrobeGallery.adapter = adapter
 
         viewModel.wardrobeList.observe(
             viewLifecycleOwner
@@ -72,6 +74,12 @@ class WardrobeFragment : Fragment() {
             }
         })
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 
     private fun filter(text: String) {
         val filteredCloths = mutableListOf<Cloth>()

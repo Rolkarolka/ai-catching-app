@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".home.MainFragment">
 
-    <include layout="@layout/view_top_settings" />
+    <include
+        android:id="@+id/main_page_toolbar"
+        layout="@layout/view_top_settings" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/outfitOfTheDayFrame"

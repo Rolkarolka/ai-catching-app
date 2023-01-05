@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,10 +20,9 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import edu.pw.aicatching.R
+import edu.pw.aicatching.databinding.FragmentAuthorizationBinding
 import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.viewModels.UserViewModel
-import kotlinx.android.synthetic.main.fragment_authorization.*
-
 class AuthorizationFragment : Fragment() {
     private val viewModel: UserViewModel by activityViewModels()
 
@@ -30,6 +30,8 @@ class AuthorizationFragment : Fragment() {
     private lateinit var signInRequest: BeginSignInRequest
     private lateinit var signUpRequest: BeginSignInRequest
     private var signUpTryCounter: Int = 0
+    private var _binding: FragmentAuthorizationBinding? = null
+    private val binding get() = _binding!!
     private val oneTapLoggingResult = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
@@ -40,6 +42,10 @@ class AuthorizationFragment : Fragment() {
                     this.viewModel.logIn(
                         Credentials(email = credential.id, token = credential.googleIdToken)
                     )
+                    activity?.window?.setFlags(
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    binding.progressbar.visibility = View.VISIBLE;
                 }
             }
         } catch (e: ApiException) {
@@ -58,16 +64,22 @@ class AuthorizationFragment : Fragment() {
         }
     }
 
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewBinding = inflater.inflate(R.layout.fragment_authorization, container, false)
+        _binding = FragmentAuthorizationBinding.inflate(inflater, container, false)
+
         viewModel.userLiveData.observe(
             this.viewLifecycleOwner
         ) { user ->
             if (user != null) {
+                binding.progressbar.visibility = View.INVISIBLE
+                activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 view?.let { view ->
                     Navigation.findNavController(view).navigate(R.id.mainFragment)
                 }
@@ -89,12 +101,12 @@ class AuthorizationFragment : Fragment() {
             .setAutoSelectEnabled(true)
             .build()
 
-        return viewBinding
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        authorizationButton.setOnClickListener {
+        binding.authorizationButton.setOnClickListener {
             sign(signInRequest)
         }
     }
@@ -105,6 +117,12 @@ class AuthorizationFragment : Fragment() {
             .setServerClientId(getString(R.string.web_client_id))
             .setFilterByAuthorizedAccounts(filterByAuthorizedAccount)
             .build()
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 
     private fun sign(request: BeginSignInRequest) {
         oneTapClient.beginSignIn(request)
