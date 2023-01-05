@@ -79,6 +79,12 @@ class CameraFragment : Fragment() {
         return view
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        cameraExecutor.shutdown()
+    }
+
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
 
@@ -130,11 +136,6 @@ class CameraFragment : Fragment() {
         } == PackageManager.PERMISSION_GRANTED
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        cameraExecutor.shutdown()
-    }
 
     private fun startCamera() {
         val cameraProviderFuture = this.context?.let { ProcessCameraProvider.getInstance(it) }
@@ -165,6 +166,14 @@ class CameraFragment : Fragment() {
         }
     }
 
+    private fun Image.toByteArray(): ByteArray {
+        val buffer = planes[0].buffer
+        buffer.rewind()
+        val bytes = ByteArray(buffer.capacity())
+        buffer.get(bytes)
+        return bytes
+    }
+
     companion object {
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
@@ -176,13 +185,5 @@ class CameraFragment : Fragment() {
                     add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 }
             }.toTypedArray()
-    }
-
-    fun Image.toByteArray(): ByteArray {
-        val buffer = planes[0].buffer
-        buffer.rewind()
-        val bytes = ByteArray(buffer.capacity())
-        buffer.get(bytes)
-        return bytes
     }
 }
