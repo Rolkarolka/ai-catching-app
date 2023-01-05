@@ -49,7 +49,6 @@ class WardrobeFragment : Fragment() {
         _binding = null
     }
 
-
     private fun prepareWardrobeGalleryAdapter(view: View) {
         val wardrobeGalleryAdapter = WardrobeGalleryAdapter(chooseClothListener(view), deleteGarmentListener())
         viewModel.wardrobeList.observe(

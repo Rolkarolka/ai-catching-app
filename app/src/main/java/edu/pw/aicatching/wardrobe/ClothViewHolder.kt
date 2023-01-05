@@ -35,6 +35,5 @@ class ClothViewHolder(
             placeholder(R.drawable.ic_loading)
             error(R.drawable.ic_damage_image)
         }
-
     }
 }
