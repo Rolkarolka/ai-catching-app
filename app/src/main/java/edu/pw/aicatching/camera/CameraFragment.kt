@@ -136,7 +136,6 @@ class CameraFragment : Fragment() {
         } == PackageManager.PERMISSION_GRANTED
     }
 
-
     private fun startCamera() {
         val cameraProviderFuture = this.context?.let { ProcessCameraProvider.getInstance(it) }
 

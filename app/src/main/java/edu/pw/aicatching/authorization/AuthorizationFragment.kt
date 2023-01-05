@@ -128,8 +128,6 @@ class AuthorizationFragment : Fragment() {
             .build()
     }
 
-
-
     private fun createBeginSignInRequest(filterByAuthorizedAccount: Boolean) =
         BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
             .setSupported(true)
