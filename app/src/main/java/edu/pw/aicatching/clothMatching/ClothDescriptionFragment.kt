@@ -46,15 +46,9 @@ class ClothDescriptionFragment : Fragment() {
             }
         }
 
-        binding.outfitMatching.apply {
-            prepareOutfitGalleryAdapter(view)
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        }
+        binding.outfitMatching.setOutfitList(view)
+        binding.attributesListView.setAttributesListView()
 
-        binding.attributesListView.apply {
-            adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
-            setAttributesListView()
-        }
         return view
 
 //        viewModel.outfitErrorMessage.observe( TODO for every errorMessage
@@ -62,7 +56,19 @@ class ClothDescriptionFragment : Fragment() {
 //        ) { Log.d(this::class.simpleName, "Creating new observer on outfitErrorMessage") }
     }
 
-    private fun RecyclerView.prepareOutfitGalleryAdapter(view: View) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.editButton.setOnClickListener(
+            Navigation.createNavigateOnClickListener(R.id.editAttributesFragment)
+        )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun RecyclerView.setOutfitList(view: View) {
         val outfitGalleryAdapter = OutfitGalleryAdapter { cloth ->
             viewModel.mainCloth.value = cloth
             Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
@@ -73,6 +79,7 @@ class ClothDescriptionFragment : Fragment() {
         ) {
             outfitGalleryAdapter.setClothList(it)
         }
+        layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         adapter = outfitGalleryAdapter
     }
 
@@ -81,6 +88,7 @@ class ClothDescriptionFragment : Fragment() {
     }
 
     private fun ListView.setAttributesListView() {
+        adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
         viewModel.mainClothAttributes.observe(
             viewLifecycleOwner
         ) {
@@ -96,13 +104,6 @@ class ClothDescriptionFragment : Fragment() {
             placeholder(R.drawable.ic_loading)
             error(R.drawable.ic_damage_image)
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.editButton.setOnClickListener(
-            Navigation.createNavigateOnClickListener(R.id.editAttributesFragment)
-        )
     }
 
     private fun createAttributesArray() =

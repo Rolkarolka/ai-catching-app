@@ -1,7 +1,6 @@
 package edu.pw.aicatching.wardrobe
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -33,39 +32,56 @@ class WardrobeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel.getWardrobe()
         _binding = FragmentWardrobeBinding.inflate(inflater, container, false)
         val view = binding.root
-        val mainActivity = this
-        binding.wardrobeGallery.apply {
-            layoutManager = GridLayoutManager(mainActivity.activity, 2)
-        }
-
-        val listener: (Cloth) -> Unit = { cloth ->
-            viewModel.mainCloth.value = cloth
-            Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
-        }
-        val actionModeListener: (Cloth) -> Unit = { garment ->
-            viewModel.deleteGarment(garment.garmentID)
-            viewModel.wardrobeList.value = viewModel.wardrobeList.value?.filter { it != garment }
-        }
-        adapter = WardrobeGalleryAdapter(listener, actionModeListener)
-        binding.wardrobeGallery.adapter = adapter
-
-        viewModel.wardrobeList.observe(
-            viewLifecycleOwner
-        ) {
-            clothListCopy = it.toMutableList()
-            adapter.setClothList(it)
-        }
-        viewModel.wardrobeErrorMessage.observe(
-            viewLifecycleOwner
-        ) { Log.d(this::class.simpleName, "Creating new observer on wardrobeErrorMessage") }
-        viewModel.getWardrobe()
+        prepareWardrobeGalleryAdapter(view)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        addMenuProvider()
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
+    private fun prepareWardrobeGalleryAdapter(view: View) {
+        val wardrobeGalleryAdapter = WardrobeGalleryAdapter(chooseClothListener(view), deleteGarmentListener())
+        viewModel.wardrobeList.observe(
+            viewLifecycleOwner
+        ) {
+            clothListCopy = it.toMutableList()
+            wardrobeGalleryAdapter.setClothList(it)
+        }
+
+        binding.wardrobeGallery.apply {
+            layoutManager = GridLayoutManager(requireActivity(), 2)
+            adapter = wardrobeGalleryAdapter
+        }
+    }
+
+    private fun deleteGarmentListener(): (Cloth) -> Unit {
+        val actionModeListener: (Cloth) -> Unit = { garment ->
+            viewModel.deleteGarment(garment.garmentID)
+            viewModel.wardrobeList.value = viewModel.wardrobeList.value?.filter { it != garment }
+        }
+        return actionModeListener
+    }
+
+    private fun chooseClothListener(view: View): (Cloth) -> Unit {
+        val listener: (Cloth) -> Unit = { cloth ->
+            viewModel.mainCloth.value = cloth
+            Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
+        }
+        return listener
+    }
+
+    private fun addMenuProvider() {
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
@@ -87,11 +103,6 @@ class WardrobeFragment : Fragment() {
             },
             viewLifecycleOwner, Lifecycle.State.RESUMED
         )
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun filter(text: String) {

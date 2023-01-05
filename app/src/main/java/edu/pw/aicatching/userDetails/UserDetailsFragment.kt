@@ -60,23 +60,6 @@ class UserDetailsFragment : Fragment() {
         return view
     }
 
-    override fun onDestroyView() {
-        val updatedUserPreferences = UserPreferences(
-            shoeSize = changedPrefValuesMap["shoeSize"].toString()
-                .compareChange(viewModel.userLiveData.value?.preferences?.shoeSize.toString()),
-            clothSize = ClothSize.from(
-                changedPrefValuesMap["clothSize"]
-                    .toString().compareChange(viewModel.userLiveData.value?.preferences?.clothSize?.name.toString())
-            ),
-            favouriteColor = changedPrefValuesMap["favouriteColor"]
-                .toString().compareChange(viewModel.userLiveData.value?.preferences?.favouriteColor?.name.toString())
-                ?.let { Color.valueOf(it) }
-        )
-        viewModel.updateUserPreferences(updatedUserPreferences)
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setClothSpinner(ClothSize.values().map { it.toString() }.toList())
@@ -93,6 +76,31 @@ class UserDetailsFragment : Fragment() {
             viewModel.deleteUser()
             this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
         }
+    }
+
+    override fun onDestroyView() {
+        compareUserPreferences()?.let { viewModel.updateUserPreferences(it) }
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun compareUserPreferences(): UserPreferences? {
+        viewModel.userLiveData.value?.preferences?.let { preferences ->
+            return UserPreferences(
+                shoeSize = changedPrefValuesMap["shoeSize"].toString()
+                    .compareChange(preferences.shoeSize.toString()),
+                clothSize = ClothSize.from(
+                    changedPrefValuesMap["clothSize"]
+                        .toString()
+                        .compareChange(preferences.clothSize?.name.toString())
+                ),
+                favouriteColor = changedPrefValuesMap["favouriteColor"]
+                    .toString()
+                    .compareChange(preferences.favouriteColor?.name.toString())
+                    ?.let { Color.valueOf(it) }
+            )
+        }
+        return null
     }
 
     private fun setClothSpinner(clothSizesArray: List<String>) {

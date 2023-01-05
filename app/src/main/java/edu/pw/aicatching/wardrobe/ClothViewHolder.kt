@@ -17,16 +17,24 @@ class ClothViewHolder(
         onLongClickListener: (Cloth, View) -> Boolean,
         viewHolderColor: Int
     ) {
-        wardrobeGalleryItemBinding.cardView.setBackgroundColor(viewHolderColor)
-        cloth.imgSrcUrl.let {
-            val imgUri = it.toUri().buildUpon().scheme("https").build()
-            wardrobeGalleryItemBinding.clothImage.load(imgUri) {
-                placeholder(R.drawable.ic_loading)
-                error(R.drawable.ic_damage_image)
-            }
+        wardrobeGalleryItemBinding.apply {
+            loadImage(cloth.imgSrcUrl)
+            clothCategory.text = cloth.part
         }
-        wardrobeGalleryItemBinding.clothCategory.text = cloth.part
-        wardrobeGalleryItemBinding.cardView.setOnClickListener { view -> onClickListener(cloth, view) }
-        wardrobeGalleryItemBinding.cardView.setOnLongClickListener { view -> onLongClickListener(cloth, view) }
+
+        wardrobeGalleryItemBinding.cardView.apply {
+            setBackgroundColor(viewHolderColor)
+            setOnClickListener { view -> onClickListener(cloth, view) }
+            setOnLongClickListener { view -> onLongClickListener(cloth, view) }
+        }
+    }
+
+    private fun ItemClothBinding.loadImage(url: String?) {
+        val imgUri = url?.toUri()?.buildUpon()?.scheme("https")?.build()
+        clothImage.load(imgUri) {
+            placeholder(R.drawable.ic_loading)
+            error(R.drawable.ic_damage_image)
+        }
+
     }
 }

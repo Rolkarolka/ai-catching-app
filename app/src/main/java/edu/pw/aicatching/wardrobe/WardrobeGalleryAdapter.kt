@@ -1,6 +1,8 @@
 package edu.pw.aicatching.wardrobe
 
 import android.graphics.Color
+import android.graphics.Color.GRAY
+import android.graphics.Color.WHITE
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -86,10 +88,10 @@ class WardrobeGalleryAdapter(
     private fun selectClothes(cloth: Cloth, view: View) {
         if (selectedClothes.contains(cloth)) {
             selectedClothes.remove(cloth)
-            view.setBackgroundColor(Color.WHITE)
+            view.setBackgroundColor(WHITE)
         } else {
             selectedClothes.add(cloth)
-            view.setBackgroundColor(Color.LTGRAY)
+            view.setBackgroundColor(GRAY)
         }
     }
 
