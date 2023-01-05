@@ -20,7 +20,6 @@ import coil.load
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import edu.pw.aicatching.R
-import edu.pw.aicatching.databinding.FragmentClothDescriptionBinding
 import edu.pw.aicatching.databinding.FragmentUserDetailsBinding
 import edu.pw.aicatching.models.ClothSize
 import edu.pw.aicatching.models.Color
@@ -71,9 +70,7 @@ class UserDetailsFragment : Fragment() {
         viewModel.updateUserPreferences(updatedUserPreferences)
         super.onDestroyView()
         _binding = null
-
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -45,8 +44,7 @@ class MainActivity : AppCompatActivity() {
             ) {
             } else if (navController.currentDestination?.id == R.id.clothDescriptionFragment &&
                 navController.popBackStack(R.id.cameraFragment, false)
-            ){
-
+            ) {
             } else {
                 navController.popBackStack()
             }

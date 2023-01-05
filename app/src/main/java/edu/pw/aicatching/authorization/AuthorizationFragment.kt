@@ -44,8 +44,9 @@ class AuthorizationFragment : Fragment() {
                     )
                     activity?.window?.setFlags(
                         WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    binding.progressbar.visibility = View.VISIBLE;
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                    )
+                    binding.progressbar.visibility = View.VISIBLE
                 }
             }
         } catch (e: ApiException) {
@@ -64,14 +65,11 @@ class AuthorizationFragment : Fragment() {
         }
     }
 
-
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentAuthorizationBinding.inflate(inflater, container, false)
 
         viewModel.userLiveData.observe(
@@ -79,7 +77,7 @@ class AuthorizationFragment : Fragment() {
         ) { user ->
             if (user != null) {
                 binding.progressbar.visibility = View.INVISIBLE
-                activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 view?.let { view ->
                     Navigation.findNavController(view).navigate(R.id.mainFragment)
                 }
@@ -123,7 +121,6 @@ class AuthorizationFragment : Fragment() {
         _binding = null
     }
 
-
     private fun sign(request: BeginSignInRequest) {
         oneTapClient.beginSignIn(request)
             .addOnSuccessListener(this.requireActivity()) { result ->
@@ -136,17 +133,22 @@ class AuthorizationFragment : Fragment() {
             }
             .addOnFailureListener(this.requireActivity()) { e ->
                 e.localizedMessage?.let { Log.d("AuthorizationFragment:Sign:OnFailureListener", it) }
-                if (signUpTryCounter <= 3) {
+                if (signUpTryCounter <= MAX_LOGGING_TRIES) {
                     signUpTryCounter += 1
                     sign(signUpRequest)
                 } else {
                     Toast.makeText(
                         this.context,
-                        "Check your Google Account. You must be logged in to your account on your phone, before logging into app.",
+                        "Check your Google Account." +
+                            " You must be logged in to your account on your phone, before logging into app.",
                         Toast.LENGTH_LONG
                     ).show()
                     signUpTryCounter = 0
                 }
             }
+    }
+
+    companion object {
+        const val MAX_LOGGING_TRIES = 3
     }
 }

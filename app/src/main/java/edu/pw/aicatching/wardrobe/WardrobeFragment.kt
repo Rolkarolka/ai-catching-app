@@ -21,7 +21,6 @@ class WardrobeFragment : Fragment() {
     private var _binding: FragmentWardrobeBinding? = null
     private val binding get() = _binding!!
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -79,7 +78,6 @@ class WardrobeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 
     private fun filter(text: String) {
         val filteredCloths = mutableListOf<Cloth>()

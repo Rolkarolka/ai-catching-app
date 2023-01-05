@@ -49,7 +49,7 @@ class ClothDescriptionFragment : Fragment() {
 
         viewModel.mainCloth.observe(
             viewLifecycleOwner
-        ) { it ->
+        ) {
             val imgUri = it.imgSrcUrl.toUri().buildUpon()?.scheme("https")?.build()
             binding.item.clothCategory.text = it.part ?: "Cloth"
             binding.item.clothImage.load(imgUri) {
@@ -65,11 +65,15 @@ class ClothDescriptionFragment : Fragment() {
         }
         binding.outfitMatching.adapter = adapter
 
-        binding.attributesListView.adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
+        binding.attributesListView.adapter = activity?.let {
+            ArrayAdapter(it, R.layout.item_attribute, createAttributesArray())
+        }
         viewModel.mainClothAttributes.observe(
             viewLifecycleOwner
         ) {
-            binding.attributesListView.adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
+            binding.attributesListView.adapter = activity?.let {
+                ArrayAdapter(it, R.layout.item_attribute, createAttributesArray())
+            }
         }
 
         return view

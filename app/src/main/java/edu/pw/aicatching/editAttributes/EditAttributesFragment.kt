@@ -10,7 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import edu.pw.aicatching.databinding.FragmentEditAttributesBinding
-import edu.pw.aicatching.models.*
+import edu.pw.aicatching.models.ClothAttributes
+import edu.pw.aicatching.models.asMap
 import edu.pw.aicatching.viewModels.ClothViewModel
 
 class EditAttributesFragment : Fragment() {
@@ -18,7 +19,6 @@ class EditAttributesFragment : Fragment() {
     private val changedAttrValuesMap = mutableMapOf<String, String>()
     private var _binding: FragmentEditAttributesBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +28,7 @@ class EditAttributesFragment : Fragment() {
         _binding = FragmentEditAttributesBinding.inflate(inflater, container, false)
         val view = binding.root
         viewModel.getValuesOfClothAttributes()
-        val adapter = EditAttributeAdapter() { key, value ->
+        val adapter = EditAttributeAdapter { key, value ->
             changedAttrValuesMap[key] = value
         }
         viewModel.availableAttributesValues.observe(
@@ -60,18 +60,23 @@ class EditAttributesFragment : Fragment() {
 
     override fun onDestroyView() {
         val updatedClothesAttributes = ClothAttributes(
-            color = changedAttrValuesMap["color"].compareChange(viewModel.mainClothAttributes.value?.color),
-            texture = changedAttrValuesMap["texture"].compareChange(viewModel.mainClothAttributes.value?.texture),
-            sleeveLength = changedAttrValuesMap["sleeve_length"].compareChange(viewModel.mainClothAttributes.value?.sleeveLength),
-            garmentLength = changedAttrValuesMap["garment_length"].compareChange(viewModel.mainClothAttributes.value?.garmentLength),
-            necklineType = changedAttrValuesMap["neckline_type"].compareChange(viewModel.mainClothAttributes.value?.necklineType),
-            fabric = changedAttrValuesMap["fabric"].compareChange(viewModel.mainClothAttributes.value?.fabric)
+            color = changedAttrValuesMap["color"]
+                .compareChange(viewModel.mainClothAttributes.value?.color),
+            texture = changedAttrValuesMap["texture"]
+                .compareChange(viewModel.mainClothAttributes.value?.texture),
+            sleeveLength = changedAttrValuesMap["sleeve_length"]
+                .compareChange(viewModel.mainClothAttributes.value?.sleeveLength),
+            garmentLength = changedAttrValuesMap["garment_length"]
+                .compareChange(viewModel.mainClothAttributes.value?.garmentLength),
+            necklineType = changedAttrValuesMap["neckline_type"]
+                .compareChange(viewModel.mainClothAttributes.value?.necklineType),
+            fabric = changedAttrValuesMap["fabric"]
+                .compareChange(viewModel.mainClothAttributes.value?.fabric)
         )
         viewModel.mainCloth.value?.garmentID?.let { clothID ->
             viewModel.updateClothAttributes(clothID, updatedClothesAttributes)
         }
         super.onDestroyView()
         _binding = null
-
     }
 }

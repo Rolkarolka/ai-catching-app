@@ -7,11 +7,22 @@ import edu.pw.aicatching.models.ClothAttributes
 import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.models.User
 import edu.pw.aicatching.models.UserPreferences
-import okhttp3.*
+import okhttp3.MultipartBody
+import okhttp3.Interceptor
+import okhttp3.Response
+import okhttp3.Request
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Multipart
+import retrofit2.http.PUT
+import retrofit2.http.DELETE
+import retrofit2.http.Part
+import retrofit2.http.Body
+import retrofit2.http.Query
 
 interface AICatchingApiService {
 
@@ -23,7 +34,7 @@ interface AICatchingApiService {
     fun updateUserPhoto(@Part photo: MultipartBody.Part): Call<UserPreferences>
 
     @POST("user/preferences/update")
-    fun updateUserPreferences(@Body new_preferences: UserPreferences): Call<UserPreferences>
+    fun updateUserPreferences(@Body newPreferences: UserPreferences): Call<UserPreferences>
 
     @PUT("user/login_session")
     fun putLogIn(@Body credentials: Credentials): Call<User>
@@ -54,7 +65,7 @@ interface AICatchingApiService {
     fun deleteGarment(@Query("garment_id") garmentID: Int): Call<Void>
 
     @PUT("garment/edit")
-    fun putEditAttributes(@Query("garment_id") garmentID: Int, @Body new_attributes: ClothAttributes): Call<ClothAttributes>
+    fun putEditAttributes(@Query("garment_id") garmentID: Int, @Body newAttributes: ClothAttributes): Call<ClothAttributes>
 
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"
