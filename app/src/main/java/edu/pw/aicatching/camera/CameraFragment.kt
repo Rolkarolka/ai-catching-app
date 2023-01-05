@@ -49,7 +49,7 @@ class CameraFragment : Fragment() {
         } else {
             Toast.makeText(
                 this.context,
-                "Permissions not granted by the user.",
+                "Permissions not granted.",
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -88,9 +88,6 @@ class CameraFragment : Fragment() {
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
-            }
         }
 
         val outputOptions = activity?.contentResolver?.let {
@@ -133,14 +130,10 @@ class CameraFragment : Fragment() {
         } == PackageManager.PERMISSION_GRANTED
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        cameraExecutor.shutdown()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        cameraExecutor.shutdown()
     }
 
     private fun startCamera() {
@@ -184,12 +177,13 @@ class CameraFragment : Fragment() {
                 }
             }.toTypedArray()
     }
+
+    fun Image.toByteArray(): ByteArray {
+        val buffer = planes[0].buffer
+        buffer.rewind()
+        val bytes = ByteArray(buffer.capacity())
+        buffer.get(bytes)
+        return bytes
+    }
 }
 
-fun Image.toByteArray(): ByteArray { // TODO
-    val buffer = planes[0].buffer
-    buffer.rewind()
-    val bytes = ByteArray(buffer.capacity())
-    buffer.get(bytes)
-    return bytes
-}

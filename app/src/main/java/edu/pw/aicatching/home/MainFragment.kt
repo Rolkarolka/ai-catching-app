@@ -13,11 +13,14 @@ import androidx.navigation.Navigation
 import coil.load
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentMainBinding
+import edu.pw.aicatching.databinding.ViewTopSettingsBinding
+import edu.pw.aicatching.models.User
+import edu.pw.aicatching.models.Color as FavColor
+import edu.pw.aicatching.models.ClothSize
 import edu.pw.aicatching.viewModels.UserViewModel
 
 class MainFragment : Fragment() {
     private val viewModel: UserViewModel by activityViewModels()
-
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
@@ -33,39 +36,8 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (viewModel.userLiveData.value != null) {
-            viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
-                val username = user?.name + " " + user?.surname
-                binding.mainPageToolbar.username.text = username
-                user?.preferences?.photoUrl?.let { photo ->
-                    binding.mainPageToolbar.userAvatar.load(photo.toUri().buildUpon()?.scheme("https")?.build()) {
-                        placeholder(R.drawable.ic_loading)
-                        error(R.drawable.ic_avatar)
-                    }
-                }
-                binding.mainPageToolbar.favColorAttribute.backgroundTintList = user?.preferences?.favouriteColor
-                    ?.let { ColorStateList.valueOf(Color.parseColor(it.hexValue)) }
-                binding.mainPageToolbar.clothSizeAttribute.text = user?.preferences?.clothSize?.name ?: "Cloth\nSize"
-                binding.mainPageToolbar.shoeSizeAttribute.text = if (user?.preferences?.shoeSize?.isNotEmpty() == true)
-                    user.preferences.shoeSize
-                else
-                    "Shoe\nSize"
-            }
-        }
-
-        viewModel.userPreferencesLiveData.observe(viewLifecycleOwner) {
-            viewModel.userLiveData.value = viewModel.userLiveData
-                .value?.copy(preferences = it)
-        }
-
-        viewModel.inspirationLiveData.observe(viewLifecycleOwner) {
-            val inspirationUrl = it["link"]
-            val imgUri = inspirationUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-            binding.inspiration.load(imgUri) {
-                placeholder(R.drawable.ic_loading)
-                error(R.drawable.ic_damage_image)
-            }
-        }
+        setMainToolbarUserInfo()
+        setInspirationImage()
 
         binding.showWardrobeButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.wardrobeFragment)
@@ -78,6 +50,67 @@ class MainFragment : Fragment() {
         binding.mainPageToolbar.appendUserDetails.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.userDetailsFragment)
         )
+    }
+
+    private fun setMainToolbarUserInfo() {
+        if (viewModel.userLiveData.value != null) {
+            viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
+                user?.preferences?.let { preferences ->
+                    binding.mainPageToolbar.apply {
+                        setUsername(user)
+                        setPhotoUrl(preferences.photoUrl)
+                        setFavColor(preferences.favouriteColor)
+                        setGarmentSize(preferences.clothSize)
+                        setShoeSize(preferences.shoeSize)
+                    }
+                }
+            }
+
+        }
+        viewModel.userPreferencesLiveData.observe(viewLifecycleOwner) {
+            viewModel.userLiveData.value = viewModel.userLiveData.value?.copy(preferences = it)
+        }
+    }
+
+    private fun ViewTopSettingsBinding.setUsername(user: User) {
+        val username = user.name + " " + user.surname
+        this.username.text = username
+    }
+
+    private fun ViewTopSettingsBinding.setPhotoUrl(photoUrl: String?) =
+        photoUrl?.let { photo ->
+            this.userAvatar.load(photo.toUri().buildUpon()?.scheme("https")?.build()) {
+                placeholder(R.drawable.ic_loading)
+                error(R.drawable.ic_avatar)
+            }
+        }
+
+    private fun ViewTopSettingsBinding.setFavColor(favouriteColor: FavColor?) {
+        this.favColorAttribute.backgroundTintList = favouriteColor
+            ?.let { ColorStateList.valueOf(Color.parseColor(it.hexValue)) }
+    }
+
+    private fun ViewTopSettingsBinding.setGarmentSize(clothSize: ClothSize?) {
+        this.clothSizeAttribute.text = clothSize?.name ?: "Cloth\nSize"
+    }
+
+    private fun ViewTopSettingsBinding.setShoeSize(shoeSize: String?) {
+        this.shoeSizeAttribute.text = if (shoeSize?.isNotEmpty() == true)
+            shoeSize
+        else
+            "Shoe\nSize"
+    }
+
+
+    private fun setInspirationImage() {
+        viewModel.inspirationLiveData.observe(viewLifecycleOwner) {
+            val inspirationUrl = it["link"]
+            val imgUri = inspirationUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
+            binding.inspiration.load(imgUri) {
+                placeholder(R.drawable.ic_loading)
+                error(R.drawable.ic_damage_image)
+            }
+        }
     }
 
     override fun onDestroyView() {
