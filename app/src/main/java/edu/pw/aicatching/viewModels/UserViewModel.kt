@@ -92,8 +92,6 @@ class UserViewModel : ViewModel() {
             override fun onResponse(call: Call<UserPreferences>, response: Response<UserPreferences>) {
                 if (response.isSuccessful) {
                     userPreferencesLiveData.postValue(response.body())
-                } else {
-                    userPreferencesLiveData.postValue(null)
                 }
             }
         })

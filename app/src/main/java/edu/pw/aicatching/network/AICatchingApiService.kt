@@ -65,7 +65,10 @@ interface AICatchingApiService {
     fun deleteGarment(@Query("garment_id") garmentID: Int): Call<Void>
 
     @PUT("garment/edit")
-    fun putEditAttributes(@Query("garment_id") garmentID: Int, @Body newAttributes: ClothAttributes): Call<ClothAttributes>
+    fun putEditAttributes(
+        @Query("garment_id") garmentID: Int,
+        @Body newAttributes: ClothAttributes
+    ): Call<ClothAttributes>
 
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"

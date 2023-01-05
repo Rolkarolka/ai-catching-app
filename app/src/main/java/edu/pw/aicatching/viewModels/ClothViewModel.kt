@@ -72,7 +72,10 @@ class ClothViewModel : ViewModel() {
     fun getValuesOfClothAttributes() {
         val response = service.getAttributesValue()
         response.enqueue(object : Callback<Map<String, List<String>>> {
-            override fun onResponse(call: Call<Map<String, List<String>>>, response: Response<Map<String, List<String>>>) {
+            override fun onResponse(
+                call: Call<Map<String, List<String>>>,
+                response: Response<Map<String, List<String>>>
+            ) {
                 availableAttributesValues.postValue(response.body())
             }
             override fun onFailure(call: Call<Map<String, List<String>>>, t: Throwable) {

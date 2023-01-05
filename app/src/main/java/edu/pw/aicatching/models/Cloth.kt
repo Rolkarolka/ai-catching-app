@@ -24,9 +24,9 @@ data class ClothAttributes(
 )
 
 fun ClothAttributes.asMap(): Map<String, String> {
-    val properties = ClothAttributes::class.memberProperties.associateBy { it ->
-        it.name.replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase() else it.toString()
+    val properties = ClothAttributes::class.memberProperties.associateBy {
+        it.name.replaceFirstChar { char ->
+            if (char.isLowerCase()) char.titlecase() else char.toString()
         }
     }
     return properties.keys.associate {

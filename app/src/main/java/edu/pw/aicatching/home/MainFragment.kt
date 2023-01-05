@@ -25,7 +25,7 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         viewModel.getInspiration()
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
@@ -35,7 +35,8 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (viewModel.userLiveData.value != null) {
             viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
-                binding.mainPageToolbar.username.text = user?.name + " " + user?.surname
+                val username = user?.name + " " + user?.surname
+                binding.mainPageToolbar.username.text = username
                 user?.preferences?.photoUrl?.let { photo ->
                     binding.mainPageToolbar.userAvatar.load(photo.toUri().buildUpon()?.scheme("https")?.build()) {
                         placeholder(R.drawable.ic_loading)
@@ -44,7 +45,7 @@ class MainFragment : Fragment() {
                 }
                 binding.mainPageToolbar.favColorAttribute.backgroundTintList = user?.preferences?.favouriteColor
                     ?.let { ColorStateList.valueOf(Color.parseColor(it.hexValue)) }
-                binding.mainPageToolbar.clothSizeAttribute.text = user?.preferences?.clothSize?.let { it.name } ?: "Cloth\nSize"
+                binding.mainPageToolbar.clothSizeAttribute.text = user?.preferences?.clothSize?.name ?: "Cloth\nSize"
                 binding.mainPageToolbar.shoeSizeAttribute.text = if (user?.preferences?.shoeSize?.isNotEmpty() == true)
                     user.preferences.shoeSize
                 else

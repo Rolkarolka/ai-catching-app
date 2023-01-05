@@ -37,15 +37,14 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.mainToolbar)
         binding.mainToolbar.setupWithNavController(navController, appBarConfiguration)
         binding.mainToolbar.setNavigationOnClickListener {
-            val currentNavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            val currentNavHostFragment =
+                supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
             val navController = currentNavHostFragment.navController
             if (navController.currentDestination?.id == R.id.clothDescriptionFragment &&
                 navController.popBackStack(R.id.wardrobeFragment, false)
-            ) {
-            } else if (navController.currentDestination?.id == R.id.clothDescriptionFragment &&
+            ) { } else if (navController.currentDestination?.id == R.id.clothDescriptionFragment &&
                 navController.popBackStack(R.id.cameraFragment, false)
-            ) {
-            } else {
+            ) { } else {
                 navController.popBackStack()
             }
         }

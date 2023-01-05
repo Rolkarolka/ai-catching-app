@@ -2,10 +2,17 @@ package edu.pw.aicatching.wardrobe
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import edu.pw.aicatching.R
@@ -54,24 +61,29 @@ class WardrobeFragment : Fragment() {
             viewLifecycleOwner
         ) { Log.d(this::class.simpleName, "Creating new observer on wardrobeErrorMessage") }
         viewModel.getWardrobe()
-        setHasOptionsMenu(true)
         return view
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.toolbar_main, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-        val searchView = menu.findItem(R.id.actionSearch).actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return false
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
+                inflater.inflate(R.menu.toolbar_main, menu)
+                val searchView = menu.findItem(R.id.actionSearch).actionView as SearchView
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String): Boolean {
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String): Boolean {
+                        filter(newText)
+                        return false
+                    }
+                })
             }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                filter(newText)
-                return false
-            }
-        })
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean { return false }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     override fun onDestroyView() {

@@ -41,7 +41,7 @@ class UserDetailsFragment : Fragment() {
             Log.d("UserDetailsFragment:PhotoPicker", "Selected URI: $uri")
             val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, uri))
             val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, stream)
             viewModel.updateUserPhoto(stream.toByteArray())
         } else {
             Log.d("UserDetailsFragment:PhotoPicker", "No media selected")
@@ -53,7 +53,7 @@ class UserDetailsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
         val view = binding.root
         colorPickerManager = ColorPickerPreferenceManager.getInstance(this.context)
@@ -62,9 +62,12 @@ class UserDetailsFragment : Fragment() {
 
     override fun onDestroyView() {
         val updatedUserPreferences = UserPreferences(
-            shoeSize = changedPrefValuesMap["shoeSize"].toString().compareChange(viewModel.userLiveData.value?.preferences?.shoeSize.toString()),
-            clothSize = ClothSize.from(changedPrefValuesMap["clothSize"].toString().compareChange(viewModel.userLiveData.value?.preferences?.clothSize?.name.toString())),
-            favouriteColor = changedPrefValuesMap["favouriteColor"].toString().compareChange(viewModel.userLiveData.value?.preferences?.favouriteColor?.name.toString())
+            shoeSize = changedPrefValuesMap["shoeSize"].toString()
+                .compareChange(viewModel.userLiveData.value?.preferences?.shoeSize.toString()),
+            clothSize = ClothSize.from(changedPrefValuesMap["clothSize"]
+                .toString().compareChange(viewModel.userLiveData.value?.preferences?.clothSize?.name.toString())),
+            favouriteColor = changedPrefValuesMap["favouriteColor"]
+                .toString().compareChange(viewModel.userLiveData.value?.preferences?.favouriteColor?.name.toString())
                 ?.let { Color.valueOf(it) }
         )
         viewModel.updateUserPreferences(updatedUserPreferences)
@@ -75,7 +78,7 @@ class UserDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setClothSpinner(ClothSize.values().map { it.toString() }.toList())
-        setShoeSpinner((35..45).toList().map { it.toString() })
+        setShoeSpinner((MIN_SHOE_SIZE..MAX_SHOE_SIZE).toList().map { it.toString() })
         setColorPicker()
         setAvatar()
 
@@ -91,7 +94,11 @@ class UserDetailsFragment : Fragment() {
     }
 
     private fun setClothSpinner(clothSizesArray: List<String>) {
-        binding.clothSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, clothSizesArray)
+        binding.clothSizeSpinner.adapter = ArrayAdapter(
+            this.requireActivity(),
+            android.R.layout.simple_spinner_dropdown_item,
+            clothSizesArray
+        )
 
         viewModel.userLiveData.value?.preferences
             ?.let { clothSizesArray.indexOf(it.clothSize.toString()) }
@@ -107,7 +114,11 @@ class UserDetailsFragment : Fragment() {
     }
 
     private fun setShoeSpinner(shoeSizesArray: List<String>) {
-        binding.shoeSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, shoeSizesArray)
+        binding.shoeSizeSpinner.adapter = ArrayAdapter(
+            this.requireActivity(),
+            android.R.layout.simple_spinner_dropdown_item,
+            shoeSizesArray
+        )
         viewModel.userLiveData.value?.preferences
             ?.let { shoeSizesArray.indexOf(it.shoeSize) }
             ?.let { binding.shoeSizeSpinner.setSelection(it) }
@@ -154,4 +165,10 @@ class UserDetailsFragment : Fragment() {
 
     private fun String?.compareChange(prevValue: String?) =
         if (this == prevValue || this.isNullOrBlank()) null else this
+
+    companion object {
+        const val IMAGE_QUALITY = 100
+        const val MAX_SHOE_SIZE = 45
+        const val MIN_SHOE_SIZE = 35
+    }
 }

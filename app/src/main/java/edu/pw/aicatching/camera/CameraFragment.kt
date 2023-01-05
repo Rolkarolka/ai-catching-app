@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -40,6 +41,21 @@ class CameraFragment : Fragment() {
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = _binding!!
 
+    val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            startCamera()
+        } else {
+            Toast.makeText(
+                this.context,
+                "Permissions not granted by the user.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,6 +71,7 @@ class CameraFragment : Fragment() {
                 ActivityCompat.requestPermissions(
                     it, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
                 )
+                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             }
         }
         binding.takePhotoButton.setOnClickListener { takePhoto() }
@@ -122,25 +139,6 @@ class CameraFragment : Fragment() {
         cameraExecutor.shutdown()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults:
-            IntArray
-    ) {
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                startCamera()
-            } else {
-                Toast.makeText(
-                    this.context,
-                    "Permissions not granted by the user.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -166,7 +164,7 @@ class CameraFragment : Fragment() {
                         cameraProvider.bindToLifecycle(
                             this, cameraSelector, preview, imageCapture
                         )
-                    } catch (exc: Exception) {
+                    } catch (exc: IllegalArgumentException) {
                         exc.message?.let { message -> Log.d("Camera:startCamera", message) }
                     }
                 },
