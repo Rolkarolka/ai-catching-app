@@ -32,7 +32,7 @@ class EditAttributeAdapter(
 
     override fun onBindViewHolder(holder: AttributeViewHolder, position: Int) {
         val key = attributes.keys.toList()[position]
-        val formattedKey = key.split(Regex(CAMELCASE_REGEX_SPLITTING_WORDS)).joinToString(separator = "_").lowercase()
+        val formattedKey = key.split(Regex(CAMELCASE_PATTERN_SPLITTING_WORDS)).joinToString(separator = "_").lowercase()
         val currentValue = attributes[key]
         availableValues[formattedKey]?.let {
             holder.bind(
@@ -43,6 +43,6 @@ class EditAttributeAdapter(
     }
 
     companion object {
-        const val CAMELCASE_REGEX_SPLITTING_WORDS = "(?<=.)(?=\\p{Lu})"
+        const val CAMELCASE_PATTERN_SPLITTING_WORDS = "(?<=.)(?=\\p{Lu})"
     }
 }

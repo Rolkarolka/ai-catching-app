@@ -6,14 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ListView
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentClothDescriptionBinding
+import edu.pw.aicatching.databinding.ItemClothBinding
 import edu.pw.aicatching.models.ClothAttributes
 import edu.pw.aicatching.models.asMap
 import edu.pw.aicatching.viewModels.ClothViewModel
@@ -33,7 +36,35 @@ class ClothDescriptionFragment : Fragment() {
         _binding = FragmentClothDescriptionBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val adapter = OutfitGalleryAdapter { cloth ->
+        viewModel.mainCloth.value?.garmentID?.let { viewModel.getAttributes(it) }
+        viewModel.mainCloth.observe(
+            viewLifecycleOwner
+        ) {
+            viewModel.getOutfit(it.garmentID)
+            binding.item.apply {
+                loadImage(it.imgSrcUrl)
+                setCategory(it.part)
+            }
+        }
+
+        binding.outfitMatching.apply {
+            prepareOutfitGalleryAdapter(view)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+
+        binding.attributesListView.apply {
+            adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
+            setAttributesListView()
+        }
+        return view
+
+//        viewModel.outfitErrorMessage.observe( TODO for every errorMessage
+//            viewLifecycleOwner
+//        ) { Log.d(this::class.simpleName, "Creating new observer on outfitErrorMessage") }
+    }
+
+    private fun RecyclerView.prepareOutfitGalleryAdapter(view: View) {
+        val outfitGalleryAdapter = OutfitGalleryAdapter { cloth ->
             viewModel.mainCloth.value = cloth
             Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
         }
@@ -41,51 +72,46 @@ class ClothDescriptionFragment : Fragment() {
         viewModel.outfitList.observe(
             viewLifecycleOwner
         ) {
-            adapter.setClothList(it)
+            outfitGalleryAdapter.setClothList(it)
         }
-        viewModel.outfitErrorMessage.observe(
-            viewLifecycleOwner
-        ) { Log.d(this::class.simpleName, "Creating new observer on outfitErrorMessage") }
+        adapter = outfitGalleryAdapter
 
-        viewModel.mainCloth.observe(
-            viewLifecycleOwner
-        ) {
-            val imgUri = it.imgSrcUrl.toUri().buildUpon()?.scheme("https")?.build()
-            binding.item.clothCategory.text = it.part ?: "Cloth"
-            binding.item.clothImage.load(imgUri) {
-                placeholder(R.drawable.ic_loading)
-                error(R.drawable.ic_damage_image)
-            }
-            viewModel.getOutfit(it.garmentID)
-        }
+    }
 
-        viewModel.mainCloth.value?.garmentID?.let { viewModel.getAttributes(it) }
-        binding.outfitMatching.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        }
-        binding.outfitMatching.adapter = adapter
+    private fun ItemClothBinding.setCategory(category: String?) {
+        clothCategory.text = category ?: "Cloth"
+    }
 
-        binding.attributesListView.adapter = activity?.let {
-            ArrayAdapter(it, R.layout.item_attribute, createAttributesArray())
-        }
+    private fun ListView.setAttributesListView() {
         viewModel.mainClothAttributes.observe(
             viewLifecycleOwner
         ) {
-            binding.attributesListView.adapter = activity?.let {
+            adapter = activity?.let {
                 ArrayAdapter(it, R.layout.item_attribute, createAttributesArray())
             }
         }
+    }
 
-        return view
+    private fun ItemClothBinding.loadImage(url: String?) {
+        val imgUri = url?.toUri()?.buildUpon()?.scheme("https")?.build()
+        clothImage.load(imgUri) {
+            placeholder(R.drawable.ic_loading)
+            error(R.drawable.ic_damage_image)
+        }
     }
-    private fun String.capitalize() = this.replaceFirstChar { char ->
-        if (char.isLowerCase()) char.titlecase() else char.toString()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.editButton.setOnClickListener(
+            Navigation.createNavigateOnClickListener(R.id.editAttributesFragment)
+        )
     }
+
     private fun createAttributesArray() =
         viewModel.mainClothAttributes.value
             ?.asMap()
             ?.map { mapEntry ->
-                val formattedKeys = mapEntry.key.split(Regex("(?=\\p{Upper})")).joinToString(separator = " ")
+                val formattedKeys = mapEntry.key.split(Regex(PATTERN)).joinToString(separator = " ")
                 val formattedValues = mapEntry.value.split("_")[0].capitalize()
                 "$formattedKeys: $formattedValues"
             }
@@ -93,10 +119,11 @@ class ClothDescriptionFragment : Fragment() {
                 it.name.capitalize()
             }.keys.toList()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.editButton.setOnClickListener(
-            Navigation.createNavigateOnClickListener(R.id.editAttributesFragment)
-        )
+    private fun String.capitalize() = this.replaceFirstChar { char ->
+        if (char.isLowerCase()) char.titlecase() else char.toString()
+    }
+
+    companion object {
+        const val PATTERN = "(?=\\p{Upper})"
     }
 }

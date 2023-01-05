@@ -14,19 +14,17 @@ class OutfitGalleryAdapter(
     private var cloths = mutableListOf<Cloth>()
 
     fun setClothList(cloths: List<Cloth>?) {
-        if (cloths == null) {
-            this.cloths = mutableListOf()
-        } else {
-            this.cloths = cloths.toMutableList()
-            notifyDataSetChanged()
-        }
+        this.cloths = cloths?.toMutableList() ?: mutableListOf()
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothViewHolder {
         val from = LayoutInflater.from(parent.context)
         val binding = ItemClothBinding.inflate(from, parent, false)
-        binding.root.layoutParams.width = parent.measuredWidth / VIEW_HOLDERS_IN_ROW
-        binding.root.layoutParams.height = parent.measuredWidth / VIEW_HOLDERS_IN_ROW
+        binding.root.layoutParams.apply {
+            width = parent.measuredWidth / VIEW_HOLDERS_IN_ROW
+            height = parent.measuredWidth / VIEW_HOLDERS_IN_ROW
+        }
         return ClothViewHolder(binding)
     }
 

@@ -32,9 +32,8 @@ class EditAttributesFragment : Fragment() {
         val view = binding.root
 
         viewModel.getValuesOfClothAttributes()
-        binding.editAttributesList.apply {
-            setAttributesList()
-        }
+        binding.editAttributesList.setAttributesList()
+
         viewModel.mainCloth.value?.let { garment ->
             binding.item.apply {
                 loadImage(garment.imgSrcUrl)

@@ -11,14 +11,18 @@ class ClothViewHolder(
     private val outfitGalleryItemBinding: ItemClothBinding,
 ) : RecyclerView.ViewHolder(outfitGalleryItemBinding.root) {
     fun bind(cloth: Cloth, listener: (Cloth) -> Unit) {
-        cloth.imgSrcUrl.let {
-            val imgUri = it.toUri().buildUpon().scheme("https").build()
-            outfitGalleryItemBinding.clothImage.load(imgUri) {
-                placeholder(R.drawable.ic_loading)
-                error(R.drawable.ic_damage_image)
-            }
+        outfitGalleryItemBinding.apply {
+            loadImage(cloth.imgSrcUrl)
+            clothCategory.text = cloth.part.toString()
+            cardView.setOnClickListener { listener(cloth) }
         }
-        outfitGalleryItemBinding.clothCategory.text = cloth.part.toString()
-        outfitGalleryItemBinding.cardView.setOnClickListener { listener(cloth) }
+    }
+
+    private fun ItemClothBinding.loadImage(url: String?) {
+        val imgUri = url?.toUri()?.buildUpon()?.scheme("https")?.build()
+        clothImage.load(imgUri) {
+            placeholder(R.drawable.ic_loading)
+            error(R.drawable.ic_damage_image)
+        }
     }
 }
