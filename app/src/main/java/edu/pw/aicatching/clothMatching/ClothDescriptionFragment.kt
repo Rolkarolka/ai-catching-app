@@ -34,12 +34,16 @@ class ClothDescriptionFragment : Fragment() {
     ): View {
         _binding = FragmentClothDescriptionBinding.inflate(inflater, container, false)
         val view = binding.root
+        binding.item.apply {
+            clothImage.load(R.drawable.ic_loading)
+            setCategory("")
+        }
 
-        viewModel.mainCloth.value?.garmentID?.let { viewModel.getAttributes(it) }
         viewModel.mainCloth.observe(
             viewLifecycleOwner
         ) {
             viewModel.getOutfit(it.garmentID)
+            viewModel.getAttributes(it.garmentID)
             binding.item.apply {
                 loadImage(it.imgSrcUrl)
                 setCategory(it.part)

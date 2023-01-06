@@ -107,7 +107,8 @@ internal class CookieInterceptor : Interceptor {
         }
 
         val response = chain.proceed(request)
-        if (cookie == null && response.isSuccessful) { // TODO
+        val isCookieHeader = response.headers().get("set-cookie") != null
+        if (cookie == null && isCookieHeader) {
             cookie = response.headers("set-cookie")[0]
         }
         return response

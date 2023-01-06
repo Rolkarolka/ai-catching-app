@@ -20,6 +20,7 @@ import edu.pw.aicatching.viewModels.ClothViewModel
 class EditAttributesFragment : Fragment() {
     private val viewModel: ClothViewModel by activityViewModels()
     private val changedAttrValuesMap = mutableMapOf<String, String>()
+    private var sendChangedAttributes = false
     private var _binding: FragmentEditAttributesBinding? = null
     private val binding get() = _binding!!
 
@@ -83,7 +84,7 @@ class EditAttributesFragment : Fragment() {
 
     private fun compareGarmentChanges(): ClothAttributes? {
         viewModel.mainClothAttributes.value?.let { attributes ->
-            return ClothAttributes(
+            val attributes = ClothAttributes(
                 color = changedAttrValuesMap["color"]
                     .compareChange(attributes.color),
                 texture = changedAttrValuesMap["texture"]
@@ -96,11 +97,18 @@ class EditAttributesFragment : Fragment() {
                     .compareChange(attributes.necklineType),
                 fabric = changedAttrValuesMap["fabric"]
                     .compareChange(attributes.fabric)
-            ) // TODO if none parameter has changed return null
+            )
+            return if (sendChangedAttributes) attributes else null
+
         }
         return null
     }
 
     private fun String?.compareChange(prevValue: String?) =
-        if (this == prevValue || this.isNullOrBlank()) null else this
+        if (this == prevValue || this.isNullOrBlank()) null
+        else {
+            sendChangedAttributes = true
+            this
+        }
+
 }

@@ -30,6 +30,7 @@ import java.io.ByteArrayOutputStream
 class UserDetailsFragment : Fragment() {
     private val viewModel: UserViewModel by activityViewModels()
     private lateinit var colorPickerManager: ColorPickerPreferenceManager
+    private var sendChangedAttributes = false
     private var _binding: FragmentUserDetailsBinding? = null
     private val binding get() = _binding!!
 
@@ -86,7 +87,7 @@ class UserDetailsFragment : Fragment() {
 
     private fun compareUserPreferences(): UserPreferences? {
         viewModel.userLiveData.value?.preferences?.let { preferences ->
-            return UserPreferences(
+            val preferences = UserPreferences(
                 shoeSize = changedPrefValuesMap["shoeSize"].toString()
                     .compareChange(preferences.shoeSize.toString()),
                 clothSize = ClothSize.from(
@@ -99,6 +100,7 @@ class UserDetailsFragment : Fragment() {
                     .compareChange(preferences.favouriteColor?.name.toString())
                     ?.let { Color.valueOf(it) }
             )
+            return if (sendChangedAttributes) preferences else null
         }
         return null
     }
@@ -174,7 +176,11 @@ class UserDetailsFragment : Fragment() {
     }
 
     private fun String?.compareChange(prevValue: String?) =
-        if (this == prevValue || this.isNullOrBlank()) null else this
+        if (this == prevValue || this.isNullOrBlank()) null
+        else {
+            sendChangedAttributes = true
+            this
+        }
 
     companion object {
         const val IMAGE_QUALITY = 100
