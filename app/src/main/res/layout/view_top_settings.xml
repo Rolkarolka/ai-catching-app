@@ -12,9 +12,9 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/userAvatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="16dp"
+        android:layout_width="@dimen/user_avatar_size"
+        android:layout_height="@dimen/user_avatar_size"
+        android:layout_margin="@dimen/margin"
         android:src="@drawable/ic_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,11 +22,11 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/username"
-        android:layout_width="0dp"
-        android:layout_height="32dp"
-        android:layout_margin="16dp"
+        android:layout_width="@dimen/match_rest_space"
+        android:layout_height="@dimen/username_height"
+        android:layout_margin="@dimen/margin"
         android:gravity="fill_vertical"
-        android:padding="8dp"
+        android:padding="@dimen/padding"
         android:text="@string/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/userAvatar"
@@ -35,7 +35,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/clothSizeAttribute"
         style="@style/RhombusWithText"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/margin"
         android:text="@string/cloth_size_before_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

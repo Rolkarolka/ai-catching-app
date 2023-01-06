@@ -84,7 +84,7 @@ class EditAttributesFragment : Fragment() {
 
     private fun compareGarmentChanges(): ClothAttributes? {
         viewModel.mainClothAttributes.value?.let { attributes ->
-            val attributes = ClothAttributes(
+            val editedAttributes = ClothAttributes(
                 color = changedAttrValuesMap["color"]
                     .compareChange(attributes.color),
                 texture = changedAttrValuesMap["texture"]
@@ -98,7 +98,7 @@ class EditAttributesFragment : Fragment() {
                 fabric = changedAttrValuesMap["fabric"]
                     .compareChange(attributes.fabric)
             )
-            return if (sendChangedAttributes) attributes else null
+            return if (sendChangedAttributes) editedAttributes else null
 
         }
         return null

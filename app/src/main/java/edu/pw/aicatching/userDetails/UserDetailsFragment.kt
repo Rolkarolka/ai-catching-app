@@ -87,7 +87,7 @@ class UserDetailsFragment : Fragment() {
 
     private fun compareUserPreferences(): UserPreferences? {
         viewModel.userLiveData.value?.preferences?.let { preferences ->
-            val preferences = UserPreferences(
+            val editedPreferences = UserPreferences(
                 shoeSize = changedPrefValuesMap["shoeSize"].toString()
                     .compareChange(preferences.shoeSize.toString()),
                 clothSize = ClothSize.from(
@@ -100,7 +100,7 @@ class UserDetailsFragment : Fragment() {
                     .compareChange(preferences.favouriteColor?.name.toString())
                     ?.let { Color.valueOf(it) }
             )
-            return if (sendChangedAttributes) preferences else null
+            return if (sendChangedAttributes) editedPreferences else null
         }
         return null
     }

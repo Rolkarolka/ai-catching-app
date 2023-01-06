@@ -4,16 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
     android:background="@drawable/blank_rectangle"
     android:orientation="vertical"
-    android:padding="4dp">
+    android:padding="@dimen/attributes_border_space"
+    android:layout_margin="@dimen/attributes_border_space">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/editAttributeCardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardElevation="8dp">
+        app:cardElevation="@dimen/card_elevation">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -22,9 +22,9 @@
 
             <TextView
                 android:id="@+id/clothAttributeLabel"
-                android:layout_width="150dp"
+                android:layout_width="@dimen/cloth_attributes_label_width"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
+                android:padding="@dimen/padding"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -33,8 +33,8 @@
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/clothAttributeSpinner"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/attributes_spinner_width"
+                android:layout_height="@dimen/attributes_spinner_height"
                 style="@style/Spinner"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

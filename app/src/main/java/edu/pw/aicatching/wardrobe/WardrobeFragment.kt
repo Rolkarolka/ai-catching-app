@@ -22,7 +22,7 @@ import edu.pw.aicatching.viewModels.ClothViewModel
 class WardrobeFragment : Fragment() {
     private val viewModel: ClothViewModel by activityViewModels()
 
-    private lateinit var adapter: WardrobeGalleryAdapter
+    private lateinit var wardrobeGalleryAdapter: WardrobeGalleryAdapter
     private var clothListCopy = mutableListOf<Cloth>()
     private var _binding: FragmentWardrobeBinding? = null
     private val binding get() = _binding!!
@@ -32,36 +32,21 @@ class WardrobeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.getWardrobe()
         _binding = FragmentWardrobeBinding.inflate(inflater, container, false)
         val view = binding.root
+        viewModel.getWardrobe()
         prepareWardrobeGalleryAdapter(view)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        addMenuProvider()
         super.onViewCreated(view, savedInstanceState)
+        addMenuProvider()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun prepareWardrobeGalleryAdapter(view: View) {
-        val wardrobeGalleryAdapter = WardrobeGalleryAdapter(chooseClothListener(view), deleteGarmentListener())
-        viewModel.wardrobeList.observe(
-            viewLifecycleOwner
-        ) {
-            clothListCopy = it.toMutableList()
-            wardrobeGalleryAdapter.setClothList(it)
-        }
-
-        binding.wardrobeGallery.apply {
-            layoutManager = GridLayoutManager(requireActivity(), 2)
-            adapter = wardrobeGalleryAdapter
-        }
     }
 
     private fun deleteGarmentListener(): (Cloth) -> Unit {
@@ -78,6 +63,21 @@ class WardrobeFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
         }
         return listener
+    }
+
+    private fun prepareWardrobeGalleryAdapter(view: View) {
+        wardrobeGalleryAdapter = WardrobeGalleryAdapter(chooseClothListener(view), deleteGarmentListener())
+        viewModel.wardrobeList.observe(
+            viewLifecycleOwner
+        ) {
+            clothListCopy = it.toMutableList()
+            wardrobeGalleryAdapter.setClothList(it)
+        }
+
+        binding.wardrobeGallery.apply {
+            layoutManager = GridLayoutManager(requireActivity(), 2)
+            adapter = wardrobeGalleryAdapter
+        }
     }
 
     private fun addMenuProvider() {
@@ -116,6 +116,6 @@ class WardrobeFragment : Fragment() {
         } else {
             filteredCloths += clothListCopy
         }
-        adapter.filterList(filteredCloths)
+        wardrobeGalleryAdapter.filterList(filteredCloths)
     }
 }

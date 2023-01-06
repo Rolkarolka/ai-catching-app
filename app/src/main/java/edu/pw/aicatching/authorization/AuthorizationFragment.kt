@@ -78,7 +78,7 @@ class AuthorizationFragment : Fragment() {
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
             )
-            binding.progressbar.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.VISIBLE
         }
     }
 
@@ -102,7 +102,7 @@ class AuthorizationFragment : Fragment() {
             this.viewLifecycleOwner
         ) { user ->
             if (user != null) {
-                binding.progressbar.visibility = View.INVISIBLE
+                binding.progressBar.visibility = View.INVISIBLE
                 activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 view?.let { view ->
                     Navigation.findNavController(view).navigate(R.id.mainFragment)

@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp">
+    android:layout_margin="@dimen/margin">
 
     <include
         android:id="@+id/item"
         layout="@layout/item_cloth"
-        android:layout_height="300dp"
-        android:layout_width="300dp"
+        android:layout_height="@dimen/item_cloth_size"
+        android:layout_width="@dimen/item_cloth_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -17,26 +17,27 @@
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:text="@string/description"
+        android:paddingTop="@dimen/padding"
+        android:paddingBottom="@dimen/padding"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/editButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/edit_attributes_button_size"
+        android:layout_height="@dimen/edit_attributes_button_size"
         android:background="@android:drawable/ic_menu_edit"
         app:layout_constraintBottom_toBottomOf="@+id/description"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/margin"
         app:layout_constraintTop_toTopOf="@+id/description" />
 
     <ListView
         android:id="@+id/attributesListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description"
         app:layout_constraintBottom_toTopOf="@id/checkWardrobe"/>
@@ -45,8 +46,9 @@
         android:id="@+id/checkWardrobe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:text="@string/check_wardrobe"
+        android:paddingTop="@dimen/padding"
+        android:paddingBottom="@dimen/padding"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/attributesListView" />
 

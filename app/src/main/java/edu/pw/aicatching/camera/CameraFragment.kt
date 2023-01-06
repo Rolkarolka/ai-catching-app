@@ -73,7 +73,7 @@ class CameraFragment : Fragment() {
                 requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             }
         }
-        binding.takePhotoButton.setOnClickListener { takePhoto() }
+        binding.captureButton.setOnClickListener { takePhoto() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
         return view

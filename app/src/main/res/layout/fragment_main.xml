@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".home.MainFragment">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/main_page_toolbar"
@@ -12,11 +10,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/outfitOfTheDayFrame"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="@dimen/outfit_of_the_day_padding"
+        android:layout_width="@dimen/inspiration_size"
+        android:layout_height="@dimen/inspiration_size"
+        android:layout_marginTop="@dimen/padding"
         android:background="@drawable/blank_rectangle"
-        android:padding="1dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/openCameraButton"
@@ -28,10 +25,10 @@
             android:id="@+id/outfitOfTheDayText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="@dimen/margin"
             android:text="@string/outfit_of_the_day"
             android:textColor="@color/black"
-            android:textSize="17sp"
+            android:textSize="@dimen/inspiration_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -52,11 +49,11 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/openCameraButton"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:background="@color/pink"
         android:drawableTop="@drawable/ic_camera"
-        android:padding="10dp"
+        android:padding="@dimen/margin"
         android:text="@string/new_cloth"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/showWardrobeButton"
@@ -65,11 +62,11 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/showWardrobeButton"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:background="@color/pink"
         android:drawableTop="@drawable/ic_wardrobe"
-        android:padding="10dp"
+        android:padding="@dimen/margin"
         android:text="@string/my_wardrobe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

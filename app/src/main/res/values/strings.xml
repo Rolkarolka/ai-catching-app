@@ -22,7 +22,7 @@
     <string name="shoe_size">Shoe size</string>
     <string name="cloth_size">Cloth size</string>
     <string name="web_client_id">1030459182-pbc99pgfovl6244mlhm0i7j8lc0ps4ee.apps.googleusercontent.com</string>
-    <string name="welcome">Welcome in your outfit creator!</string>
+    <string name="welcome">Welcome to your outfit creator!</string>
     <string name="editAttributeValue">Attribute Value</string>
     <string name="search">Search</string>
 </resources>
