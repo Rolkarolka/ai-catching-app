@@ -16,9 +16,11 @@
     <dimen name="capture_button_bottom_margin">50dp</dimen>
     <!-- fragment cloth description -->
     <dimen name="edit_attributes_button_size">30dp</dimen>
+    <dimen name="description_attributes_padding">2dp</dimen>
     <!-- fragment main -->
     <dimen name="inspiration_size">320dp</dimen>
     <dimen name="inspiration_text_size">17sp</dimen>
+    <dimen name="main_button_width">140dp</dimen>
     <!-- fragment user details -->
     <dimen name="details_spinner_width">300dp</dimen>
     <dimen name="details_spinner_height">40dp</dimen>
@@ -31,6 +33,7 @@
     <!-- view top settings -->
     <dimen name="user_avatar_size">100dp</dimen>
     <dimen name="username_height">32dp</dimen>
+    <dimen name="user_details">10dp</dimen>
     <!-- item cloth -->
     <dimen name="cloth_margin">5dp</dimen>
 </resources>

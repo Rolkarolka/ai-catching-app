@@ -63,7 +63,7 @@
         android:id="@+id/appendUserDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/user_details"
         android:background="@drawable/ic_info_in_rhombus"
         app:layout_constraintStart_toEndOf="@+id/favColorAttribute"
         app:layout_constraintTop_toBottomOf="@+id/username" />
