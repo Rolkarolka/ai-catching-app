@@ -6,9 +6,9 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/currentUserAvatar"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_margin="16dp"
+        android:layout_width="@dimen/showings_size"
+        android:layout_height="@dimen/showings_size"
+        android:layout_margin="@dimen/margin"
         android:src="@drawable/ic_avatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,8 +18,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/pink"
-        android:layout_margin="10dp"
-        android:padding="10dp"
+        android:layout_margin="@dimen/margin"
+        android:padding="@dimen/padding"
         android:text="@string/change_avatar"
         app:layout_constraintBottom_toBottomOf="@id/currentUserAvatar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,9 +29,9 @@
     <View
         android:id="@+id/avatarSectionLineBottom"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/line_height"
         android:background="@color/gray"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/currentUserAvatar"
@@ -39,10 +39,10 @@
 
     <com.skydoves.colorpickerview.ColorPickerView
         android:id="@+id/favColorPickerView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="10dp"
+        android:layout_width="@dimen/showings_size"
+        android:layout_height="@dimen/showings_size"
+        android:padding="@dimen/padding"
+        android:layout_margin="@dimen/margin"
         app:layout_constraintTop_toBottomOf="@id/avatarSectionLineBottom"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fav_color"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/margin"
         app:layout_constraintStart_toEndOf="@id/favColorPickerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/favouriteColorView"
@@ -70,35 +70,32 @@
     <View
         android:id="@+id/colorSectionLineBottom"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/line_height"
         android:background="@color/gray"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/favColorPickerView"
-        app:layout_constraintBottom_toTopOf="@+id/clothSizeSpinner"/>
+        app:layout_constraintBottom_toTopOf="@+id/garmentSizeSpinner"/>
 
     <TextView
-        android:id="@+id/clothSizeLabel"
+        android:id="@+id/garmentSizeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cloth_size"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/margin"
+        android:text="@string/garment_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/clothSizeSpinner"
-        app:layout_constraintBottom_toBottomOf="@id/clothSizeSpinner"
+        app:layout_constraintTop_toTopOf="@id/garmentSizeSpinner"
+        app:layout_constraintBottom_toBottomOf="@id/garmentSizeSpinner"
         />
 
-
     <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/clothSizeSpinner"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        android:layout_margin="15dp"
+        android:id="@+id/garmentSizeSpinner"
+        android:layout_width="@dimen/details_spinner_width"
+        android:layout_height="@dimen/details_spinner_height"
+        android:layout_margin="@dimen/margin"
+        style="@style/Spinner"
         app:layout_constraintTop_toBottomOf="@id/colorSectionLineBottom"
-        app:layout_constraintStart_toEndOf="@id/clothSizeLabel"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
@@ -106,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/shoe_size"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/shoeSizeSpinner"
         app:layout_constraintBottom_toBottomOf="@id/shoeSizeSpinner"
@@ -114,20 +111,19 @@
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/shoeSizeSpinner"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        app:layout_constraintTop_toBottomOf="@id/clothSizeSpinner"
-        app:layout_constraintStart_toEndOf="@id/shoeSizeLabel"
+        android:layout_width="@dimen/details_spinner_width"
+        android:layout_height="@dimen/details_spinner_height"
+        android:layout_margin="@dimen/margin"
+        style="@style/Spinner"
+        app:layout_constraintTop_toBottomOf="@id/garmentSizeSpinner"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <View
         android:id="@+id/dangerSectionLineBottom"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/line_height"
         android:background="@color/gray"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/shoeSizeSpinner"
@@ -138,7 +134,7 @@
         android:id="@+id/logOutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/margin"
         app:layout_constraintTop_toBottomOf="@id/dangerSectionLineBottom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -150,11 +146,25 @@
         android:id="@+id/deleteAccountButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/margin"
         app:layout_constraintTop_toBottomOf="@id/logOutButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/pink"
         android:text="@string/delete_account"
         />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        android:backgroundTint="@color/white"
+        android:indeterminateTint="@color/pink"
+        android:layout_margin="@dimen/logging_toolbar_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/deleteAccountButton"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

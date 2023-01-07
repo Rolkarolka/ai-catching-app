@@ -1,6 +1,6 @@
 package edu.pw.aicatching.editAttributes
 
-import android.R
+import android.R.layout.simple_spinner_dropdown_item
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -11,19 +11,34 @@ class AttributeViewHolder(
     private val editAttributeItemBinding: ItemEditAttriibuteBinding,
 ) : RecyclerView.ViewHolder(editAttributeItemBinding.root) {
 
-    fun bind(attributeName: String, attributeValue: String?, availableValues: List<String>, listener: (String, String) -> Unit) {
-        editAttributeItemBinding.clothAttributeLabel.text = attributeName
-        val clothAttributeList = listOf("") + availableValues
+    fun bind(
+        attributeName: String,
+        attributeValue: String?,
+        availableValues: List<String>,
+        listener: (String, String) -> Unit
+    ) {
+        editAttributeItemBinding.garmentAttributeLabel.text = attributeName
+        val garmentAttributeList = availableValues.toMutableList()
 
-        editAttributeItemBinding.clothAttributeSpinner.adapter = ArrayAdapter(this.itemView.context, R.layout.simple_spinner_dropdown_item, clothAttributeList)
-        editAttributeItemBinding.clothAttributeSpinner.setSelection(clothAttributeList.indexOf(attributeValue))
+        editAttributeItemBinding.garmentAttributeSpinner.apply {
+            adapter = ArrayAdapter(
+                this@AttributeViewHolder.itemView.context,
+                simple_spinner_dropdown_item,
+                garmentAttributeList
+            )
+            setSelection(garmentAttributeList.indexOf(attributeValue))
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parentView: AdapterView<*>?,
+                    selectedItemView: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    listener(attributeName, garmentAttributeList[position])
+                }
 
-        object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                listener(attributeName, clothAttributeList[position])
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }.also { editAttributeItemBinding.clothAttributeSpinner.onItemSelectedListener = it }
+        }
     }
 }

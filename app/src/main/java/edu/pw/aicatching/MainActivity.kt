@@ -6,9 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
-import kotlinx.android.synthetic.main.activity_main.*
+import edu.pw.aicatching.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,25 +17,36 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_AICatching)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
         val navHostFragment = supportFragmentManager.findFragmentById(
             R.id.nav_host_fragment
         ) as NavHostFragment
         navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id in listOf(R.id.mainFragment, R.id.authorizationFragment)) {
-                main_toolbar.visibility = View.GONE
+                binding.mainToolbar.visibility = View.GONE
             } else {
-                main_toolbar.visibility = View.VISIBLE
+                binding.mainToolbar.visibility = View.VISIBLE
             }
         }
         appBarConfiguration = AppBarConfiguration(
-            topLevelDestinationIds = setOf(R.id.mainFragment, R.id.authorizationFragment),
-            fallbackOnNavigateUpListener = ::onSupportNavigateUp
+            topLevelDestinationIds = setOf(R.id.mainFragment, R.id.authorizationFragment)
         )
-        setSupportActionBar(main_toolbar)
-        main_toolbar.setupWithNavController(navController, appBarConfiguration)
+        setSupportActionBar(binding.mainToolbar)
+        binding.mainToolbar.setupWithNavController(navController, appBarConfiguration)
+        binding.mainToolbar.setNavigationOnClickListener {
+            val currentNavHostFragment =
+                supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            val navController = currentNavHostFragment.navController
+            if (navController.currentDestination?.id == R.id.garmentDescriptionFragment &&
+                navController.popBackStack(R.id.wardrobeFragment, false)
+            ) { } else if (navController.currentDestination?.id == R.id.garmentDescriptionFragment &&
+                navController.popBackStack(R.id.cameraFragment, false)
+            ) { } else {
+                navController.popBackStack()
+            }
+        }
     }
-
-    override fun onSupportNavigateUp() = navController.navigateUp(appBarConfiguration)
 }
