@@ -30,6 +30,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         viewModel.getInspiration()
+        // TODO errorMessage getInspiration
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -58,8 +59,8 @@ class MainFragment : Fragment() {
     }
 
     private fun setMainToolbarUserInfo() {
-        if (viewModel.userLiveData.value != null) {
-            viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
+        if (viewModel.user.value != null) {
+            viewModel.user.observe(viewLifecycleOwner) { user ->
                 user?.preferences?.let { preferences ->
                     binding.mainPageToolbar.apply {
                         setUsername(user)
@@ -71,8 +72,8 @@ class MainFragment : Fragment() {
                 }
             }
         }
-        viewModel.userPreferencesLiveData.observe(viewLifecycleOwner) {
-            viewModel.userLiveData.value = viewModel.userLiveData.value?.copy(preferences = it)
+        viewModel.userPreferences.observe(viewLifecycleOwner) {
+            viewModel.user.value = viewModel.user.value?.copy(preferences = it)
         }
     }
 
@@ -106,7 +107,7 @@ class MainFragment : Fragment() {
     }
 
     private fun setInspirationImage() {
-        viewModel.inspirationLiveData.observe(viewLifecycleOwner) {
+        viewModel.inspiration.observe(viewLifecycleOwner) {
             val inspirationUrl = it["link"]
             val imgUri = inspirationUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
             binding.inspiration.load(imgUri) {

@@ -16,19 +16,21 @@ class ClothViewModel : ViewModel() {
     private val service = AICatchingApiService.getInstance()
 
     val mainCloth = MutableLiveData<Cloth>()
+    val mainClothErrorMessage = MutableLiveData<String>()
+
     val mainClothAttributes = MutableLiveData<ClothAttributes>()
+    val mainClothAttributesErrorMessage = MutableLiveData<String>()
+
     val outfitList = MutableLiveData<List<Cloth>>()
     val outfitErrorMessage = MutableLiveData<String>()
-    val availableAttributesValues = MutableLiveData<Map<String, List<String>>>()
 
-    val errorWhileUpdatingAttributes = MutableLiveData<String>()
-    val deleteErrorMessage = MutableLiveData<String>()
+    val availableAttributesValues = MutableLiveData<Map<String, List<String>>>()
+    val availableAttributesValuesErrorMessage = MutableLiveData<String>()
 
     val wardrobeList = MutableLiveData<List<Cloth>>()
     val wardrobeErrorMessage = MutableLiveData<String>()
-    val mainClothAttributesErrorMessage = MutableLiveData<String>()
-    val availableAttributesValuesErrorMessage = MutableLiveData<String>()
-    val mainClothErrorMessage = MutableLiveData<String>()
+
+    val deleteErrorMessage = MutableLiveData<String>()
 
     fun getOutfit(garmentID: Int) {
         val response = service.getOutfit(garmentID)
@@ -91,7 +93,7 @@ class ClothViewModel : ViewModel() {
                 mainClothAttributes.postValue(response.body())
             }
             override fun onFailure(call: Call<ClothAttributes>, t: Throwable) {
-                errorWhileUpdatingAttributes.postValue(t.message)
+                mainClothAttributesErrorMessage.postValue(t.message)
             }
         })
     }

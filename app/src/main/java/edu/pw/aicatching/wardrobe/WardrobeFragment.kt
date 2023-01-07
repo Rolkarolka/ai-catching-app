@@ -35,6 +35,7 @@ class WardrobeFragment : Fragment() {
         _binding = FragmentWardrobeBinding.inflate(inflater, container, false)
         val view = binding.root
         viewModel.getWardrobe()
+        // TODO errorMessage getWardrobe
         prepareWardrobeGalleryAdapter(view)
         return view
     }
@@ -54,6 +55,7 @@ class WardrobeFragment : Fragment() {
             viewModel.deleteGarment(garment.garmentID)
             viewModel.wardrobeList.value = viewModel.wardrobeList.value?.filter { it != garment }
         }
+        // TODO errorMessage deleteGarment
         return actionModeListener
     }
 

@@ -44,6 +44,7 @@ class UserDetailsFragment : Fragment() {
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, stream)
             viewModel.updateUserPhoto(stream.toByteArray())
+            // TODO errorMessage updateUserPhoto
         } else {
             Log.d("UserDetailsFragment:PhotoPicker", "No media selected")
         }
@@ -70,23 +71,26 @@ class UserDetailsFragment : Fragment() {
 
         binding.logOutButton.setOnClickListener {
             viewModel.logOut()
+            // TODO errorMessage logOut
             this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
         }
 
         binding.deleteAccountButton.setOnClickListener {
             viewModel.deleteUser()
+            // TODO errorMessage deleteUser
             this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
         }
     }
 
     override fun onDestroyView() {
         compareUserPreferences()?.let { viewModel.updateUserPreferences(it) }
+        // TODO errorMessage updateUserPreferences
         super.onDestroyView()
         _binding = null
     }
 
     private fun compareUserPreferences(): UserPreferences? {
-        viewModel.userLiveData.value?.preferences?.let { preferences ->
+        viewModel.user.value?.preferences?.let { preferences ->
             val editedPreferences = UserPreferences(
                 shoeSize = changedPrefValuesMap["shoeSize"].toString()
                     .compareChange(preferences.shoeSize.toString()),
@@ -112,7 +116,7 @@ class UserDetailsFragment : Fragment() {
             clothSizesArray
         )
 
-        viewModel.userLiveData.value?.preferences
+        viewModel.user.value?.preferences
             ?.let { clothSizesArray.indexOf(it.clothSize.toString()) }
             ?.let { binding.clothSizeSpinner.setSelection(it) }
 
@@ -131,7 +135,7 @@ class UserDetailsFragment : Fragment() {
             android.R.layout.simple_spinner_dropdown_item,
             shoeSizesArray
         )
-        viewModel.userLiveData.value?.preferences
+        viewModel.user.value?.preferences
             ?.let { shoeSizesArray.indexOf(it.shoeSize) }
             ?.let { binding.shoeSizeSpinner.setSelection(it) }
 
@@ -146,7 +150,7 @@ class UserDetailsFragment : Fragment() {
 
     private fun setColorPicker() {
         binding.favColorPickerView.preferenceName = "FavColorPicker"
-        viewModel.userLiveData.value?.preferences?.let {
+        viewModel.user.value?.preferences?.let {
             it.favouriteColor?.let { favColor ->
                 colorPickerManager.setColor("FavColorPicker", android.graphics.Color.parseColor(favColor.hexValue))
             }
@@ -164,7 +168,7 @@ class UserDetailsFragment : Fragment() {
     }
 
     private fun setAvatar() {
-        viewModel.userLiveData.value?.preferences?.photoUrl?.let { photo ->
+        viewModel.user.value?.preferences?.photoUrl?.let { photo ->
             binding.currentUserAvatar.load(photo.toUri().buildUpon()?.scheme("https")?.build()) {
                 placeholder(R.drawable.ic_loading)
                 error(R.drawable.ic_avatar)

@@ -16,28 +16,30 @@ import retrofit2.Response
 class UserViewModel : ViewModel() {
     private val service = AICatchingApiService.getInstance()
 
-    var userLiveData: MutableLiveData<User?> = MutableLiveData()
-    val userPreferencesLiveData: MutableLiveData<UserPreferences> = MutableLiveData()
+    var user: MutableLiveData<User?> = MutableLiveData()
     var userErrorMessage = MutableLiveData<String>()
-    var userPreferencesErrorMessage = MutableLiveData<String>()
-    var loggingErrorMessage = MutableLiveData<String>()
 
-    var inspirationLiveData: MutableLiveData<Map<String, String>> = MutableLiveData()
+    val userPreferences: MutableLiveData<UserPreferences> = MutableLiveData()
+    var userPreferencesErrorMessage = MutableLiveData<String>()
+
+    var inspiration: MutableLiveData<Map<String, String>> = MutableLiveData()
     var inspirationErrorMessage = MutableLiveData<String>()
+
+    var loggingErrorMessage = MutableLiveData<String>()
 
     fun logIn(credentials: Credentials) {
         val response = service.putLogIn(credentials)
         response.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
                 userErrorMessage.postValue(t.message)
-                userLiveData.postValue(null)
+                user.postValue(null)
             }
 
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
-                    userLiveData.postValue(response.body())
+                    user.postValue(response.body())
                 } else {
-                    userLiveData.postValue(null)
+                    user.postValue(null)
                 }
             }
         })
@@ -45,7 +47,7 @@ class UserViewModel : ViewModel() {
 
     fun deleteUser() {
         val response = service.deleteUser()
-        userLiveData.postValue(null)
+        user.postValue(null)
         response.enqueue(object : Callback<Void?> {
             override fun onResponse(call: Call<Void?>, response: Response<Void?>) { }
 
@@ -57,7 +59,7 @@ class UserViewModel : ViewModel() {
 
     fun logOut() {
         val response = service.deleteSession()
-        userLiveData.postValue(null)
+        user.postValue(null)
         response.enqueue(object : Callback<Void?> {
             override fun onResponse(call: Call<Void?>, response: Response<Void?>) { }
 
@@ -73,7 +75,7 @@ class UserViewModel : ViewModel() {
         val response = body.let { service.updateUserPhoto(it) }
         response.enqueue(object : Callback<UserPreferences> {
             override fun onResponse(call: Call<UserPreferences>, response: Response<UserPreferences>) {
-                userPreferencesLiveData.postValue(response.body())
+                userPreferences.postValue(response.body())
             }
 
             override fun onFailure(call: Call<UserPreferences>, t: Throwable) {
@@ -91,7 +93,7 @@ class UserViewModel : ViewModel() {
 
             override fun onResponse(call: Call<UserPreferences>, response: Response<UserPreferences>) {
                 if (response.isSuccessful) {
-                    userPreferencesLiveData.postValue(response.body())
+                    userPreferences.postValue(response.body())
                 }
             }
         })
@@ -106,7 +108,7 @@ class UserViewModel : ViewModel() {
 
             override fun onResponse(call: Call<Map<String, String>>, response: Response<Map<String, String>>) {
                 if (response.isSuccessful) {
-                    inspirationLiveData.postValue(response.body())
+                    inspiration.postValue(response.body())
                 }
             }
         })

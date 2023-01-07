@@ -33,6 +33,7 @@ class EditAttributesFragment : Fragment() {
         val view = binding.root
 
         viewModel.getValuesOfClothAttributes()
+        // TODO errorMessage getValuesOfClothAttributes
         binding.editAttributesList.setAttributesList()
 
         viewModel.mainCloth.value?.let { garment ->
@@ -51,6 +52,7 @@ class EditAttributesFragment : Fragment() {
                 viewModel.updateClothAttributes(clothID, it)
             }
         }
+        // TODO errorMessage updateClothAttributes
         super.onDestroyView()
         _binding = null
     }

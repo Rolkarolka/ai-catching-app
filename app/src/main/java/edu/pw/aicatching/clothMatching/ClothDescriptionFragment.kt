@@ -50,6 +50,9 @@ class ClothDescriptionFragment : Fragment() {
             }
         }
 
+        // TODO errorMessage getOutfit
+        // TODO errorMessage getAttributes
+
         binding.outfitMatching.setOutfitList(view)
         binding.attributesListView.setAttributesListView()
 

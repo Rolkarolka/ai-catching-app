@@ -74,6 +74,7 @@ class AuthorizationFragment : Fragment() {
             this.viewModel.logIn(
                 Credentials(email = credential.id, token = credential.googleIdToken)
             )
+            // TODO errorMessage logIn
             activity?.window?.setFlags(
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
@@ -98,7 +99,7 @@ class AuthorizationFragment : Fragment() {
     }
 
     private fun prepareForLoggingUserIn() {
-        viewModel.userLiveData.observe(
+        viewModel.user.observe(
             this.viewLifecycleOwner
         ) { user ->
             if (user != null) {

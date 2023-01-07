@@ -116,6 +116,7 @@ class CameraFragment : Fragment() {
                         override fun onCaptureSuccess(image: ImageProxy) {
                             super.onCaptureSuccess(image)
                             viewModel.createGarment(image.image?.toByteArray())
+                            // TODO errorMessage createGarment
                             view?.let { Navigation.findNavController(it).navigate(R.id.clothDescriptionFragment) }
                         }
 
