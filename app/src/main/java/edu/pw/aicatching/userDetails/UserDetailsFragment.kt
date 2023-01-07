@@ -1,159 +1,234 @@
 package edu.pw.aicatching.userDetails
 
 import android.content.res.ColorStateList
-import android.net.Uri
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import com.skydoves.colorpickerview.listeners.ColorListener
+import coil.load
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import edu.pw.aicatching.R
-import edu.pw.aicatching.models.ClothSize
+import edu.pw.aicatching.databinding.FragmentUserDetailsBinding
+import edu.pw.aicatching.models.Color
+import edu.pw.aicatching.models.GarmentSize
 import edu.pw.aicatching.models.UserPreferences
 import edu.pw.aicatching.viewModels.UserViewModel
-import kotlinx.android.synthetic.main.fragment_user_details.*
+import java.io.ByteArrayOutputStream
 
 class UserDetailsFragment : Fragment() {
     private val viewModel: UserViewModel by activityViewModels()
     private lateinit var colorPickerManager: ColorPickerPreferenceManager
+    private var sendChangedAttributes = false
+    private var _binding: FragmentUserDetailsBinding? = null
+    private val binding get() = _binding!!
+
     private val pickMediaResult = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         if (uri != null) {
+            binding.currentUserAvatar.setImageURI(uri)
             Log.d("UserDetailsFragment:PhotoPicker", "Selected URI: $uri")
-            currentUserAvatar.setImageURI(uri)
-            viewModel.updateUserPhoto(uri)
-            if (viewModel.userLiveData.value?.preferences == null) {
-                viewModel.userLiveData.value = viewModel.userLiveData
-                    .value?.copy(preferences = UserPreferences(photoUrl = uri.toString()))
-            } else {
-                viewModel.userLiveData.value = viewModel.userLiveData
-                    .value?.copy(
-                        preferences = viewModel.userLiveData.value
-                            ?.preferences?.copy(photoUrl = uri.toString())
-                    )
-            }
+            val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, uri))
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, stream)
+            viewModel.updateUserPhoto(stream.toByteArray())
         } else {
             Log.d("UserDetailsFragment:PhotoPicker", "No media selected")
         }
     }
+    private val changedPrefValuesMap: MutableMap<String, Any> = mutableMapOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        _binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
+        val view = binding.root
         colorPickerManager = ColorPickerPreferenceManager.getInstance(this.context)
-        return inflater.inflate(R.layout.fragment_user_details, container, false)
+        handleLoggingErrorMessage()
+        handleUpdateUserPhotoErrorMessage()
+        handleUpdateUserPreferences()
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setClothSpinner(ClothSize.values().map { it.toString() }.toList())
-        setShoeSpinner(listOf("UNKNOWN") + (35..45).toList().map { it.toString() })
+        setGarmentSpinner(GarmentSize.values().map { it.toString() }.toList())
+        setShoeSpinner((MIN_SHOE_SIZE..MAX_SHOE_SIZE).toList().map { it.toString() })
         setColorPicker()
         setAvatar()
 
-        logOutButton.setOnClickListener {
+        binding.logOutButton.setOnClickListener {
             viewModel.logOut()
-            this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
+            showProgressBar()
         }
 
-        deleteAccountButton.setOnClickListener {
+        binding.deleteAccountButton.setOnClickListener {
             viewModel.deleteUser()
-            this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
+            showProgressBar()
+        }
+
+        viewModel.user.observe(
+            viewLifecycleOwner
+        ) { user ->
+            if (user == null) {
+                this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
+            }
+            hideProgressBar()
         }
     }
 
-    private fun setClothSpinner(clothSizesArray: List<String>) {
-        clothSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, clothSizesArray)
+    override fun onDestroyView() {
+        compareUserPreferences()?.let { viewModel.updateUserPreferences(it) }
+        super.onDestroyView()
+        _binding = null
+    }
 
-        viewModel.userLiveData.value?.preferences
-            ?.let { clothSizesArray.indexOf(it.clothSize.toString()) }
-            ?.let { clothSizeSpinner.setSelection(it) }
+    private fun compareUserPreferences(): UserPreferences? {
+        viewModel.user.value?.preferences?.let { preferences ->
+            val editedPreferences = UserPreferences(
+                shoeSize = changedPrefValuesMap["shoeSize"].toString()
+                    .compareChange(preferences.shoeSize.toString()),
+                garmentSize = GarmentSize.from(
+                    changedPrefValuesMap["garmentSize"]
+                        .toString()
+                        .compareChange(preferences.garmentSize?.name.toString())
+                ),
+                favouriteColor = changedPrefValuesMap["favouriteColor"]
+                    .toString()
+                    .compareChange(preferences.favouriteColor?.name.toString())
+                    ?.let { Color.valueOf(it) }
+            )
+            return if (sendChangedAttributes) editedPreferences else null
+        }
+        return null
+    }
+
+    private fun setGarmentSpinner(garmentSizesArray: List<String>) {
+        binding.garmentSizeSpinner.adapter = ArrayAdapter(
+            this.requireActivity(),
+            android.R.layout.simple_spinner_dropdown_item,
+            garmentSizesArray
+        )
+
+        viewModel.user.value?.preferences
+            ?.let { garmentSizesArray.indexOf(it.garmentSize.toString()) }
+            ?.let { binding.garmentSizeSpinner.setSelection(it) }
 
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                if (viewModel.userLiveData.value?.preferences == null) {
-                    viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(preferences = UserPreferences(clothSize = ClothSize.valueOf(clothSizesArray[position])))
-                } else {
-                    viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(
-                            preferences = viewModel.userLiveData.value
-                                ?.preferences?.copy(clothSize = ClothSize.valueOf(clothSizesArray[position]))
-                        )
-                }
+                changedPrefValuesMap["garmentSize"] = GarmentSize.valueOf(garmentSizesArray[position])
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }.also { clothSizeSpinner.onItemSelectedListener = it }
+        }.also { binding.garmentSizeSpinner.onItemSelectedListener = it }
     }
 
     private fun setShoeSpinner(shoeSizesArray: List<String>) {
-        shoeSizeSpinner.adapter = ArrayAdapter(this.requireActivity(), android.R.layout.simple_spinner_dropdown_item, shoeSizesArray)
-        viewModel.userLiveData.value?.preferences
+        binding.shoeSizeSpinner.adapter = ArrayAdapter(
+            this.requireActivity(),
+            android.R.layout.simple_spinner_dropdown_item,
+            shoeSizesArray
+        )
+        viewModel.user.value?.preferences
             ?.let { shoeSizesArray.indexOf(it.shoeSize) }
-            ?.let { shoeSizeSpinner.setSelection(it) }
+            ?.let { binding.shoeSizeSpinner.setSelection(it) }
 
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                if (viewModel.userLiveData.value?.preferences == null) {
-                    viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(preferences = UserPreferences(shoeSize = shoeSizesArray[position]))
-                } else {
-                    viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(
-                            preferences = viewModel.userLiveData.value
-                                ?.preferences?.copy(shoeSize = shoeSizesArray[position])
-                        )
-                }
+                changedPrefValuesMap["shoeSize"] = shoeSizesArray[position]
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }.also { shoeSizeSpinner.onItemSelectedListener = it }
+        }.also { binding.shoeSizeSpinner.onItemSelectedListener = it }
     }
 
     private fun setColorPicker() {
-        favColorPickerView.preferenceName = "FavColorPicker"
-        viewModel.userLiveData.value?.preferences?.let {
+        binding.favColorPickerView.preferenceName = "FavColorPicker"
+        viewModel.user.value?.preferences?.let {
             it.favouriteColor?.let { favColor ->
-                colorPickerManager.setColor("FavColorPicker", favColor)
+                colorPickerManager.setColor("FavColorPicker", android.graphics.Color.parseColor(favColor.hexValue))
             }
         }
 
-        favColorPickerView.setColorListener(
-            ColorListener { color, _ ->
-                favouriteColorView.backgroundTintList = ColorStateList.valueOf(color)
-                if (viewModel.userLiveData.value?.preferences == null) {
-                    viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(preferences = UserPreferences(favouriteColor = color))
-                } else {
-                    viewModel.userLiveData.value = viewModel.userLiveData
-                        .value?.copy(
-                            preferences = viewModel.userLiveData.value
-                                ?.preferences?.copy(favouriteColor = color)
-                        )
+        binding.favColorPickerView.setColorListener(
+            ColorEnvelopeListener { envelope, _ ->
+                binding.favouriteColorView.backgroundTintList = ColorStateList.valueOf(envelope.color)
+                val color = Color.from(envelope.argb)
+                if (color != null) {
+                    changedPrefValuesMap["favouriteColor"] = color.name
                 }
             }
         )
     }
 
     private fun setAvatar() {
-        viewModel.userLiveData.value?.preferences?.photoUrl?.let { photo ->
-            currentUserAvatar.setImageURI(Uri.parse(photo))
+        viewModel.user.value?.preferences?.photoUrl?.let { photo ->
+            binding.currentUserAvatar.load(photo.toUri().buildUpon()?.scheme("https")?.build()) {
+                placeholder(R.drawable.ic_loading)
+                error(R.drawable.ic_avatar)
+            }
         }
-        changeUserPhotoButton.setOnClickListener {
+        binding.changeUserPhotoButton.setOnClickListener {
             pickMediaResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+    }
+
+    private fun showProgressBar() {
+        activity?.window?.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        binding.progressBar.visibility = View.INVISIBLE
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    private fun handleLoggingErrorMessage() {
+        viewModel.loggingErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.d("UserDetailsFragment:onCreateView", it) }
+    }
+
+    private fun handleUpdateUserPhotoErrorMessage() {
+        viewModel.userPreferencesErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.d("UserDetailsFragment:onCreateView:updateUserPhoto", it) }
+    }
+
+    private fun handleUpdateUserPreferences() {
+        viewModel.userPreferencesErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.d("UserDetailsFragment:onCreateView:updateUserPreferences", it) }
+    }
+
+    private fun String?.compareChange(prevValue: String?) =
+        if (this == prevValue || this.isNullOrBlank()) null
+        else {
+            sendChangedAttributes = true
+            this
+        }
+
+    companion object {
+        const val IMAGE_QUALITY = 100
+        const val MAX_SHOE_SIZE = 45
+        const val MIN_SHOE_SIZE = 35
     }
 }

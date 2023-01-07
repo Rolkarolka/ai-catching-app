@@ -1,6 +1,7 @@
 package edu.pw.aicatching.wardrobe
 
-import android.graphics.Color
+import android.graphics.Color.LTGRAY
+import android.graphics.Color.WHITE
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -9,51 +10,51 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.recyclerview.widget.RecyclerView
-import edu.pw.aicatching.databinding.ItemClothBinding
-import edu.pw.aicatching.models.Cloth
+import edu.pw.aicatching.databinding.ItemGarmentBinding
+import edu.pw.aicatching.models.Garment
 
 class WardrobeGalleryAdapter(
-    val listener: (Cloth) -> Unit,
-    val actionModeListener: (Cloth) -> Unit
+    val listener: (Garment) -> Unit,
+    val actionModeListener: (Garment) -> Unit
 ) :
-    RecyclerView.Adapter<ClothViewHolder>() {
+    RecyclerView.Adapter<GarmentViewHolder>() {
     var multiSelect: Boolean = false
-    val selectedClothes = mutableListOf<Cloth>()
-    private var cloths = mutableListOf<Cloth>()
+    val selectedGarments = mutableListOf<Garment>()
+    private var garments = mutableListOf<Garment>()
 
-    fun setClothList(cloths: List<Cloth>) {
-        this.cloths = cloths.toMutableList()
+    fun setGarmentList(garments: List<Garment>) {
+        this.garments = garments.toMutableList()
         notifyDataSetChanged()
     }
 
-    fun filterList(filteredCloths: MutableList<Cloth>) {
-        cloths = filteredCloths
+    fun filterList(filteredGarments: MutableList<Garment>) {
+        garments = filteredGarments
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GarmentViewHolder {
         val from = LayoutInflater.from(parent.context)
-        val binding = ItemClothBinding.inflate(from, parent, false)
+        val binding = ItemGarmentBinding.inflate(from, parent, false)
         binding.root.layoutParams.height = parent.measuredWidth / 2
-        return ClothViewHolder(binding)
+        return GarmentViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ClothViewHolder, position: Int) {
-        val onClickListener: (Cloth, View) -> Unit = { cloth, view ->
+    override fun onBindViewHolder(holder: GarmentViewHolder, position: Int) {
+        val onClickListener: (Garment, View) -> Unit = { garment, view ->
             if (this.multiSelect) {
-                this.selectClothes(cloth, view)
+                this.selectGarments(garment, view)
             } else {
-                listener(cloth)
+                listener(garment)
             }
         }
-        val onLongClickListener: (Cloth, View) -> Boolean = { cloth, view ->
+        val onLongClickListener: (Garment, View) -> Boolean = { garment, view ->
             (view.context as AppCompatActivity).startSupportActionMode(actionModeCallbacks)
-            selectClothes(cloth, view)
+            selectGarments(garment, view)
             true
         }
-        val cloth = cloths[position]
-        val backgroundViewHolderColor = if (selectedClothes.contains(cloth)) Color.LTGRAY else Color.WHITE
-        holder.bind(cloth, onClickListener, onLongClickListener, backgroundViewHolderColor)
+        val garment = garments[position]
+        val backgroundViewHolderColor = if (selectedGarments.contains(garment)) LTGRAY else WHITE
+        holder.bind(garment, onClickListener, onLongClickListener, backgroundViewHolderColor)
     }
 
     private val actionModeCallbacks: ActionMode.Callback = object : ActionMode.Callback {
@@ -68,9 +69,9 @@ class WardrobeGalleryAdapter(
         }
 
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-            for (cloth in selectedClothes) {
-                cloths.remove(cloth)
-                actionModeListener(cloth)
+            for (garment in selectedGarments) {
+                garments.remove(garment)
+                actionModeListener(garment)
             }
             mode?.finish()
             return true
@@ -78,20 +79,20 @@ class WardrobeGalleryAdapter(
 
         override fun onDestroyActionMode(mode: ActionMode?) {
             multiSelect = false
-            selectedClothes.clear()
+            selectedGarments.clear()
             notifyDataSetChanged()
         }
     }
 
-    private fun selectClothes(cloth: Cloth, view: View) {
-        if (selectedClothes.contains(cloth)) {
-            selectedClothes.remove(cloth)
-            view.setBackgroundColor(Color.WHITE)
+    private fun selectGarments(garment: Garment, view: View) {
+        if (selectedGarments.contains(garment)) {
+            selectedGarments.remove(garment)
+            view.setBackgroundColor(WHITE)
         } else {
-            selectedClothes.add(cloth)
-            view.setBackgroundColor(Color.LTGRAY)
+            selectedGarments.add(garment)
+            view.setBackgroundColor(LTGRAY)
         }
     }
 
-    override fun getItemCount(): Int = cloths.size
+    override fun getItemCount(): Int = garments.size
 }
