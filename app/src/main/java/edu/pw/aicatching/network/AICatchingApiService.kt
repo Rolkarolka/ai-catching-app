@@ -2,9 +2,9 @@ package edu.pw.aicatching.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.models.Garment
 import edu.pw.aicatching.models.GarmentAttributes
-import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.models.User
 import edu.pw.aicatching.models.UserPreferences
 import okhttp3.Interceptor

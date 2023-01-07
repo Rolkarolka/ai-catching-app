@@ -3,6 +3,7 @@ package edu.pw.aicatching.home
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +15,8 @@ import coil.load
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentMainBinding
 import edu.pw.aicatching.databinding.ViewTopSettingsBinding
-import edu.pw.aicatching.models.GarmentSize
 import edu.pw.aicatching.models.Color as FavColor
-import android.util.Log
+import edu.pw.aicatching.models.GarmentSize
 import edu.pw.aicatching.models.User
 import edu.pw.aicatching.viewModels.UserViewModel
 

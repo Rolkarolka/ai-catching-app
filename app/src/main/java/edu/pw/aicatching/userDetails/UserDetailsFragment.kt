@@ -188,7 +188,6 @@ class UserDetailsFragment : Fragment() {
         }
     }
 
-
     private fun showProgressBar() {
         activity?.window?.setFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -202,7 +201,6 @@ class UserDetailsFragment : Fragment() {
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
-
     private fun handleLoggingErrorMessage() {
         viewModel.loggingErrorMessage.observe(
             viewLifecycleOwner
@@ -214,7 +212,6 @@ class UserDetailsFragment : Fragment() {
             viewLifecycleOwner
         ) { Log.d("UserDetailsFragment:onCreateView:updateUserPhoto", it) }
     }
-
 
     private fun handleUpdateUserPreferences() {
         viewModel.userPreferencesErrorMessage.observe(

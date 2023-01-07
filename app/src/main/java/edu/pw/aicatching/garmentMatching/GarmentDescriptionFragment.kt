@@ -58,7 +58,7 @@ class GarmentDescriptionFragment : Fragment() {
         binding.attributesListView.setAttributesListView()
 
         return view
-   }
+    }
 
     private fun handleOutfitErrorMessage() {
         viewModel.outfitErrorMessage.observe(

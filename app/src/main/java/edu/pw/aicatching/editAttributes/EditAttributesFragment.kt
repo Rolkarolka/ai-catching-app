@@ -70,8 +70,6 @@ class EditAttributesFragment : Fragment() {
         _binding = null
     }
 
-
-
     private fun RecyclerView.setAttributesList() {
         val editAttributesAdapter = EditAttributeAdapter { key, value ->
             changedAttrValuesMap[key] = value
@@ -116,7 +114,6 @@ class EditAttributesFragment : Fragment() {
                     .compareChange(attributes.fabric)
             )
             return if (sendChangedAttributes) editedAttributes else null
-
         }
         return null
     }
@@ -127,5 +124,4 @@ class EditAttributesFragment : Fragment() {
             sendChangedAttributes = true
             this
         }
-
 }

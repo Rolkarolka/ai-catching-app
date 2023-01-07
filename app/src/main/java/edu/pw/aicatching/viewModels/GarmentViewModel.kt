@@ -1,7 +1,5 @@
 package edu.pw.aicatching.viewModels
 
-import android.util.Log
-import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.pw.aicatching.models.Garment
