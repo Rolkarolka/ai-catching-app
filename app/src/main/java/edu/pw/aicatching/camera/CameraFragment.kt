@@ -28,14 +28,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentCameraBinding
-import edu.pw.aicatching.viewModels.ClothViewModel
+import edu.pw.aicatching.viewModels.GarmentViewModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment : Fragment() {
 
     private var imageCapture: ImageCapture? = null
-    private val viewModel: ClothViewModel by activityViewModels()
+    private val viewModel: GarmentViewModel by activityViewModels()
     private lateinit var cameraExecutor: ExecutorService
 
     private var _binding: FragmentCameraBinding? = null
@@ -117,7 +117,7 @@ class CameraFragment : Fragment() {
                             super.onCaptureSuccess(image)
                             viewModel.createGarment(image.image?.toByteArray())
                             // TODO errorMessage createGarment
-                            view?.let { Navigation.findNavController(it).navigate(R.id.clothDescriptionFragment) }
+                            view?.let { Navigation.findNavController(it).navigate(R.id.garmentDescriptionFragment) }
                         }
 
                         override fun onError(exc: ImageCaptureException) {

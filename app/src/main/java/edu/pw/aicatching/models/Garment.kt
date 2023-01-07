@@ -3,7 +3,7 @@ package edu.pw.aicatching.models
 import com.squareup.moshi.Json
 import kotlin.reflect.full.memberProperties
 
-data class Cloth(
+data class Garment(
     @Json(name = "garment_id")
     val garmentID: Int,
     @Json(name = "photo_url")
@@ -11,7 +11,7 @@ data class Cloth(
     val part: String?
 )
 
-data class ClothAttributes(
+data class GarmentAttributes(
     val texture: String? = null,
     @Json(name = "sleeve_length")
     val sleeveLength: String? = null,
@@ -23,8 +23,8 @@ data class ClothAttributes(
     val color: String? = null,
 )
 
-fun ClothAttributes.asMap(): Map<String, String> {
-    val properties = ClothAttributes::class.memberProperties.associateBy {
+fun GarmentAttributes.asMap(): Map<String, String> {
+    val properties = GarmentAttributes::class.memberProperties.associateBy {
         it.name.replaceFirstChar { char ->
             if (char.isLowerCase()) char.titlecase() else char.toString()
         }

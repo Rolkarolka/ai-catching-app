@@ -76,27 +76,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/favColorPickerView"
-        app:layout_constraintBottom_toTopOf="@+id/clothSizeSpinner"/>
+        app:layout_constraintBottom_toTopOf="@+id/garmentSizeSpinner"/>
 
     <TextView
-        android:id="@+id/clothSizeLabel"
+        android:id="@+id/garmentSizeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin"
-        android:text="@string/cloth_size"
+        android:text="@string/garment_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/clothSizeSpinner"
-        app:layout_constraintBottom_toBottomOf="@id/clothSizeSpinner"
+        app:layout_constraintTop_toTopOf="@id/garmentSizeSpinner"
+        app:layout_constraintBottom_toBottomOf="@id/garmentSizeSpinner"
         />
 
     <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/clothSizeSpinner"
+        android:id="@+id/garmentSizeSpinner"
         android:layout_width="@dimen/details_spinner_width"
         android:layout_height="@dimen/details_spinner_height"
         android:layout_margin="@dimen/margin"
         style="@style/Spinner"
         app:layout_constraintTop_toBottomOf="@id/colorSectionLineBottom"
-        app:layout_constraintStart_toEndOf="@id/clothSizeLabel"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
@@ -116,8 +115,7 @@
         android:layout_height="@dimen/details_spinner_height"
         android:layout_margin="@dimen/margin"
         style="@style/Spinner"
-        app:layout_constraintTop_toBottomOf="@id/clothSizeSpinner"
-        app:layout_constraintStart_toEndOf="@id/shoeSizeLabel"
+        app:layout_constraintTop_toBottomOf="@id/garmentSizeSpinner"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <View

@@ -1,4 +1,4 @@
-package edu.pw.aicatching.clothMatching
+package edu.pw.aicatching.garmentMatching
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,16 +14,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import edu.pw.aicatching.R
-import edu.pw.aicatching.databinding.FragmentClothDescriptionBinding
-import edu.pw.aicatching.databinding.ItemClothBinding
-import edu.pw.aicatching.models.ClothAttributes
+import edu.pw.aicatching.databinding.FragmentGarmentDescriptionBinding
+import edu.pw.aicatching.databinding.ItemGarmentBinding
+import edu.pw.aicatching.models.GarmentAttributes
 import edu.pw.aicatching.models.asMap
-import edu.pw.aicatching.viewModels.ClothViewModel
+import edu.pw.aicatching.viewModels.GarmentViewModel
 import kotlin.reflect.full.memberProperties
 
-class ClothDescriptionFragment : Fragment() {
-    private val viewModel: ClothViewModel by activityViewModels()
-    private var _binding: FragmentClothDescriptionBinding? = null
+class GarmentDescriptionFragment : Fragment() {
+    private val viewModel: GarmentViewModel by activityViewModels()
+    private var _binding: FragmentGarmentDescriptionBinding? = null
 
     private val binding get() = _binding!!
 
@@ -32,14 +32,14 @@ class ClothDescriptionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentClothDescriptionBinding.inflate(inflater, container, false)
+        _binding = FragmentGarmentDescriptionBinding.inflate(inflater, container, false)
         val view = binding.root
         binding.item.apply {
-            clothImage.load(R.drawable.ic_loading)
+            garmentImage.load(R.drawable.ic_loading)
             setCategory("")
         }
 
-        viewModel.mainCloth.observe(
+        viewModel.mainGarment.observe(
             viewLifecycleOwner
         ) {
             viewModel.getOutfit(it.garmentID)
@@ -76,27 +76,27 @@ class ClothDescriptionFragment : Fragment() {
     }
 
     private fun RecyclerView.setOutfitList(view: View) {
-        val outfitGalleryAdapter = OutfitGalleryAdapter { cloth ->
-            viewModel.mainCloth.value = cloth
-            Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
+        val outfitGalleryAdapter = OutfitGalleryAdapter { garment ->
+            viewModel.mainGarment.value = garment
+            Navigation.findNavController(view).navigate(R.id.garmentDescriptionFragment)
         }
 
         viewModel.outfitList.observe(
             viewLifecycleOwner
         ) {
-            outfitGalleryAdapter.setClothList(it)
+            outfitGalleryAdapter.setGarmentList(it)
         }
         layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         adapter = outfitGalleryAdapter
     }
 
-    private fun ItemClothBinding.setCategory(category: String?) {
-        clothCategory.text = category ?: "Cloth"
+    private fun ItemGarmentBinding.setCategory(category: String?) {
+        garmentCategory.text = category ?: "Garment"
     }
 
     private fun ListView.setAttributesListView() {
         adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
-        viewModel.mainClothAttributes.observe(
+        viewModel.mainGarmentAttributes.observe(
             viewLifecycleOwner
         ) {
             adapter = activity?.let {
@@ -105,23 +105,23 @@ class ClothDescriptionFragment : Fragment() {
         }
     }
 
-    private fun ItemClothBinding.loadImage(url: String?) {
+    private fun ItemGarmentBinding.loadImage(url: String?) {
         val imgUri = url?.toUri()?.buildUpon()?.scheme("https")?.build()
-        clothImage.load(imgUri) {
+        garmentImage.load(imgUri) {
             placeholder(R.drawable.ic_loading)
             error(R.drawable.ic_damage_image)
         }
     }
 
     private fun createAttributesArray() =
-        viewModel.mainClothAttributes.value
+        viewModel.mainGarmentAttributes.value
             ?.asMap()
             ?.map { mapEntry ->
                 val formattedKeys = mapEntry.key.split(Regex(PATTERN)).joinToString(separator = " ")
                 val formattedValues = mapEntry.value.split("_")[0].capitalize()
                 "$formattedKeys: $formattedValues"
             }
-            ?: ClothAttributes::class.memberProperties.associateBy {
+            ?: GarmentAttributes::class.memberProperties.associateBy {
                 it.name.capitalize()
             }.keys.toList()
 

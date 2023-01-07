@@ -21,8 +21,8 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/clothAttributeLabel"
-                android:layout_width="@dimen/cloth_attributes_label_width"
+                android:id="@+id/garmentAttributeLabel"
+                android:layout_width="@dimen/attributes_label_width"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding"
                 android:textColor="@color/black"
@@ -32,13 +32,13 @@
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/clothAttributeSpinner"
+                android:id="@+id/garmentAttributeSpinner"
                 android:layout_width="@dimen/attributes_spinner_width"
                 android:layout_height="@dimen/attributes_spinner_height"
                 style="@style/Spinner"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/clothAttributeLabel"
+                app:layout_constraintStart_toEndOf="@id/garmentAttributeLabel"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,14 +16,14 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentWardrobeBinding
-import edu.pw.aicatching.models.Cloth
-import edu.pw.aicatching.viewModels.ClothViewModel
+import edu.pw.aicatching.models.Garment
+import edu.pw.aicatching.viewModels.GarmentViewModel
 
 class WardrobeFragment : Fragment() {
-    private val viewModel: ClothViewModel by activityViewModels()
+    private val viewModel: GarmentViewModel by activityViewModels()
 
     private lateinit var wardrobeGalleryAdapter: WardrobeGalleryAdapter
-    private var clothListCopy = mutableListOf<Cloth>()
+    private var garmentListCopy = mutableListOf<Garment>()
     private var _binding: FragmentWardrobeBinding? = null
     private val binding get() = _binding!!
 
@@ -50,8 +50,8 @@ class WardrobeFragment : Fragment() {
         _binding = null
     }
 
-    private fun deleteGarmentListener(): (Cloth) -> Unit {
-        val actionModeListener: (Cloth) -> Unit = { garment ->
+    private fun deleteGarmentListener(): (Garment) -> Unit {
+        val actionModeListener: (Garment) -> Unit = { garment ->
             viewModel.deleteGarment(garment.garmentID)
             viewModel.wardrobeList.value = viewModel.wardrobeList.value?.filter { it != garment }
         }
@@ -59,21 +59,21 @@ class WardrobeFragment : Fragment() {
         return actionModeListener
     }
 
-    private fun chooseClothListener(view: View): (Cloth) -> Unit {
-        val listener: (Cloth) -> Unit = { cloth ->
-            viewModel.mainCloth.value = cloth
-            Navigation.findNavController(view).navigate(R.id.clothDescriptionFragment)
+    private fun chooseGarmentListener(view: View): (Garment) -> Unit {
+        val listener: (Garment) -> Unit = { garment ->
+            viewModel.mainGarment.value = garment
+            Navigation.findNavController(view).navigate(R.id.garmentDescriptionFragment)
         }
         return listener
     }
 
     private fun prepareWardrobeGalleryAdapter(view: View) {
-        wardrobeGalleryAdapter = WardrobeGalleryAdapter(chooseClothListener(view), deleteGarmentListener())
+        wardrobeGalleryAdapter = WardrobeGalleryAdapter(chooseGarmentListener(view), deleteGarmentListener())
         viewModel.wardrobeList.observe(
             viewLifecycleOwner
         ) {
-            clothListCopy = it.toMutableList()
-            wardrobeGalleryAdapter.setClothList(it)
+            garmentListCopy = it.toMutableList()
+            wardrobeGalleryAdapter.setGarmentList(it)
         }
 
         binding.wardrobeGallery.apply {
@@ -107,17 +107,17 @@ class WardrobeFragment : Fragment() {
     }
 
     private fun filter(text: String) {
-        val filteredCloths = mutableListOf<Cloth>()
+        val filteredGarments = mutableListOf<Garment>()
 
         if (text.isNotEmpty()) {
-            for (cloth in clothListCopy) {
-                if (cloth.part?.lowercase()?.contains(text.lowercase()) == true) {
-                    filteredCloths.add(cloth)
+            for (garment in garmentListCopy) {
+                if (garment.part?.lowercase()?.contains(text.lowercase()) == true) {
+                    filteredGarments.add(garment)
                 }
             }
         } else {
-            filteredCloths += clothListCopy
+            filteredGarments += garmentListCopy
         }
-        wardrobeGalleryAdapter.filterList(filteredCloths)
+        wardrobeGalleryAdapter.filterList(filteredGarments)
     }
 }

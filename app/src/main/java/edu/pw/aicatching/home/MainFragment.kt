@@ -14,7 +14,7 @@ import coil.load
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentMainBinding
 import edu.pw.aicatching.databinding.ViewTopSettingsBinding
-import edu.pw.aicatching.models.ClothSize
+import edu.pw.aicatching.models.GarmentSize
 import edu.pw.aicatching.models.Color as FavColor
 import edu.pw.aicatching.models.User
 import edu.pw.aicatching.viewModels.UserViewModel
@@ -66,7 +66,7 @@ class MainFragment : Fragment() {
                         setUsername(user)
                         setPhotoUrl(preferences.photoUrl)
                         setFavColor(preferences.favouriteColor)
-                        setGarmentSize(preferences.clothSize)
+                        setGarmentSize(preferences.garmentSize)
                         setShoeSize(preferences.shoeSize)
                     }
                 }
@@ -95,8 +95,8 @@ class MainFragment : Fragment() {
             ?.let { ColorStateList.valueOf(Color.parseColor(it.hexValue)) }
     }
 
-    private fun ViewTopSettingsBinding.setGarmentSize(clothSize: ClothSize?) {
-        this.clothSizeAttribute.text = clothSize?.name ?: "Cloth\nSize"
+    private fun ViewTopSettingsBinding.setGarmentSize(garmentSize: GarmentSize?) {
+        this.garmentSizeAttribute.text = garmentSize?.name ?: "Garment\nSize"
     }
 
     private fun ViewTopSettingsBinding.setShoeSize(shoeSize: String?) {

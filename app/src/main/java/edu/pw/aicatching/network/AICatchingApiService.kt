@@ -2,8 +2,8 @@ package edu.pw.aicatching.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import edu.pw.aicatching.models.Cloth
-import edu.pw.aicatching.models.ClothAttributes
+import edu.pw.aicatching.models.Garment
+import edu.pw.aicatching.models.GarmentAttributes
 import edu.pw.aicatching.models.Credentials
 import edu.pw.aicatching.models.User
 import edu.pw.aicatching.models.UserPreferences
@@ -46,20 +46,20 @@ interface AICatchingApiService {
     fun deleteUser(): Call<Void>
 
     @GET("garment/wardrobe")
-    fun getWardrobe(): Call<List<Cloth>>
+    fun getWardrobe(): Call<List<Garment>>
 
     @GET("garment/outfit")
-    fun getOutfit(@Query("garment_id") garmentID: Int): Call<List<Cloth>>
+    fun getOutfit(@Query("garment_id") garmentID: Int): Call<List<Garment>>
 
     @GET("garment/attributes")
-    fun getGarmentAttributes(@Query("garment_id") garmentID: Int): Call<ClothAttributes>
+    fun getGarmentAttributes(@Query("garment_id") garmentID: Int): Call<GarmentAttributes>
 
     @GET("garment/available_attributes")
     fun getAttributesValue(): Call<Map<String, List<String>>>
 
     @Multipart
     @POST("garment/create")
-    fun postGarment(@Part photo: MultipartBody.Part): Call<Cloth>
+    fun postGarment(@Part photo: MultipartBody.Part): Call<Garment>
 
     @DELETE("garment/delete")
     fun deleteGarment(@Query("garment_id") garmentID: Int): Call<Void>
@@ -67,8 +67,8 @@ interface AICatchingApiService {
     @PUT("garment/edit")
     fun putEditAttributes(
         @Query("garment_id") garmentID: Int,
-        @Body newAttributes: ClothAttributes
-    ): Call<ClothAttributes>
+        @Body newAttributes: GarmentAttributes
+    ): Call<GarmentAttributes>
 
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"

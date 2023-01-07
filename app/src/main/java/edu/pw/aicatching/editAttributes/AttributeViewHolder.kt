@@ -17,16 +17,16 @@ class AttributeViewHolder(
         availableValues: List<String>,
         listener: (String, String) -> Unit
     ) {
-        editAttributeItemBinding.clothAttributeLabel.text = attributeName
-        val clothAttributeList = availableValues.toMutableList()
+        editAttributeItemBinding.garmentAttributeLabel.text = attributeName
+        val garmentAttributeList = availableValues.toMutableList()
 
-        editAttributeItemBinding.clothAttributeSpinner.apply {
+        editAttributeItemBinding.garmentAttributeSpinner.apply {
             adapter = ArrayAdapter(
                 this@AttributeViewHolder.itemView.context,
                 simple_spinner_dropdown_item,
-                clothAttributeList
+                garmentAttributeList
             )
-            setSelection(clothAttributeList.indexOf(attributeValue))
+            setSelection(garmentAttributeList.indexOf(attributeValue))
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parentView: AdapterView<*>?,
@@ -34,7 +34,7 @@ class AttributeViewHolder(
                     position: Int,
                     id: Long
                 ) {
-                    listener(attributeName, clothAttributeList[position])
+                    listener(attributeName, garmentAttributeList[position])
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}

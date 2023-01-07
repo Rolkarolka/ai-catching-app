@@ -21,8 +21,8 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentUserDetailsBinding
-import edu.pw.aicatching.models.ClothSize
 import edu.pw.aicatching.models.Color
+import edu.pw.aicatching.models.GarmentSize
 import edu.pw.aicatching.models.UserPreferences
 import edu.pw.aicatching.viewModels.UserViewModel
 import java.io.ByteArrayOutputStream
@@ -64,7 +64,7 @@ class UserDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setClothSpinner(ClothSize.values().map { it.toString() }.toList())
+        setGarmentSpinner(GarmentSize.values().map { it.toString() }.toList())
         setShoeSpinner((MIN_SHOE_SIZE..MAX_SHOE_SIZE).toList().map { it.toString() })
         setColorPicker()
         setAvatar()
@@ -94,10 +94,10 @@ class UserDetailsFragment : Fragment() {
             val editedPreferences = UserPreferences(
                 shoeSize = changedPrefValuesMap["shoeSize"].toString()
                     .compareChange(preferences.shoeSize.toString()),
-                clothSize = ClothSize.from(
-                    changedPrefValuesMap["clothSize"]
+                garmentSize = GarmentSize.from(
+                    changedPrefValuesMap["garmentSize"]
                         .toString()
-                        .compareChange(preferences.clothSize?.name.toString())
+                        .compareChange(preferences.garmentSize?.name.toString())
                 ),
                 favouriteColor = changedPrefValuesMap["favouriteColor"]
                     .toString()
@@ -109,24 +109,24 @@ class UserDetailsFragment : Fragment() {
         return null
     }
 
-    private fun setClothSpinner(clothSizesArray: List<String>) {
-        binding.clothSizeSpinner.adapter = ArrayAdapter(
+    private fun setGarmentSpinner(garmentSizesArray: List<String>) {
+        binding.garmentSizeSpinner.adapter = ArrayAdapter(
             this.requireActivity(),
             android.R.layout.simple_spinner_dropdown_item,
-            clothSizesArray
+            garmentSizesArray
         )
 
         viewModel.user.value?.preferences
-            ?.let { clothSizesArray.indexOf(it.clothSize.toString()) }
-            ?.let { binding.clothSizeSpinner.setSelection(it) }
+            ?.let { garmentSizesArray.indexOf(it.garmentSize.toString()) }
+            ?.let { binding.garmentSizeSpinner.setSelection(it) }
 
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                changedPrefValuesMap["clothSize"] = ClothSize.valueOf(clothSizesArray[position])
+                changedPrefValuesMap["garmentSize"] = GarmentSize.valueOf(garmentSizesArray[position])
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }.also { binding.clothSizeSpinner.onItemSelectedListener = it }
+        }.also { binding.garmentSizeSpinner.onItemSelectedListener = it }
     }
 
     private fun setShoeSpinner(shoeSizesArray: List<String>) {

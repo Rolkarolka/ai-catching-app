@@ -40,9 +40,9 @@ class MainActivity : AppCompatActivity() {
             val currentNavHostFragment =
                 supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
             val navController = currentNavHostFragment.navController
-            if (navController.currentDestination?.id == R.id.clothDescriptionFragment &&
+            if (navController.currentDestination?.id == R.id.garmentDescriptionFragment &&
                 navController.popBackStack(R.id.wardrobeFragment, false)
-            ) { } else if (navController.currentDestination?.id == R.id.clothDescriptionFragment &&
+            ) { } else if (navController.currentDestination?.id == R.id.garmentDescriptionFragment &&
                 navController.popBackStack(R.id.cameraFragment, false)
             ) { } else {
                 navController.popBackStack()

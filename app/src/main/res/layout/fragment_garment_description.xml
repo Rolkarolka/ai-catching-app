@@ -7,9 +7,9 @@
 
     <include
         android:id="@+id/item"
-        layout="@layout/item_cloth"
-        android:layout_height="@dimen/item_cloth_size"
-        android:layout_width="@dimen/item_cloth_size"
+        layout="@layout/item_garment"
+        android:layout_height="@dimen/item_garment_size"
+        android:layout_width="@dimen/item_garment_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

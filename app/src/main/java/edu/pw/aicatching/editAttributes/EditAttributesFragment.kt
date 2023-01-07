@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import edu.pw.aicatching.R
 import edu.pw.aicatching.databinding.FragmentEditAttributesBinding
-import edu.pw.aicatching.databinding.ItemClothBinding
-import edu.pw.aicatching.models.ClothAttributes
+import edu.pw.aicatching.databinding.ItemGarmentBinding
+import edu.pw.aicatching.models.GarmentAttributes
 import edu.pw.aicatching.models.asMap
-import edu.pw.aicatching.viewModels.ClothViewModel
+import edu.pw.aicatching.viewModels.GarmentViewModel
 
 class EditAttributesFragment : Fragment() {
-    private val viewModel: ClothViewModel by activityViewModels()
+    private val viewModel: GarmentViewModel by activityViewModels()
     private val changedAttrValuesMap = mutableMapOf<String, String>()
     private var sendChangedAttributes = false
     private var _binding: FragmentEditAttributesBinding? = null
@@ -32,11 +32,11 @@ class EditAttributesFragment : Fragment() {
         _binding = FragmentEditAttributesBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        viewModel.getValuesOfClothAttributes()
-        // TODO errorMessage getValuesOfClothAttributes
+        viewModel.getValuesOfGarmentAttributes()
+        // TODO errorMessage getValuesOfGarmentAttributes
         binding.editAttributesList.setAttributesList()
 
-        viewModel.mainCloth.value?.let { garment ->
+        viewModel.mainGarment.value?.let { garment ->
             binding.item.apply {
                 loadImage(garment.imgSrcUrl)
                 setCategory(garment.part)
@@ -47,12 +47,12 @@ class EditAttributesFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        viewModel.mainCloth.value?.garmentID?.let { clothID ->
+        viewModel.mainGarment.value?.garmentID?.let { garmentID ->
             compareGarmentChanges()?.let {
-                viewModel.updateClothAttributes(clothID, it)
+                viewModel.updateGarmentAttributes(garmentID, it)
             }
         }
-        // TODO errorMessage updateClothAttributes
+        // TODO errorMessage updateGarmentAttributes
         super.onDestroyView()
         _binding = null
     }
@@ -65,28 +65,28 @@ class EditAttributesFragment : Fragment() {
             viewLifecycleOwner
         ) { editAttributesAdapter.setAttributesValues(it) }
 
-        val attributes = viewModel.mainClothAttributes.value ?: ClothAttributes(null, null, null)
+        val attributes = viewModel.mainGarmentAttributes.value ?: GarmentAttributes(null, null, null)
         editAttributesAdapter.setAttributesMap(attributes.asMap())
 
         layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         adapter = editAttributesAdapter
     }
 
-    private fun ItemClothBinding.loadImage(url: String?) {
+    private fun ItemGarmentBinding.loadImage(url: String?) {
         val imgUri = url?.toUri()?.buildUpon()?.scheme("https")?.build()
-        clothImage.load(imgUri) {
+        garmentImage.load(imgUri) {
             placeholder(R.drawable.ic_loading)
             error(R.drawable.ic_damage_image)
         }
     }
 
-    private fun ItemClothBinding.setCategory(category: String?) {
-        clothCategory.text = category ?: "Cloth"
+    private fun ItemGarmentBinding.setCategory(category: String?) {
+        garmentCategory.text = category ?: "Garment"
     }
 
-    private fun compareGarmentChanges(): ClothAttributes? {
-        viewModel.mainClothAttributes.value?.let { attributes ->
-            val editedAttributes = ClothAttributes(
+    private fun compareGarmentChanges(): GarmentAttributes? {
+        viewModel.mainGarmentAttributes.value?.let { attributes ->
+            val editedAttributes = GarmentAttributes(
                 color = changedAttrValuesMap["color"]
                     .compareChange(attributes.color),
                 texture = changedAttrValuesMap["texture"]

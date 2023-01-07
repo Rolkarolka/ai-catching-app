@@ -33,10 +33,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/clothSizeAttribute"
+        android:id="@+id/garmentSizeAttribute"
         style="@style/RhombusWithText"
         android:layout_marginStart="@dimen/margin"
-        android:text="@string/cloth_size_before_set"
+        android:text="@string/garment_size_before_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/userAvatar"
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/shoe_size_before_set"
-        app:layout_constraintStart_toEndOf="@+id/clothSizeAttribute"
+        app:layout_constraintStart_toEndOf="@+id/garmentSizeAttribute"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <androidx.appcompat.widget.AppCompatImageView

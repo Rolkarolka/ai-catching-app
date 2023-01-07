@@ -21,7 +21,7 @@ data class UserPreferences(
     @Json(name = "shoe_size")
     val shoeSize: String? = null,
     @Json(name = "garment_size")
-    val clothSize: ClothSize? = null,
+    val garmentSize: GarmentSize? = null,
     @Json(name = "favorite_color")
     val favouriteColor: Color? = null
 )
@@ -33,10 +33,10 @@ class Credentials(
     val token: String?
 )
 
-enum class ClothSize {
+enum class GarmentSize {
     XS, S, M, L, XL, XXL;
     companion object {
-        infix fun from(value: String?): ClothSize? =
+        infix fun from(value: String?): GarmentSize? =
             if (value != null)
                 values().firstOrNull { it.name == value }
             else

@@ -54,7 +54,7 @@
         android:background="@color/pink"
         android:drawableTop="@drawable/ic_camera"
         android:padding="@dimen/margin"
-        android:text="@string/new_cloth"
+        android:text="@string/new_garment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/showWardrobeButton"
         app:layout_constraintStart_toStartOf="parent"
