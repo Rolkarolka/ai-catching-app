@@ -33,7 +33,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment : Fragment() {
-
+// TODO refactor
     private var imageCapture: ImageCapture? = null
     private val viewModel: GarmentViewModel by activityViewModels()
     private lateinit var cameraExecutor: ExecutorService
@@ -62,7 +62,7 @@ class CameraFragment : Fragment() {
     ): View {
         _binding = FragmentCameraBinding.inflate(inflater, container, false)
         val view = binding.root
-
+        handleCreateGarmentErrorMessage()
         if (allPermissionsGranted()) {
             startCamera()
         } else {
@@ -77,6 +77,12 @@ class CameraFragment : Fragment() {
 
         cameraExecutor = Executors.newSingleThreadExecutor()
         return view
+    }
+
+    private fun handleCreateGarmentErrorMessage() {
+        viewModel.mainGarmentErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.i("CameraFragment:onCreateView:createGarment", it) }
     }
 
     override fun onDestroyView() {
@@ -116,7 +122,6 @@ class CameraFragment : Fragment() {
                         override fun onCaptureSuccess(image: ImageProxy) {
                             super.onCaptureSuccess(image)
                             viewModel.createGarment(image.image?.toByteArray())
-                            // TODO errorMessage createGarment
                             view?.let { Navigation.findNavController(it).navigate(R.id.garmentDescriptionFragment) }
                         }
 

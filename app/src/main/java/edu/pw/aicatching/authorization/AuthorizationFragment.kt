@@ -40,6 +40,7 @@ class AuthorizationFragment : Fragment() {
     ) { result ->
         try {
             if (result.resultCode == Activity.RESULT_OK) { signIn(result) }
+            hideProgressBar()
         } catch (e: ApiException) { catchLoggingExceptions(e) }
     }
 
@@ -50,15 +51,23 @@ class AuthorizationFragment : Fragment() {
     ): View {
         _binding = FragmentAuthorizationBinding.inflate(inflater, container, false)
         prepareForLoggingUserIn()
+        handleUserErrorMessage()
         oneTapClient = Identity.getSignInClient(requireActivity())
         createSignInRequest()
         createSignUpRequest()
         return binding.root
     }
 
+    private fun handleUserErrorMessage() {
+        viewModel.userErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.d("AuthorizationFragment:onCreateView:logIn", it) }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.authorizationButton.setOnClickListener {
+            showProgressBar()
             sign(signInRequest)
         }
     }
@@ -74,13 +83,20 @@ class AuthorizationFragment : Fragment() {
             this.viewModel.logIn(
                 Credentials(email = credential.id, token = credential.googleIdToken)
             )
-            // TODO errorMessage logIn
-            activity?.window?.setFlags(
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-            )
-            binding.progressBar.visibility = View.VISIBLE
         }
+    }
+
+    private fun showProgressBar() {
+        activity?.window?.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        binding.progressBar.visibility = View.INVISIBLE
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
     private fun catchLoggingExceptions(e: ApiException) {
@@ -103,8 +119,7 @@ class AuthorizationFragment : Fragment() {
             this.viewLifecycleOwner
         ) { user ->
             if (user != null) {
-                binding.progressBar.visibility = View.INVISIBLE
-                activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                hideProgressBar()
                 view?.let { view ->
                     Navigation.findNavController(view).navigate(R.id.mainFragment)
                 }

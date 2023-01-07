@@ -16,6 +16,7 @@ import edu.pw.aicatching.databinding.FragmentMainBinding
 import edu.pw.aicatching.databinding.ViewTopSettingsBinding
 import edu.pw.aicatching.models.GarmentSize
 import edu.pw.aicatching.models.Color as FavColor
+import android.util.Log
 import edu.pw.aicatching.models.User
 import edu.pw.aicatching.viewModels.UserViewModel
 
@@ -30,9 +31,15 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         viewModel.getInspiration()
-        // TODO errorMessage getInspiration
+        handleInspirationErrorMessage()
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    private fun handleInspirationErrorMessage() {
+        viewModel.inspirationErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.i("MainFragment:onCreateView:getInspiration", it) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -25,6 +25,7 @@
     <dimen name="details_spinner_width">250dp</dimen>
     <dimen name="details_spinner_height">40dp</dimen>
     <dimen name="showings_size">150dp</dimen>
+    <dimen name="logging_toolbar_margin">2dp</dimen>
     <!-- item edit attribute -->
     <dimen name="attributes_label_width">150dp</dimen>
     <dimen name="attributes_spinner_width">200dp</dimen>

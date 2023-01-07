@@ -1,6 +1,7 @@
 package edu.pw.aicatching.garmentMatching
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,17 +51,25 @@ class GarmentDescriptionFragment : Fragment() {
             }
         }
 
-        // TODO errorMessage getOutfit
-        // TODO errorMessage getAttributes
+        handleOutfitErrorMessage()
+        handleGetAttributesErrorMessage()
 
         binding.outfitMatching.setOutfitList(view)
         binding.attributesListView.setAttributesListView()
 
         return view
+   }
 
-//        viewModel.outfitErrorMessage.observe( TODO for every errorMessage
-//            viewLifecycleOwner
-//        ) { Log.d(this::class.simpleName, "Creating new observer on outfitErrorMessage") }
+    private fun handleOutfitErrorMessage() {
+        viewModel.outfitErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.d("GarmentDescriptionFragment:onCreateView:getOutfit", it) }
+    }
+
+    private fun handleGetAttributesErrorMessage() {
+        viewModel.outfitErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.d("GarmentDescriptionFragment:onCreateView:getAttributes", it) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -86,6 +95,7 @@ class GarmentDescriptionFragment : Fragment() {
         ) {
             outfitGalleryAdapter.setGarmentList(it)
         }
+
         layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         adapter = outfitGalleryAdapter
     }
@@ -130,6 +140,6 @@ class GarmentDescriptionFragment : Fragment() {
     }
 
     companion object {
-        const val PATTERN = "(?=\\p{Upper})"
+        const val PATTERN = "(?=\\p{Upper})" // TODO change name
     }
 }

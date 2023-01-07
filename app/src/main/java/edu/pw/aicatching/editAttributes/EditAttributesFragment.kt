@@ -1,6 +1,7 @@
 package edu.pw.aicatching.editAttributes
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +34,8 @@ class EditAttributesFragment : Fragment() {
         val view = binding.root
 
         viewModel.getValuesOfGarmentAttributes()
-        // TODO errorMessage getValuesOfGarmentAttributes
+        handleGetValuesOfGarmentAttributesErrorMessage()
+        handleUpdateGarmentAttributesErrorMessage()
         binding.editAttributesList.setAttributesList()
 
         viewModel.mainGarment.value?.let { garment ->
@@ -46,16 +48,29 @@ class EditAttributesFragment : Fragment() {
         return view
     }
 
+    private fun handleGetValuesOfGarmentAttributesErrorMessage() {
+        viewModel.availableAttributesValuesErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.d("EditAttributesFragment:onCreateView:getValuesOfGarmentAttributes", it) }
+    }
+
+    private fun handleUpdateGarmentAttributesErrorMessage() {
+        viewModel.mainGarmentAttributesErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.d("EditAttributesFragment:onCreateView:updateGarmentAttributes", it) }
+    }
+
     override fun onDestroyView() {
         viewModel.mainGarment.value?.garmentID?.let { garmentID ->
             compareGarmentChanges()?.let {
                 viewModel.updateGarmentAttributes(garmentID, it)
             }
         }
-        // TODO errorMessage updateGarmentAttributes
         super.onDestroyView()
         _binding = null
     }
+
+
 
     private fun RecyclerView.setAttributesList() {
         val editAttributesAdapter = EditAttributeAdapter { key, value ->

@@ -1,6 +1,7 @@
 package edu.pw.aicatching.wardrobe
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -35,9 +36,22 @@ class WardrobeFragment : Fragment() {
         _binding = FragmentWardrobeBinding.inflate(inflater, container, false)
         val view = binding.root
         viewModel.getWardrobe()
-        // TODO errorMessage getWardrobe
+        handleWardrobeErrorMessage()
+        handleDeleteGarmentMessage()
         prepareWardrobeGalleryAdapter(view)
         return view
+    }
+
+    private fun handleDeleteGarmentMessage() {
+        viewModel.deleteErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.i("WardrobeFragment:onCreateView:deleteGarment", it) }
+    }
+
+    private fun handleWardrobeErrorMessage() {
+        viewModel.wardrobeErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.i("WardrobeFragment:onCreateView:getWardrobe", it) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,7 +69,6 @@ class WardrobeFragment : Fragment() {
             viewModel.deleteGarment(garment.garmentID)
             viewModel.wardrobeList.value = viewModel.wardrobeList.value?.filter { it != garment }
         }
-        // TODO errorMessage deleteGarment
         return actionModeListener
     }
 

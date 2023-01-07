@@ -153,4 +153,18 @@
         android:background="@color/pink"
         android:text="@string/delete_account"
         />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        android:backgroundTint="@color/white"
+        android:indeterminateTint="@color/pink"
+        android:layout_margin="@dimen/logging_toolbar_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/deleteAccountButton"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

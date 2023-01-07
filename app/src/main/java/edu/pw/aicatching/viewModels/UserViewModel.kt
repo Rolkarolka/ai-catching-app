@@ -19,7 +19,7 @@ class UserViewModel : ViewModel() {
     var user: MutableLiveData<User?> = MutableLiveData()
     var userErrorMessage = MutableLiveData<String>()
 
-    val userPreferences: MutableLiveData<UserPreferences> = MutableLiveData()
+    var userPreferences: MutableLiveData<UserPreferences> = MutableLiveData()
     var userPreferencesErrorMessage = MutableLiveData<String>()
 
     var inspiration: MutableLiveData<Map<String, String>> = MutableLiveData()
@@ -32,14 +32,14 @@ class UserViewModel : ViewModel() {
         response.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
                 userErrorMessage.postValue(t.message)
-                user.postValue(null)
+                user.postValue(null) // TODO
             }
 
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
                     user.postValue(response.body())
                 } else {
-                    user.postValue(null)
+                    user.postValue(null) // TODO
                 }
             }
         })
@@ -47,9 +47,10 @@ class UserViewModel : ViewModel() {
 
     fun deleteUser() {
         val response = service.deleteUser()
-        user.postValue(null)
         response.enqueue(object : Callback<Void?> {
-            override fun onResponse(call: Call<Void?>, response: Response<Void?>) { }
+            override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                user.postValue(null)
+            }
 
             override fun onFailure(call: Call<Void?>, t: Throwable) {
                 loggingErrorMessage.postValue(t.message)
@@ -59,9 +60,10 @@ class UserViewModel : ViewModel() {
 
     fun logOut() {
         val response = service.deleteSession()
-        user.postValue(null)
         response.enqueue(object : Callback<Void?> {
-            override fun onResponse(call: Call<Void?>, response: Response<Void?>) { }
+            override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                user.postValue(null)
+            }
 
             override fun onFailure(call: Call<Void?>, t: Throwable) {
                 loggingErrorMessage.postValue(t.message)
@@ -88,7 +90,7 @@ class UserViewModel : ViewModel() {
         val response = service.updateUserPreferences(preferences)
         response.enqueue(object : Callback<UserPreferences> {
             override fun onFailure(call: Call<UserPreferences>, t: Throwable) {
-                userErrorMessage.postValue(t.message)
+                userPreferencesErrorMessage.postValue(t.message)
             }
 
             override fun onResponse(call: Call<UserPreferences>, response: Response<UserPreferences>) {

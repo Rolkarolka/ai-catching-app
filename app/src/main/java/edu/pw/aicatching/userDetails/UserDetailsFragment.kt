@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.result.PickVisualMediaRequest
@@ -44,7 +45,6 @@ class UserDetailsFragment : Fragment() {
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, stream)
             viewModel.updateUserPhoto(stream.toByteArray())
-            // TODO errorMessage updateUserPhoto
         } else {
             Log.d("UserDetailsFragment:PhotoPicker", "No media selected")
         }
@@ -59,6 +59,9 @@ class UserDetailsFragment : Fragment() {
         _binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
         val view = binding.root
         colorPickerManager = ColorPickerPreferenceManager.getInstance(this.context)
+        handleLoggingErrorMessage()
+        handleUpdateUserPhotoErrorMessage()
+        handleUpdateUserPreferences()
         return view
     }
 
@@ -71,20 +74,26 @@ class UserDetailsFragment : Fragment() {
 
         binding.logOutButton.setOnClickListener {
             viewModel.logOut()
-            // TODO errorMessage logOut
-            this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
+            showProgressBar()
         }
 
         binding.deleteAccountButton.setOnClickListener {
             viewModel.deleteUser()
-            // TODO errorMessage deleteUser
-            this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
+            showProgressBar()
+        }
+
+        viewModel.user.observe(
+            viewLifecycleOwner
+        ) { user ->
+            if (user == null) {
+                this.view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.authorizationFragment) }
+            }
+            hideProgressBar()
         }
     }
 
     override fun onDestroyView() {
         compareUserPreferences()?.let { viewModel.updateUserPreferences(it) }
-        // TODO errorMessage updateUserPreferences
         super.onDestroyView()
         _binding = null
     }
@@ -177,6 +186,40 @@ class UserDetailsFragment : Fragment() {
         binding.changeUserPhotoButton.setOnClickListener {
             pickMediaResult.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+    }
+
+
+    private fun showProgressBar() {
+        activity?.window?.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        binding.progressBar.visibility = View.INVISIBLE
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+
+    private fun handleLoggingErrorMessage() {
+        viewModel.loggingErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.d("UserDetailsFragment:onCreateView", it) }
+    }
+
+    private fun handleUpdateUserPhotoErrorMessage() {
+        viewModel.userPreferencesErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.d("UserDetailsFragment:onCreateView:updateUserPhoto", it) }
+    }
+
+
+    private fun handleUpdateUserPreferences() {
+        viewModel.userPreferencesErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.d("UserDetailsFragment:onCreateView:updateUserPreferences", it) }
     }
 
     private fun String?.compareChange(prevValue: String?) =
