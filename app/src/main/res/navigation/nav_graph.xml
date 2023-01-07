@@ -25,8 +25,8 @@
         android:label="Camera"
         tools:layout="@layout/fragment_camera">
         <action
-            android:id="@+id/action_cameraFragment_to_clothDescriptionFragment"
-            app:destination="@id/clothDescriptionFragment" />
+            android:id="@+id/action_cameraFragment_to_garmentDescriptionFragment"
+            app:destination="@id/garmentDescriptionFragment" />
     </fragment>
     <fragment
         android:id="@+id/wardrobeFragment"
@@ -34,8 +34,8 @@
         android:label="Wardrobe"
         tools:layout="@layout/fragment_wardrobe">
         <action
-            android:id="@+id/action_wardrobeFragment_to_clothDescriptionFragment"
-            app:destination="@id/clothDescriptionFragment" />
+            android:id="@+id/action_wardrobeFragment_to_garmentDescriptionFragment"
+            app:destination="@id/garmentDescriptionFragment" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
@@ -53,21 +53,21 @@
             app:destination="@id/userDetailsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/clothDescriptionFragment"
-        android:name="edu.pw.aicatching.clothMatching.ClothDescriptionFragment"
-        android:label="Cloth Description"
-        tools:layout="@layout/fragment_cloth_description" >
+        android:id="@+id/garmentDescriptionFragment"
+        android:name="edu.pw.aicatching.garmentMatching.GarmentDescriptionFragment"
+        android:label="Garment Description"
+        tools:layout="@layout/fragment_garment_description" >
         <argument
             android:name="category"
             app:argType="string" />
         <action
-            android:id="@+id/action_clothDescriptionFragment_to_editAttributesFragment"
+            android:id="@+id/action_garmentDescriptionFragment_to_editAttributesFragment"
             app:destination="@id/editAttributesFragment" />
     </fragment>
     <fragment
         android:id="@+id/editAttributesFragment"
         android:name="edu.pw.aicatching.editAttributes.EditAttributesFragment"
-        android:label="Edit Cloth Attributes"
+        android:label="Edit Garment Attributes"
         tools:layout="@layout/fragment_edit_attributes" >
     </fragment>
 </navigation>

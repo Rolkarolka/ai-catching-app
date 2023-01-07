@@ -12,9 +12,9 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/userAvatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="16dp"
+        android:layout_width="@dimen/user_avatar_size"
+        android:layout_height="@dimen/user_avatar_size"
+        android:layout_margin="@dimen/margin"
         android:src="@drawable/ic_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,21 +22,21 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/username"
-        android:layout_width="0dp"
-        android:layout_height="32dp"
-        android:layout_margin="16dp"
+        android:layout_width="@dimen/match_rest_space"
+        android:layout_height="@dimen/username_height"
+        android:layout_margin="@dimen/margin"
         android:gravity="fill_vertical"
-        android:padding="8dp"
+        android:padding="@dimen/padding"
         android:text="@string/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/userAvatar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/clothSizeAttribute"
+        android:id="@+id/garmentSizeAttribute"
         style="@style/RhombusWithText"
-        android:layout_marginStart="16dp"
-        android:text="@string/cloth_size_before_set"
+        android:layout_marginStart="@dimen/margin"
+        android:text="@string/garment_size_before_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/userAvatar"
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/shoe_size_before_set"
-        app:layout_constraintStart_toEndOf="@+id/clothSizeAttribute"
+        app:layout_constraintStart_toEndOf="@+id/garmentSizeAttribute"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -63,7 +63,7 @@
         android:id="@+id/appendUserDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/user_details"
         android:background="@drawable/ic_info_in_rhombus"
         app:layout_constraintStart_toEndOf="@+id/favColorAttribute"
         app:layout_constraintTop_toBottomOf="@+id/username" />
