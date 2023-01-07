@@ -179,6 +179,7 @@ class AuthorizationFragment : Fragment() {
                 Toast.LENGTH_LONG
             ).show()
             signUpTryCounter = 0
+            hideProgressBar()
         }
     }
 

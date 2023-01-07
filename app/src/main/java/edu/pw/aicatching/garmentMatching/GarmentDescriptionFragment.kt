@@ -127,7 +127,8 @@ class GarmentDescriptionFragment : Fragment() {
         viewModel.mainGarmentAttributes.value
             ?.asMap()
             ?.map { mapEntry ->
-                val formattedKeys = mapEntry.key.split(Regex(PATTERN)).joinToString(separator = " ")
+                val formattedKeys = mapEntry.key.split(Regex(CAMELCASE_PATTERN_TO_SPLITTED_WORLDS))
+                    .joinToString(separator = " ")
                 val formattedValues = mapEntry.value.split("_")[0].capitalize()
                 "$formattedKeys: $formattedValues"
             }
@@ -140,6 +141,6 @@ class GarmentDescriptionFragment : Fragment() {
     }
 
     companion object {
-        const val PATTERN = "(?=\\p{Upper})" // TODO change name
+        const val CAMELCASE_PATTERN_TO_SPLITTED_WORLDS = "(?=\\p{Upper})"
     }
 }

@@ -2,26 +2,17 @@ package edu.pw.aicatching.camera
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.pm.PackageManager
-import android.icu.text.SimpleDateFormat
 import android.media.Image
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.ImageProxy
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -33,14 +24,12 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment : Fragment() {
-// TODO refactor
     private var imageCapture: ImageCapture? = null
     private val viewModel: GarmentViewModel by activityViewModels()
     private lateinit var cameraExecutor: ExecutorService
 
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = _binding!!
-
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -66,24 +55,15 @@ class CameraFragment : Fragment() {
         if (allPermissionsGranted()) {
             startCamera()
         } else {
-            this.activity?.let {
-                ActivityCompat.requestPermissions(
-                    it, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
-                )
-                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-            }
+            requestPermissionLauncher.launch(REQUIRED_PERMISSIONS)
         }
         binding.captureButton.setOnClickListener { takePhoto() }
-
         cameraExecutor = Executors.newSingleThreadExecutor()
         return view
     }
 
-    private fun handleCreateGarmentErrorMessage() {
-        viewModel.mainGarmentErrorMessage.observe(
-            viewLifecycleOwner
-        ) { Log.i("CameraFragment:onCreateView:createGarment", it) }
-    }
+    private fun allPermissionsGranted(): Boolean =
+        requireContext().checkSelfPermission(REQUIRED_PERMISSIONS) == PackageManager.PERMISSION_GRANTED
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -94,52 +74,24 @@ class CameraFragment : Fragment() {
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
 
-        val name = SimpleDateFormat(FILENAME_FORMAT, java.util.Locale.US)
-            .format(System.currentTimeMillis())
-
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-        }
-
-        val outputOptions = activity?.contentResolver?.let {
-            ImageCapture.OutputFileOptions
-                .Builder(
-                    it,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    contentValues
-                )
-                .build()
-        }
-
         this.context?.let { ContextCompat.getMainExecutor(it) }?.let { executor ->
-            if (outputOptions != null) {
-                imageCapture.takePicture(
-                    executor,
-                    object : ImageCapture.OnImageCapturedCallback() {
+            imageCapture.takePicture(
+                executor,
+                object : ImageCapture.OnImageCapturedCallback() {
 
-                        @SuppressLint("UnsafeOptInUsageError")
-                        override fun onCaptureSuccess(image: ImageProxy) {
-                            super.onCaptureSuccess(image)
-                            viewModel.createGarment(image.image?.toByteArray())
-                            view?.let { Navigation.findNavController(it).navigate(R.id.garmentDescriptionFragment) }
-                        }
-
-                        override fun onError(exc: ImageCaptureException) {
-                            exc.message?.let { it1 -> Log.e("Camera:takePhoto", it1) }
-                        }
+                    @SuppressLint("UnsafeOptInUsageError")
+                    override fun onCaptureSuccess(image: ImageProxy) {
+                        super.onCaptureSuccess(image)
+                        viewModel.createGarment(image.image?.toByteArray())
+                        view?.let { Navigation.findNavController(it).navigate(R.id.garmentDescriptionFragment) }
                     }
-                )
-            }
-        }
-    }
 
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        this.context?.let { it1 ->
-            ContextCompat.checkSelfPermission(
-                it1, it
+                    override fun onError(exc: ImageCaptureException) {
+                        exc.message?.let { it1 -> Log.e("Camera:takePhoto", it1) }
+                    }
+                }
             )
-        } == PackageManager.PERMISSION_GRANTED
+        }
     }
 
     private fun startCamera() {
@@ -154,13 +106,12 @@ class CameraFragment : Fragment() {
                         .also { it1 ->
                             it1.setSurfaceProvider(binding.cameraView.surfaceProvider)
                         }
-                    imageCapture = ImageCapture.Builder().build()
-                    val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
+                    imageCapture = ImageCapture.Builder().build()
                     try {
                         cameraProvider.unbindAll()
                         cameraProvider.bindToLifecycle(
-                            this, cameraSelector, preview, imageCapture
+                            this, CAMERA_SELECTOR, preview, imageCapture
                         )
                     } catch (exc: IllegalArgumentException) {
                         exc.message?.let { message -> Log.d("Camera:startCamera", message) }
@@ -169,6 +120,12 @@ class CameraFragment : Fragment() {
                 it
             )
         }
+    }
+
+    private fun handleCreateGarmentErrorMessage() {
+        viewModel.mainGarmentErrorMessage.observe(
+            viewLifecycleOwner
+        ) { Log.i("CameraFragment:onCreateView:createGarment", it) }
     }
 
     private fun Image.toByteArray(): ByteArray {
@@ -180,15 +137,8 @@ class CameraFragment : Fragment() {
     }
 
     companion object {
-        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
-        private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS =
-            mutableListOf(
-                Manifest.permission.CAMERA
-            ).apply {
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                    add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }
-            }.toTypedArray()
+        private val CAMERA_SELECTOR = CameraSelector.DEFAULT_BACK_CAMERA
+        private const val REQUIRED_PERMISSIONS =
+            Manifest.permission.CAMERA
     }
 }

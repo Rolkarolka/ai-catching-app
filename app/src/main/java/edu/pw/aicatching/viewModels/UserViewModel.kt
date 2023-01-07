@@ -32,14 +32,14 @@ class UserViewModel : ViewModel() {
         response.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
                 userErrorMessage.postValue(t.message)
-                user.postValue(null) // TODO
+                user.postValue(null)
             }
 
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
                     user.postValue(response.body())
                 } else {
-                    user.postValue(null) // TODO
+                    user.postValue(null)
                 }
             }
         })
@@ -94,9 +94,7 @@ class UserViewModel : ViewModel() {
             }
 
             override fun onResponse(call: Call<UserPreferences>, response: Response<UserPreferences>) {
-                if (response.isSuccessful) {
-                    userPreferences.postValue(response.body())
-                }
+                userPreferences.postValue(response.body())
             }
         })
     }
