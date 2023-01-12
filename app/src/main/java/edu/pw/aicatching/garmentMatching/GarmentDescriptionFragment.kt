@@ -90,6 +90,7 @@ class GarmentDescriptionFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.garmentDescriptionFragment)
         }
 
+        outfitGalleryAdapter.setGarmentList(emptyList())
         viewModel.outfitList.observe(
             viewLifecycleOwner
         ) {
@@ -105,7 +106,7 @@ class GarmentDescriptionFragment : Fragment() {
     }
 
     private fun ListView.setAttributesListView() {
-        adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
+        adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createEmptyAttributesArray()) }
         viewModel.mainGarmentAttributes.observe(
             viewLifecycleOwner
         ) {
@@ -133,6 +134,11 @@ class GarmentDescriptionFragment : Fragment() {
                 "$formattedKeys: $formattedValues"
             }
             ?: GarmentAttributes::class.memberProperties.associateBy {
+                it.name.capitalize()
+            }.keys.toList()
+
+    private fun createEmptyAttributesArray() =
+        GarmentAttributes::class.memberProperties.associateBy {
                 it.name.capitalize()
             }.keys.toList()
 

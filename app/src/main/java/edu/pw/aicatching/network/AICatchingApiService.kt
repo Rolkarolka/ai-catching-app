@@ -108,8 +108,13 @@ internal class CookieInterceptor : Interceptor {
 
         val response = chain.proceed(request)
         val isCookieHeader = response.headers().get("set-cookie") != null
-        if (cookie == null && isCookieHeader) {
-            cookie = response.headers("set-cookie")[0]
+        if (isCookieHeader) {
+            val cookieValue = response.headers("set-cookie")[0]
+            val cookieElements = cookieValue.split(";").map { str -> str.split("=")}.associate {
+                it[0] to it[1]
+            }
+
+            cookie = if (cookieElements["session_token"].equals("\"\"")) null else cookieValue
         }
         return response
     }

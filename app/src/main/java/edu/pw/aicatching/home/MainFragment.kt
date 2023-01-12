@@ -114,10 +114,11 @@ class MainFragment : Fragment() {
     }
 
     private fun setInspirationImage() {
+        binding.inspirationImage.load(R.drawable.ic_loading)
         viewModel.inspiration.observe(viewLifecycleOwner) {
             val inspirationUrl = it["link"]
             val imgUri = inspirationUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-            binding.inspiration.load(imgUri) {
+            binding.inspirationImage.load(imgUri) {
                 placeholder(R.drawable.ic_loading)
                 error(R.drawable.ic_damage_image)
             }

@@ -132,6 +132,7 @@ class AuthorizationFragment : Fragment() {
             .setGoogleIdTokenRequestOptions(
                 createBeginSignInRequest(false)
             )
+            .setAutoSelectEnabled(false)
             .build()
     }
 
