@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AICatching</string>
     <string name="user_avatar">User\'s Avatar</string>
-    <string name="outfit_of_the_day">Outfit \nof the day</string>
+    <string name="inspiration">Instagram\n#outfit</string>
     <string name="my_wardrobe">My wardrobe</string>
     <string name="new_garment">New garment</string>
     <string name="take_photo">Take Photo</string>

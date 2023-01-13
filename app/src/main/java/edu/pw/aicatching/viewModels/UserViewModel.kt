@@ -39,6 +39,7 @@ class UserViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     user.postValue(response.body())
                 } else {
+                    userErrorMessage.postValue(response.errorBody().toString())
                     user.postValue(null)
                 }
             }
@@ -49,7 +50,11 @@ class UserViewModel : ViewModel() {
         val response = service.deleteUser()
         response.enqueue(object : Callback<Void?> {
             override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
-                user.postValue(null)
+                if (response.isSuccessful) {
+                    user.postValue(null)
+                } else {
+                    loggingErrorMessage.postValue(response.errorBody().toString())
+                }
             }
 
             override fun onFailure(call: Call<Void?>, t: Throwable) {
@@ -62,7 +67,11 @@ class UserViewModel : ViewModel() {
         val response = service.deleteSession()
         response.enqueue(object : Callback<Void?> {
             override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
-                user.postValue(null)
+                if (response.isSuccessful) {
+                    user.postValue(null)
+                } else {
+                    loggingErrorMessage.postValue(response.errorBody().toString())
+                }
             }
 
             override fun onFailure(call: Call<Void?>, t: Throwable) {
@@ -77,7 +86,11 @@ class UserViewModel : ViewModel() {
         val response = body.let { service.updateUserPhoto(it) }
         response.enqueue(object : Callback<UserPreferences> {
             override fun onResponse(call: Call<UserPreferences>, response: Response<UserPreferences>) {
-                userPreferences.postValue(response.body())
+                if (response.isSuccessful) {
+                    userPreferences.postValue(response.body())
+                } else {
+                    userPreferencesErrorMessage.postValue(response.errorBody().toString())
+                }
             }
 
             override fun onFailure(call: Call<UserPreferences>, t: Throwable) {
@@ -94,7 +107,11 @@ class UserViewModel : ViewModel() {
             }
 
             override fun onResponse(call: Call<UserPreferences>, response: Response<UserPreferences>) {
-                userPreferences.postValue(response.body())
+                if (response.isSuccessful) {
+                    userPreferences.postValue(response.body())
+                } else {
+                    userPreferencesErrorMessage.postValue(response.errorBody().toString())
+                }
             }
         })
     }
@@ -109,6 +126,8 @@ class UserViewModel : ViewModel() {
             override fun onResponse(call: Call<Map<String, String>>, response: Response<Map<String, String>>) {
                 if (response.isSuccessful) {
                     inspiration.postValue(response.body())
+                } else {
+                    inspirationErrorMessage.postValue(response.errorBody().toString())
                 }
             }
         })

@@ -9,31 +9,32 @@
         layout="@layout/view_top_settings" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/outfitOfTheDayFrame"
+        android:id="@+id/inspirationFrame"
         android:layout_width="@dimen/inspiration_size"
         android:layout_height="@dimen/inspiration_size"
         android:layout_marginTop="@dimen/padding"
         android:background="@drawable/blank_rectangle"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
+        android:padding="@dimen/inspiration_padding"
         app:layout_constraintBottom_toTopOf="@+id/openCameraButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_page_toolbar">
 
         <TextView
-            android:id="@+id/outfitOfTheDayText"
+            android:id="@+id/inspirationText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/margin"
-            android:text="@string/outfit_of_the_day"
+            android:text="@string/inspiration"
             android:textColor="@color/black"
             android:textSize="@dimen/inspiration_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/inspiration"
+            android:id="@+id/inspirationImage"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -41,7 +42,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/outfitOfTheDayText"
+            app:layout_constraintStart_toEndOf="@+id/inspirationText"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
@@ -58,7 +59,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/showWardrobeButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/outfitOfTheDayFrame" />
+        app:layout_constraintTop_toBottomOf="@+id/inspirationFrame" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/showWardrobeButton"
@@ -71,6 +72,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/openCameraButton"
-        app:layout_constraintTop_toBottomOf="@+id/outfitOfTheDayFrame" />
+        app:layout_constraintTop_toBottomOf="@+id/inspirationFrame" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

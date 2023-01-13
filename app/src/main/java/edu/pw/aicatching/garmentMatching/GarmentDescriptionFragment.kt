@@ -43,11 +43,18 @@ class GarmentDescriptionFragment : Fragment() {
         viewModel.mainGarment.observe(
             viewLifecycleOwner
         ) {
-            viewModel.getOutfit(it.garmentID)
-            viewModel.getAttributes(it.garmentID)
-            binding.item.apply {
-                loadImage(it.imgSrcUrl)
-                setCategory(it.part)
+            if (it.part != null) {
+                viewModel.getOutfit(it.garmentID)
+                viewModel.getAttributes(it.garmentID)
+                binding.item.apply {
+                    loadImage(it.imgSrcUrl)
+                    setCategory(it.part)
+                }
+            } else {
+                binding.item.apply {
+                    loadImage(it.imgSrcUrl)
+                }
+                viewModel.getPrediction(it.garmentID)
             }
         }
 
@@ -90,6 +97,7 @@ class GarmentDescriptionFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.garmentDescriptionFragment)
         }
 
+        outfitGalleryAdapter.setGarmentList(emptyList())
         viewModel.outfitList.observe(
             viewLifecycleOwner
         ) {
@@ -105,7 +113,7 @@ class GarmentDescriptionFragment : Fragment() {
     }
 
     private fun ListView.setAttributesListView() {
-        adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createAttributesArray()) }
+        adapter = activity?.let { ArrayAdapter(it, R.layout.item_attribute, createEmptyAttributesArray()) }
         viewModel.mainGarmentAttributes.observe(
             viewLifecycleOwner
         ) {
@@ -135,6 +143,11 @@ class GarmentDescriptionFragment : Fragment() {
             ?: GarmentAttributes::class.memberProperties.associateBy {
                 it.name.capitalize()
             }.keys.toList()
+
+    private fun createEmptyAttributesArray() =
+        GarmentAttributes::class.memberProperties.associateBy {
+            it.name.capitalize()
+        }.keys.toList()
 
     private fun String.capitalize() = this.replaceFirstChar { char ->
         if (char.isLowerCase()) char.titlecase() else char.toString()

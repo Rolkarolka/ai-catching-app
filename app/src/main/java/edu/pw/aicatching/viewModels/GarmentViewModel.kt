@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import edu.pw.aicatching.models.Garment
 import edu.pw.aicatching.models.GarmentAttributes
 import edu.pw.aicatching.network.AICatchingApiService
+import edu.pw.aicatching.network.CallbackWithRetry
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -36,7 +37,11 @@ class GarmentViewModel : ViewModel() {
         val response = service.getOutfit(garmentID)
         response.enqueue(object : Callback<List<Garment>> {
             override fun onResponse(call: Call<List<Garment>>, response: Response<List<Garment>>) {
-                outfitList.postValue(response.body())
+                if (response.isSuccessful) {
+                    outfitList.postValue(response.body())
+                } else {
+                    outfitErrorMessage.postValue(response.errorBody().toString())
+                }
             }
             override fun onFailure(call: Call<List<Garment>>, t: Throwable) {
                 outfitErrorMessage.postValue(t.message)
@@ -48,7 +53,11 @@ class GarmentViewModel : ViewModel() {
         val response = service.getWardrobe()
         response.enqueue(object : Callback<List<Garment>> {
             override fun onResponse(call: Call<List<Garment>>, response: Response<List<Garment>>) {
-                wardrobeList.postValue(response.body())
+                if (response.isSuccessful) {
+                    wardrobeList.postValue(response.body())
+                } else {
+                    wardrobeErrorMessage.postValue(response.errorBody().toString())
+                }
             }
             override fun onFailure(call: Call<List<Garment>>, t: Throwable) {
                 wardrobeErrorMessage.postValue(t.message)
@@ -62,7 +71,11 @@ class GarmentViewModel : ViewModel() {
         val response = body?.let { service.postGarment(it) }
         response?.enqueue(object : Callback<Garment> {
             override fun onResponse(call: Call<Garment>, response: Response<Garment>) {
-                mainGarment.postValue(response.body())
+                if (response.isSuccessful) {
+                    mainGarment.postValue(response.body())
+                } else {
+                    mainGarmentErrorMessage.postValue(response.errorBody().toString())
+                }
             }
 
             override fun onFailure(call: Call<Garment>, t: Throwable) {
@@ -78,7 +91,11 @@ class GarmentViewModel : ViewModel() {
                 call: Call<Map<String, List<String>>>,
                 response: Response<Map<String, List<String>>>
             ) {
-                availableAttributesValues.postValue(response.body())
+                if (response.isSuccessful) {
+                    availableAttributesValues.postValue(response.body())
+                } else {
+                    availableAttributesValuesErrorMessage.postValue(response.errorBody().toString())
+                }
             }
             override fun onFailure(call: Call<Map<String, List<String>>>, t: Throwable) {
                 availableAttributesValuesErrorMessage.postValue(t.message)
@@ -90,7 +107,11 @@ class GarmentViewModel : ViewModel() {
         val response = service.putEditAttributes(garmentID, updatedGarmentAttributes)
         response.enqueue(object : Callback<GarmentAttributes> {
             override fun onResponse(call: Call<GarmentAttributes>, response: Response<GarmentAttributes>) {
-                mainGarmentAttributes.postValue(response.body())
+                if (response.isSuccessful) {
+                    mainGarmentAttributes.postValue(response.body())
+                } else {
+                    mainGarmentAttributesErrorMessage.postValue(response.errorBody().toString())
+                }
             }
             override fun onFailure(call: Call<GarmentAttributes>, t: Throwable) {
                 mainGarmentAttributesErrorMessage.postValue(t.message)
@@ -101,7 +122,11 @@ class GarmentViewModel : ViewModel() {
     fun deleteGarment(garmentID: Int) {
         val response = service.deleteGarment(garmentID)
         response.enqueue(object : Callback<Void?> {
-            override fun onResponse(call: Call<Void?>, response: Response<Void?>) { }
+            override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                if (!response.isSuccessful) {
+                    deleteErrorMessage.postValue(response.errorBody().toString())
+                }
+            }
 
             override fun onFailure(call: Call<Void?>, t: Throwable) {
                 deleteErrorMessage.postValue(t.message)
@@ -113,10 +138,27 @@ class GarmentViewModel : ViewModel() {
         val response = service.getGarmentAttributes(garmentID)
         response.enqueue(object : Callback<GarmentAttributes> {
             override fun onResponse(call: Call<GarmentAttributes>, response: Response<GarmentAttributes>) {
-                mainGarmentAttributes.postValue(response.body())
+                if (response.isSuccessful) {
+                    mainGarmentAttributes.postValue(response.body())
+                } else {
+                    mainGarmentAttributesErrorMessage.postValue(response.errorBody().toString())
+                }
             }
             override fun onFailure(call: Call<GarmentAttributes>, t: Throwable) {
                 mainGarmentAttributesErrorMessage.postValue(t.message)
+            }
+        })
+    }
+
+    fun getPrediction(garmentID: Int) {
+        val response = service.getPrediction(garmentID)
+        response.enqueue(object : CallbackWithRetry<Garment>() {
+            override fun onResponse(call: Call<Garment>, response: Response<Garment>) {
+                if (response.isSuccessful) {
+                    mainGarment.postValue(response.body())
+                } else {
+                    retryCall(call)
+                }
             }
         })
     }

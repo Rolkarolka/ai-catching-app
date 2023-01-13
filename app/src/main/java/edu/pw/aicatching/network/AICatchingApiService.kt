@@ -7,11 +7,8 @@ import edu.pw.aicatching.models.Garment
 import edu.pw.aicatching.models.GarmentAttributes
 import edu.pw.aicatching.models.User
 import edu.pw.aicatching.models.UserPreferences
-import okhttp3.Interceptor
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -70,6 +67,9 @@ interface AICatchingApiService {
         @Body newAttributes: GarmentAttributes
     ): Call<GarmentAttributes>
 
+    @GET("garment/prediction")
+    fun getPrediction(@Query("garment_id") garmentID: Int): Call<Garment>
+
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"
         private val moshi: Moshi = Moshi.Builder()
@@ -91,26 +91,5 @@ interface AICatchingApiService {
             }
             return aiCatchingApiService!!
         }
-    }
-}
-
-internal class CookieInterceptor : Interceptor {
-    @Volatile
-    var cookie: String? = null
-
-    override fun intercept(chain: Interceptor.Chain): Response {
-        var request: Request = chain.request()
-        cookie?.let {
-            request = request.newBuilder()
-                .header("Cookie", it)
-                .build()
-        }
-
-        val response = chain.proceed(request)
-        val isCookieHeader = response.headers().get("set-cookie") != null
-        if (cookie == null && isCookieHeader) {
-            cookie = response.headers("set-cookie")[0]
-        }
-        return response
     }
 }

@@ -39,8 +39,7 @@ class AuthorizationFragment : Fragment() {
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
         try {
-            if (result.resultCode == Activity.RESULT_OK) { signIn(result) }
-            hideProgressBar()
+            if (result.resultCode == Activity.RESULT_OK) { signIn(result) } else hideProgressBar()
         } catch (e: ApiException) { catchLoggingExceptions(e) }
     }
 
@@ -74,6 +73,7 @@ class AuthorizationFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        hideProgressBar()
         _binding = null
     }
 
@@ -132,6 +132,7 @@ class AuthorizationFragment : Fragment() {
             .setGoogleIdTokenRequestOptions(
                 createBeginSignInRequest(false)
             )
+            .setAutoSelectEnabled(false)
             .build()
     }
 
@@ -168,8 +169,7 @@ class AuthorizationFragment : Fragment() {
 
     private fun onSignFailure(e: Exception) {
         e.localizedMessage?.let { Log.d("AuthorizationFragment:Sign:OnFailureListener", it) }
-        if (signUpTryCounter <= MAX_LOGGING_TRIES) {
-            signUpTryCounter += 1
+        if (signUpTryCounter++ <= MAX_LOGGING_TRIES) {
             sign(signUpRequest)
         } else {
             Toast.makeText(

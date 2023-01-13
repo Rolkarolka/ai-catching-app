@@ -36,6 +36,7 @@
         android:id="@+id/garmentSizeAttribute"
         style="@style/RhombusWithText"
         android:layout_marginStart="@dimen/margin"
+        android:textSize="11sp"
         android:text="@string/garment_size_before_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
