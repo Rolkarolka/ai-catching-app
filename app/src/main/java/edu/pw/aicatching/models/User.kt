@@ -45,22 +45,22 @@ enum class GarmentSize {
 }
 
 enum class Color(val hexValue: String) {
-    AQUA("#00FFFF"),
-    BLACK("#000000"),
-    BLUE("#0000FF"),
-    FUCHSIA("#FF00FF"),
-    GREEN("#008000"),
-    GREY("#808080"),
-    LIME("#00FF00"),
-    MAROON("#800000"),
-    NAVY("#000080"),
-    OLIVE("#808000"),
-    PURPLE("#800080"),
-    RED("#FF0000"),
-    SILVER("#C0C0C0"),
-    TEAL("#008080"),
-    WHITE("#FFFFFF"),
-    YELLOW("#FFFF00");
+    @Json(name = "aqua") AQUA("#00FFFF"),
+    @Json(name = "black") BLACK("#000000"),
+    @Json(name = "blue") BLUE("#0000FF"),
+    @Json(name = "fuchsia") FUCHSIA("#FF00FF"),
+    @Json(name = "green") GREEN("#008000"),
+    @Json(name = "grey") GREY("#808080"),
+    @Json(name = "lime") LIME("#00FF00"),
+    @Json(name = "maroon") MAROON("#800000"),
+    @Json(name = "navy") NAVY("#000080"),
+    @Json(name = "olive") OLIVE("#808000"),
+    @Json(name = "purple") PURPLE("#800080"),
+    @Json(name = "red") RED("#FF0000"),
+    @Json(name = "silver") SILVER("#C0C0C0"),
+    @Json(name = "teal") TEAL("#008080"),
+    @Json(name = "white") WHITE("#FFFFFF"),
+    @Json(name = "yellow") YELLOW("#FFFF00");
 
     companion object {
         private const val INT_BASE = 16
