@@ -20,7 +20,7 @@ internal class CookieInterceptor : Interceptor {
         val isCookieHeader = response.headers().get("set-cookie") != null
         if (isCookieHeader) {
             val cookieValue = response.headers("set-cookie")[0]
-            val cookieElements = cookieValue.split(";").map { str -> str.split("=")}.associate {
+            val cookieElements = cookieValue.split(";").map { str -> str.split("=") }.associate {
                 it[0] to it[1]
             }
 

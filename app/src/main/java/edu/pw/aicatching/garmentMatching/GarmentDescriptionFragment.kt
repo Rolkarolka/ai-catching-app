@@ -147,8 +147,8 @@ class GarmentDescriptionFragment : Fragment() {
 
     private fun createEmptyAttributesArray() =
         GarmentAttributes::class.memberProperties.associateBy {
-                it.name.capitalize()
-            }.keys.toList()
+            it.name.capitalize()
+        }.keys.toList()
 
     private fun String.capitalize() = this.replaceFirstChar { char ->
         if (char.isLowerCase()) char.titlecase() else char.toString()

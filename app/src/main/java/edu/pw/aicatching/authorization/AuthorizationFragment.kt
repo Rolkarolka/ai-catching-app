@@ -39,8 +39,7 @@ class AuthorizationFragment : Fragment() {
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
         try {
-            if (result.resultCode == Activity.RESULT_OK) { signIn(result) }
-            else hideProgressBar()
+            if (result.resultCode == Activity.RESULT_OK) { signIn(result) } else hideProgressBar()
         } catch (e: ApiException) { catchLoggingExceptions(e) }
     }
 

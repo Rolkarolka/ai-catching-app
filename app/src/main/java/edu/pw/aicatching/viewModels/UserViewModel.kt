@@ -55,7 +55,6 @@ class UserViewModel : ViewModel() {
                 } else {
                     loggingErrorMessage.postValue(response.errorBody().toString())
                 }
-
             }
 
             override fun onFailure(call: Call<Void?>, t: Throwable) {
@@ -73,7 +72,6 @@ class UserViewModel : ViewModel() {
                 } else {
                     loggingErrorMessage.postValue(response.errorBody().toString())
                 }
-
             }
 
             override fun onFailure(call: Call<Void?>, t: Throwable) {
@@ -93,7 +91,6 @@ class UserViewModel : ViewModel() {
                 } else {
                     userPreferencesErrorMessage.postValue(response.errorBody().toString())
                 }
-
             }
 
             override fun onFailure(call: Call<UserPreferences>, t: Throwable) {
@@ -115,7 +112,6 @@ class UserViewModel : ViewModel() {
                 } else {
                     userPreferencesErrorMessage.postValue(response.errorBody().toString())
                 }
-
             }
         })
     }

@@ -1,6 +1,5 @@
 package edu.pw.aicatching.viewModels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.pw.aicatching.models.Garment
@@ -43,7 +42,6 @@ class GarmentViewModel : ViewModel() {
                 } else {
                     outfitErrorMessage.postValue(response.errorBody().toString())
                 }
-
             }
             override fun onFailure(call: Call<List<Garment>>, t: Throwable) {
                 outfitErrorMessage.postValue(t.message)
@@ -125,7 +123,7 @@ class GarmentViewModel : ViewModel() {
         val response = service.deleteGarment(garmentID)
         response.enqueue(object : Callback<Void?> {
             override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
-                if (!response.isSuccessful){
+                if (!response.isSuccessful) {
                     deleteErrorMessage.postValue(response.errorBody().toString())
                 }
             }
@@ -152,12 +150,11 @@ class GarmentViewModel : ViewModel() {
         })
     }
 
-
     fun getPrediction(garmentID: Int) {
         val response = service.getPrediction(garmentID)
         response.enqueue(object : CallbackWithRetry<Garment>() {
             override fun onResponse(call: Call<Garment>, response: Response<Garment>) {
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     mainGarment.postValue(response.body())
                 } else {
                     retryCall(call)

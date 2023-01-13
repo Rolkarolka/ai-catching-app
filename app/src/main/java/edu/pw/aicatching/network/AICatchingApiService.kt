@@ -7,11 +7,8 @@ import edu.pw.aicatching.models.Garment
 import edu.pw.aicatching.models.GarmentAttributes
 import edu.pw.aicatching.models.User
 import edu.pw.aicatching.models.UserPreferences
-import okhttp3.Interceptor
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
