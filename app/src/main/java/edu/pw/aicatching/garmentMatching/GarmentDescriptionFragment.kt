@@ -43,7 +43,6 @@ class GarmentDescriptionFragment : Fragment() {
         viewModel.mainGarment.observe(
             viewLifecycleOwner
         ) {
-            Log.d("GarmentDescriptionFragment", "$it")
             if (it.part != null) {
                 viewModel.getOutfit(it.garmentID)
                 viewModel.getAttributes(it.garmentID)

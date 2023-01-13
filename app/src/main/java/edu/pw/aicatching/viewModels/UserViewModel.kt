@@ -63,6 +63,7 @@ class UserViewModel : ViewModel() {
         })
     }
 
+
     fun logOut() {
         val response = service.deleteSession()
         response.enqueue(object : Callback<Void?> {
