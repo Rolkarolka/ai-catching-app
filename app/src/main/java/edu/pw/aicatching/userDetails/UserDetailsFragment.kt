@@ -111,7 +111,7 @@ class UserDetailsFragment : Fragment() {
                 favouriteColor = changedPrefValuesMap["favouriteColor"]
                     .toString()
                     .compareChange(preferences.favouriteColor?.name.toString())
-                    ?.let { Color.valueOf(it)}
+                    ?.let { Color.valueOf(it) }
             )
             return if (sendChangedAttributes) editedPreferences else null
         }

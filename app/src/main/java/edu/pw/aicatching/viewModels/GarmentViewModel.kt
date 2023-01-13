@@ -43,7 +43,6 @@ class GarmentViewModel : ViewModel() {
                 } else {
                     outfitErrorMessage.postValue(response.errorBody().toString())
                 }
-
             }
             override fun onFailure(call: Call<List<Garment>>, t: Throwable) {
                 outfitErrorMessage.postValue(t.message)

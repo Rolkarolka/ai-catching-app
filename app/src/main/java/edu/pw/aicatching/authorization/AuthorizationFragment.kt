@@ -120,6 +120,7 @@ class AuthorizationFragment : Fragment() {
             this.viewLifecycleOwner
         ) { user ->
             if (user != null) {
+                hideProgressBar()
                 view?.let { view ->
                     Navigation.findNavController(view).navigate(R.id.mainFragment)
                 }

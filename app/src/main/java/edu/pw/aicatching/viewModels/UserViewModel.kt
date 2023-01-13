@@ -64,6 +64,7 @@ class UserViewModel : ViewModel() {
         })
     }
 
+
     fun logOut() {
         val response = service.deleteSession()
         response.enqueue(object : Callback<Void?> {
@@ -73,7 +74,6 @@ class UserViewModel : ViewModel() {
                 } else {
                     loggingErrorMessage.postValue(response.errorBody().toString())
                 }
-
             }
 
             override fun onFailure(call: Call<Void?>, t: Throwable) {
@@ -115,7 +115,6 @@ class UserViewModel : ViewModel() {
                 } else {
                     userPreferencesErrorMessage.postValue(response.errorBody().toString())
                 }
-
             }
         })
     }
