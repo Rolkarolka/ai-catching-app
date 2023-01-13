@@ -70,6 +70,9 @@ interface AICatchingApiService {
         @Body newAttributes: GarmentAttributes
     ): Call<GarmentAttributes>
 
+    @GET("garment/prediction")
+    fun getPrediction(@Query("garment_id") garmentID: Int): Call<Garment>
+
     companion object {
         private const val BASE_URL = "https://berrygood.hopto.org/api/v1/"
         private val moshi: Moshi = Moshi.Builder()
@@ -91,31 +94,5 @@ interface AICatchingApiService {
             }
             return aiCatchingApiService!!
         }
-    }
-}
-
-internal class CookieInterceptor : Interceptor {
-    @Volatile
-    var cookie: String? = null
-
-    override fun intercept(chain: Interceptor.Chain): Response {
-        var request: Request = chain.request()
-        cookie?.let {
-            request = request.newBuilder()
-                .header("Cookie", it)
-                .build()
-        }
-
-        val response = chain.proceed(request)
-        val isCookieHeader = response.headers().get("set-cookie") != null
-        if (isCookieHeader) {
-            val cookieValue = response.headers("set-cookie")[0]
-            val cookieElements = cookieValue.split(";").map { str -> str.split("=")}.associate {
-                it[0] to it[1]
-            }
-
-            cookie = if (cookieElements["session_token"].equals("\"\"")) null else cookieValue
-        }
-        return response
     }
 }

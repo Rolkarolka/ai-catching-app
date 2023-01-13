@@ -43,11 +43,19 @@ class GarmentDescriptionFragment : Fragment() {
         viewModel.mainGarment.observe(
             viewLifecycleOwner
         ) {
-            viewModel.getOutfit(it.garmentID)
-            viewModel.getAttributes(it.garmentID)
-            binding.item.apply {
-                loadImage(it.imgSrcUrl)
-                setCategory(it.part)
+            Log.d("GarmentDescriptionFragment", "$it")
+            if (it.part != null) {
+                viewModel.getOutfit(it.garmentID)
+                viewModel.getAttributes(it.garmentID)
+                binding.item.apply {
+                    loadImage(it.imgSrcUrl)
+                    setCategory(it.part)
+                }
+            } else {
+                binding.item.apply {
+                    loadImage(it.imgSrcUrl)
+                }
+                viewModel.getPrediction(it.garmentID)
             }
         }
 

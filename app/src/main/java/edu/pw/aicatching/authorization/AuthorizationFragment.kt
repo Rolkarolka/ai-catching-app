@@ -40,7 +40,7 @@ class AuthorizationFragment : Fragment() {
     ) { result ->
         try {
             if (result.resultCode == Activity.RESULT_OK) { signIn(result) }
-            hideProgressBar()
+            else hideProgressBar()
         } catch (e: ApiException) { catchLoggingExceptions(e) }
     }
 
@@ -74,6 +74,7 @@ class AuthorizationFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        hideProgressBar()
         _binding = null
     }
 
@@ -119,7 +120,6 @@ class AuthorizationFragment : Fragment() {
             this.viewLifecycleOwner
         ) { user ->
             if (user != null) {
-                hideProgressBar()
                 view?.let { view ->
                     Navigation.findNavController(view).navigate(R.id.mainFragment)
                 }
@@ -169,8 +169,7 @@ class AuthorizationFragment : Fragment() {
 
     private fun onSignFailure(e: Exception) {
         e.localizedMessage?.let { Log.d("AuthorizationFragment:Sign:OnFailureListener", it) }
-        if (signUpTryCounter <= MAX_LOGGING_TRIES) {
-            signUpTryCounter += 1
+        if (signUpTryCounter++ <= MAX_LOGGING_TRIES) {
             sign(signUpRequest)
         } else {
             Toast.makeText(
