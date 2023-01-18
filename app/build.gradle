@@ -79,15 +79,15 @@ def getLocalProperties() {
   def file = project.rootProject.file("local.properties")
   if (file.exists()) {
     props.load(file.newDataInputStream())
-    println System.getenv("GOOGLE_CLIENT_ID")
+    def client_id = System.getenv("GOOGLE_CLIENT_ID")
+    println("Here is value if it is working2  $client_id")
   }
   return props
 }
 
 static def getEnvVariable(String name) {
   def value = System.getenv("GOOGLE_CLIENT_ID")
-  println("Here is value if it is working")
-  println value
+  println("Here is value if it is working $value")
   if (value != null) {
     return value
   }
