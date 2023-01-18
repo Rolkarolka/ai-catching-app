@@ -39,7 +39,7 @@ class UserViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     user.postValue(response.body())
                 } else {
-                    userErrorMessage.postValue(response.errorBody().toString())
+                    userErrorMessage.postValue("${response.code()} ${response.message()}")
                     user.postValue(null)
                 }
             }
@@ -53,7 +53,7 @@ class UserViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     user.postValue(null)
                 } else {
-                    loggingErrorMessage.postValue(response.errorBody().toString())
+                    loggingErrorMessage.postValue("${response.code()} ${response.message()}")
                 }
             }
 
@@ -70,7 +70,7 @@ class UserViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     user.postValue(null)
                 } else {
-                    loggingErrorMessage.postValue(response.errorBody().toString())
+                    loggingErrorMessage.postValue("${response.code()} ${response.message()}")
                 }
             }
 
@@ -89,7 +89,7 @@ class UserViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     userPreferences.postValue(response.body())
                 } else {
-                    userPreferencesErrorMessage.postValue(response.errorBody().toString())
+                    userPreferencesErrorMessage.postValue("${response.code()} ${response.message()}")
                 }
             }
 
@@ -110,7 +110,7 @@ class UserViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     userPreferences.postValue(response.body())
                 } else {
-                    userPreferencesErrorMessage.postValue(response.errorBody().toString())
+                    userPreferencesErrorMessage.postValue("${response.code()} ${response.message()}")
                 }
             }
         })
@@ -127,7 +127,7 @@ class UserViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     inspiration.postValue(response.body())
                 } else {
-                    inspirationErrorMessage.postValue(response.errorBody().toString())
+                    inspirationErrorMessage.postValue("${response.code()} ${response.message()}")
                 }
             }
         })
