@@ -3,29 +3,6 @@ plugins {
     id 'kotlin-android'
 }
 
-def getLocalProperties() {
-  Properties props = new Properties()
-  def file = project.rootProject.file("local.properties")
-  if (file.exists()) {
-      props.load(file.newDataInputStream())
-      println System.getenv('GOOGLE_CLIENT_ID')
-  }
-  return props
-}
-
-static def getEnvVariable(String name) {
-  def value = System.getenv('GOOGLE_CLIENT_ID')
-  println value
-  if (value != null) {
-    return value
-  }
-  return ''
-}
-
-def getGoogleClientID() {
-  Properties properties = getLocalProperties()
-  properties.getProperty("google.client.id", getEnvVariable('GOOGLE_CLIENT_ID'))
-}
 android {
   compileSdk 33
   defaultConfig {
@@ -95,4 +72,28 @@ dependencies {
     implementation "androidx.activity:activity-ktx:$activity_version"
 
 
+}
+
+def getLocalProperties() {
+  Properties props = new Properties()
+  def file = project.rootProject.file("local.properties")
+  if (file.exists()) {
+    props.load(file.newDataInputStream())
+    println System.getenv('GOOGLE_CLIENT_ID')
+  }
+  return props
+}
+
+static def getEnvVariable(String name) {
+  def value = System.getenv('GOOGLE_CLIENT_ID')
+  println value
+  if (value != null) {
+    return value
+  }
+  return ''
+}
+
+def getGoogleClientID() {
+  Properties properties = getLocalProperties()
+  properties.getProperty("google.client.id", getEnvVariable('GOOGLE_CLIENT_ID'))
 }
