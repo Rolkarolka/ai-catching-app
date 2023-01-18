@@ -40,7 +40,7 @@ class GarmentViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     outfitList.postValue(response.body())
                 } else {
-                    outfitErrorMessage.postValue(response.errorBody().toString())
+                    outfitErrorMessage.postValue("${response.code()} ${response.message()}")
                 }
             }
             override fun onFailure(call: Call<List<Garment>>, t: Throwable) {
@@ -56,7 +56,7 @@ class GarmentViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     wardrobeList.postValue(response.body())
                 } else {
-                    wardrobeErrorMessage.postValue(response.errorBody().toString())
+                    wardrobeErrorMessage.postValue("${response.code()} ${response.message()}")
                 }
             }
             override fun onFailure(call: Call<List<Garment>>, t: Throwable) {
@@ -74,7 +74,7 @@ class GarmentViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     mainGarment.postValue(response.body())
                 } else {
-                    mainGarmentErrorMessage.postValue(response.errorBody().toString())
+                    mainGarmentErrorMessage.postValue("${response.code()} ${response.message()}")
                 }
             }
 
@@ -94,7 +94,7 @@ class GarmentViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     availableAttributesValues.postValue(response.body())
                 } else {
-                    availableAttributesValuesErrorMessage.postValue(response.errorBody().toString())
+                    availableAttributesValuesErrorMessage.postValue("${response.code()} ${response.message()}")
                 }
             }
             override fun onFailure(call: Call<Map<String, List<String>>>, t: Throwable) {
@@ -110,7 +110,7 @@ class GarmentViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     mainGarmentAttributes.postValue(response.body())
                 } else {
-                    mainGarmentAttributesErrorMessage.postValue(response.errorBody().toString())
+                    mainGarmentAttributesErrorMessage.postValue("${response.code()} ${response.message()}")
                 }
             }
             override fun onFailure(call: Call<GarmentAttributes>, t: Throwable) {
@@ -124,7 +124,7 @@ class GarmentViewModel : ViewModel() {
         response.enqueue(object : Callback<Void?> {
             override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                 if (!response.isSuccessful) {
-                    deleteErrorMessage.postValue(response.errorBody().toString())
+                    deleteErrorMessage.postValue("${response.code()} ${response.message()}")
                 }
             }
 
@@ -141,7 +141,7 @@ class GarmentViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     mainGarmentAttributes.postValue(response.body())
                 } else {
-                    mainGarmentAttributesErrorMessage.postValue(response.errorBody().toString())
+                    mainGarmentAttributesErrorMessage.postValue("${response.code()} ${response.message()}")
                 }
             }
             override fun onFailure(call: Call<GarmentAttributes>, t: Throwable) {
