@@ -27,3 +27,5 @@ jobs:
         run: |
           chmod +x ./gradlew
           bash ./gradlew ktlintCheck
+        env:
+          GOOGLE_CLIENT_ID: ${{ vars.GOOGLE_CLIENT_ID }}
