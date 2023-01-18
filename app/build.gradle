@@ -86,7 +86,7 @@ def getLocalProperties() {
 }
 
 static def getEnvVariable(String name) {
-  def value = System.getenv("GOOGLE_CLIENT_ID")
+  def value = System.getenv(name)
   println("Here is value if it is working $value")
   if (value != null) {
     return value
@@ -96,5 +96,6 @@ static def getEnvVariable(String name) {
 
 def getGoogleClientID() {
   Properties properties = getLocalProperties()
-  properties.getProperty("google.client.id", getEnvVariable("GOOGLE_CLIENT_ID"))
+  def clientID = getEnvVariable("GOOGLE_CLIENT_ID")
+  return properties.getProperty("google.client.id", clientID)
 }
