@@ -3,12 +3,18 @@ plugins {
     id 'kotlin-android'
 }
 
+def getLocalProperties() {
+  Properties props = new Properties()
+  def file = project.rootProject.file("local.properties")
+  if (file.exists()) {
+        props.load(file.newDataInputStream())
+}
+return props
+}
+
 android {
-    compileSdk 33
-
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file("local.properties").newDataInputStream())
-
+  compileSdk 33
+  Properties properties = getLocalProperties()
   defaultConfig {
         applicationId "edu.pw.aicatching"
         minSdk 28
