@@ -22,7 +22,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        resValue "string", "google_client_id", properties.getProperty("google.client.id")
+        resValue "string", "google_client_id", properties.getProperty("google.client.id", System.getenv('GOOGLE_CLIENT_ID'))
     }
 
     buildFeatures {
