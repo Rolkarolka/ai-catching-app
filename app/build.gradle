@@ -6,13 +6,17 @@ plugins {
 android {
     compileSdk 33
 
-    defaultConfig {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+  defaultConfig {
         applicationId "edu.pw.aicatching"
         minSdk 28
         targetSdk 33
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        resValue "string", "google_client_id", properties.getProperty("google.client.id")
     }
 
     buildFeatures {

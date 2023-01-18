@@ -21,7 +21,6 @@
     <string name="fav_color">Favourite color</string>
     <string name="shoe_size">Shoe size</string>
     <string name="garment_size">Garment size</string>
-    <string name="web_client_id">TODO google id placement</string>
     <string name="welcome">Welcome to your outfit creator!</string>
     <string name="editAttributeValue">Attribute Value</string>
     <string name="search">Search</string>
