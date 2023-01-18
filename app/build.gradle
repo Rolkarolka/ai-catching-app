@@ -7,14 +7,27 @@ def getLocalProperties() {
   Properties props = new Properties()
   def file = project.rootProject.file("local.properties")
   if (file.exists()) {
-        props.load(file.newDataInputStream())
-}
-return props
+      props.load(file.newDataInputStream())
+      println System.getenv('GOOGLE_CLIENT_ID')
+  }
+  return props
 }
 
+static def getEnvVariable(String name) {
+  def value = System.getenv('GOOGLE_CLIENT_ID')
+  println value
+  if (value != null) {
+    return value
+  }
+  return ''
+}
+
+def getGoogleClientID() {
+  Properties properties = getLocalProperties()
+  properties.getProperty("google.client.id", getEnvVariable('GOOGLE_CLIENT_ID'))
+}
 android {
   compileSdk 33
-  Properties properties = getLocalProperties()
   defaultConfig {
         applicationId "edu.pw.aicatching"
         minSdk 28
@@ -22,7 +35,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        resValue "string", "google_client_id", properties.getProperty("google.client.id", System.getenv('GOOGLE_CLIENT_ID'))
+        resValue "string", "google_client_id", getGoogleClientID()
     }
 
     buildFeatures {
