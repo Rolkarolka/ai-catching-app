@@ -86,6 +86,7 @@ def getLocalProperties() {
 
 static def getEnvVariable(String name) {
   def value = System.getenv("GOOGLE_CLIENT_ID")
+  println("Here is value if it is working")
   println value
   if (value != null) {
     return value
