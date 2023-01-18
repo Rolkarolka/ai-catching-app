@@ -148,7 +148,7 @@ class AuthorizationFragment : Fragment() {
     private fun createBeginSignInRequest(filterByAuthorizedAccount: Boolean) =
         BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
             .setSupported(true)
-            .setServerClientId(getString(R.string.web_client_id))
+            .setServerClientId(getString(R.string.google_client_id))
             .setFilterByAuthorizedAccounts(filterByAuthorizedAccount)
             .build()
 
