@@ -57,11 +57,6 @@ class AuthorizationFragment : Fragment() {
         return binding.root
     }
 
-    private fun handleUserErrorMessage() {
-        viewModel.userErrorMessage.observe(
-            viewLifecycleOwner
-        ) { Log.d("AuthorizationFragment:onCreateView:logIn", it) }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -124,6 +119,21 @@ class AuthorizationFragment : Fragment() {
                     Navigation.findNavController(view).navigate(R.id.mainFragment)
                 }
             }
+        }
+    }
+
+    private fun handleUserErrorMessage() {
+        viewModel.userErrorMessage.observe(
+            viewLifecycleOwner
+        ) {
+            Log.d("AuthorizationFragment:onCreateView:logIn", it)
+            hideProgressBar()
+            Toast.makeText(
+                this.context,
+                "Sorry, there was a problem with connecting to server. " +
+                    "Please, try again later.",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
