@@ -69,7 +69,7 @@ class MainFragment : Fragment() {
         if (viewModel.user.value != null) {
             viewModel.user.observe(viewLifecycleOwner) { user ->
                 binding.mainPageToolbar.apply {
-                    user?.let{ setUsername(user) }
+                    user?.let { setUsername(user) }
                     user?.preferences?.let { preferences ->
                         setPhotoUrl(preferences.photoUrl)
                         setFavColor(preferences.favouriteColor)

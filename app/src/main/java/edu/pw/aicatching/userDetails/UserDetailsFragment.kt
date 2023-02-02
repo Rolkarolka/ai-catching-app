@@ -137,7 +137,7 @@ class UserDetailsFragment : Fragment() {
             ?.let { garmentSizesArray.indexOf(it.garmentSize.toString()) }
             ?.let { binding.garmentSizeSpinner.setSelection(it) }
 
-        binding.garmentSizeSpinner.setSelection(0,false)
+        binding.garmentSizeSpinner.setSelection(0, false)
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 changedPrefValuesMap["garmentSize"] = GarmentSize.valueOf(garmentSizesArray[position])
@@ -157,7 +157,7 @@ class UserDetailsFragment : Fragment() {
             ?.let { shoeSizesArray.indexOf(it.shoeSize) }
             ?.let { binding.shoeSizeSpinner.setSelection(it) }
 
-        binding.shoeSizeSpinner.setSelection(0,false)
+        binding.shoeSizeSpinner.setSelection(0, false)
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 changedPrefValuesMap["shoeSize"] = shoeSizesArray[position]
