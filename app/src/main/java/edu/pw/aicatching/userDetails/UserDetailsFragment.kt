@@ -115,7 +115,7 @@ class UserDetailsFragment : Fragment() {
             )
             return if (sendChangedAttributes) editedPreferences else null
         }
-        val pref = UserPreferences(
+        val newPreferences = UserPreferences(
             shoeSize = changedPrefValuesMap["shoeSize"].toString().compareChange(null),
             garmentSize = GarmentSize.from(changedPrefValuesMap["garmentSize"].toString().compareChange(null)),
             favouriteColor = changedPrefValuesMap["favouriteColor"]
@@ -123,7 +123,7 @@ class UserDetailsFragment : Fragment() {
                 .compareChange(null)
                 ?.let { Color.valueOf(it) }
         )
-        return if (sendChangedAttributes) pref else null
+        return if (sendChangedAttributes) newPreferences else null
     }
 
     private fun setGarmentSpinner(garmentSizesArray: List<String>) {
