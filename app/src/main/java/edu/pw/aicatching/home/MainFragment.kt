@@ -68,9 +68,9 @@ class MainFragment : Fragment() {
     private fun setMainToolbarUserInfo() {
         if (viewModel.user.value != null) {
             viewModel.user.observe(viewLifecycleOwner) { user ->
-                user?.preferences?.let { preferences ->
-                    binding.mainPageToolbar.apply {
-                        setUsername(user)
+                binding.mainPageToolbar.apply {
+                    user?.let{ setUsername(user) }
+                    user?.preferences?.let { preferences ->
                         setPhotoUrl(preferences.photoUrl)
                         setFavColor(preferences.favouriteColor)
                         setGarmentSize(preferences.garmentSize)

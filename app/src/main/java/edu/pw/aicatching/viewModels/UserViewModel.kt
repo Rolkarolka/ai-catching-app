@@ -52,6 +52,7 @@ class UserViewModel : ViewModel() {
             override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
                 if (response.isSuccessful) {
                     user.postValue(null)
+                    userPreferences = MutableLiveData()
                 } else {
                     loggingErrorMessage.postValue("${response.code()} ${response.message()}")
                 }

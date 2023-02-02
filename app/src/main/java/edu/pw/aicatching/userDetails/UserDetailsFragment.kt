@@ -115,7 +115,15 @@ class UserDetailsFragment : Fragment() {
             )
             return if (sendChangedAttributes) editedPreferences else null
         }
-        return null
+        val pref = UserPreferences(
+            shoeSize = changedPrefValuesMap["shoeSize"].toString().compareChange(null),
+            garmentSize = GarmentSize.from(changedPrefValuesMap["garmentSize"].toString().compareChange(null)),
+            favouriteColor = changedPrefValuesMap["favouriteColor"]
+                .toString()
+                .compareChange(null)
+                ?.let { Color.valueOf(it) }
+        )
+        return if (sendChangedAttributes) pref else null
     }
 
     private fun setGarmentSpinner(garmentSizesArray: List<String>) {
@@ -129,6 +137,7 @@ class UserDetailsFragment : Fragment() {
             ?.let { garmentSizesArray.indexOf(it.garmentSize.toString()) }
             ?.let { binding.garmentSizeSpinner.setSelection(it) }
 
+        binding.garmentSizeSpinner.setSelection(0,false)
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 changedPrefValuesMap["garmentSize"] = GarmentSize.valueOf(garmentSizesArray[position])
@@ -148,6 +157,7 @@ class UserDetailsFragment : Fragment() {
             ?.let { shoeSizesArray.indexOf(it.shoeSize) }
             ?.let { binding.shoeSizeSpinner.setSelection(it) }
 
+        binding.shoeSizeSpinner.setSelection(0,false)
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
                 changedPrefValuesMap["shoeSize"] = shoeSizesArray[position]
@@ -164,7 +174,6 @@ class UserDetailsFragment : Fragment() {
                 colorPickerManager.setColor("FavColorPicker", android.graphics.Color.parseColor(favColor.hexValue))
             }
         }
-
         binding.favColorPickerView.setColorListener(
             ColorEnvelopeListener { envelope, _ ->
                 binding.favouriteColorView.backgroundTintList = ColorStateList.valueOf(envelope.color)
@@ -220,7 +229,7 @@ class UserDetailsFragment : Fragment() {
     }
 
     private fun String?.compareChange(prevValue: String?) =
-        if (this == prevValue || this.isNullOrBlank()) null
+        if (this == prevValue || this.isNullOrBlank() || this.equals("null")) null
         else {
             sendChangedAttributes = true
             this
